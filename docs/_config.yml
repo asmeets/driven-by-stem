@@ -1,0 +1,25 @@
+# Site Settings
+title: "Driven by STEM"
+description: "A classroom-ready MakeCode Arcade racing game about engineering tradeoffs, sustainability, and STEM career readiness."
+url: "https://asmeets.github.io"
+baseurl: "/driven-by-stem"
+
+# Theme Settings
+remote_theme: chrisrhymes/bulma-clean-theme@v0.14.0
+
+# Plugins
+plugins:
+  - jekyll-remote-theme
+  - jekyll-sitemap
+  - jekyll-feed
+
+# Reading Files
+include:
+  - _pages
+exclude:
+  - vendor
+  - node_modules
+  - Gemfile
+  - Gemfile.lock
+  - SETUP.md
+  - index.html.bak

@@ -1,0 +1,35 @@
+---
+layout: page
+show_sidebar: false
+---
+
+<div class="educator-page-shell">
+  <div class="educator-page-main">
+    {{ content }}
+  </div>
+
+  <aside class="educator-page-nav" aria-label="Educator guide sections">
+    <p class="educator-page-nav-label">Table of Contents</p>
+    <ul class="educator-page-nav-list">
+      <li>{% if page.educator_nav == "home" %}<span aria-current="page"><strong>Home</strong></span>{% else %}<a href="{{ site.baseurl }}/">Home</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "about" %}<span aria-current="page"><strong>About</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/about/">About</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "goals" %}<span aria-current="page"><strong>Goals</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/goals/">Goals</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "requirements" %}<span aria-current="page"><strong>Materials & Setup</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/requirements/">Materials & Setup</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "standards" %}<span aria-current="page"><strong>Standards</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/standards/">Standards</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "foundations" %}<span aria-current="page"><strong>Foundations</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/foundations/">Foundations</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "accessibility" %}<span aria-current="page"><strong>Accessibility</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/accessibility/">Accessibility</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "definitions" %}<span aria-current="page"><strong>Definitions</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/definitions/">Definitions</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "agenda" %}<span aria-current="page"><strong>Agenda</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/agenda/">Agenda</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "run-of-show" %}<span aria-current="page"><strong>Run of Show</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/run-of-show/">Run of Show</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "supplementals" %}<span aria-current="page"><strong>Remix & Extensions</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/supplementals/">Remix & Extensions</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "feedback" %}<span aria-current="page"><strong>Assessment & Reflection</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/feedback/">Assessment & Reflection</a>{% endif %}</li>
+    </ul>
+
+    <p class="educator-page-nav-label">Links</p>
+    <ul class="educator-page-nav-list">
+      <li><a href="https://tinyurl.com/miami-stem">Launch Short Link</a></li>
+      <li><a href="https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap">Full Skillmap Link</a></li>
+      <li><a href="https://github.com/asmeets/driven-by-stem">GitHub Repository</a></li>
+    </ul>
+  </aside>
+</div>

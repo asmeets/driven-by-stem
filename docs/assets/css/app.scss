@@ -1,0 +1,85 @@
+---
+---
+
+@import "main";
+
+.navbar-start {
+  display: none !important;
+}
+
+.hero.is-primary {
+  background-color: #000 !important;
+  background-image: unset !important;
+  color: #fff !important;
+}
+
+.hero.is-primary.is-bold {
+  background-color: #000 !important;
+  background-image: unset !important;
+  color: #fff !important;
+}
+
+.navbar.is-primary {
+  background-color: #888;
+  color: #000;
+}
+
+.hero.is-medium .hero-body {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.hero .title.is-2 {
+  margin-bottom: 0;
+}
+
+.educator-page-shell {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.educator-page-main {
+  flex: 1 1 34rem;
+  min-width: 0;
+}
+
+.educator-page-nav {
+  flex: 0 0 15rem;
+  width: 100%;
+  max-width: 15rem;
+  padding: 1rem 1.1rem;
+  border: 1px solid #c8c8c8;
+  border-radius: 0.75rem;
+  background: #f7f7f7;
+  position: sticky;
+  top: 1rem;
+}
+
+.educator-page-nav-label {
+  margin: 0 0 0.35rem 0;
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.educator-page-nav-list {
+  margin-left: 1em !important;
+  padding-left: 0;
+  list-style: none !important;
+}
+
+.educator-page-nav-list li {
+  margin: 0.35rem 0;
+}
+
+@media (max-width: 960px) {
+  .educator-page-shell {
+    flex-direction: column;
+  }
+
+  .educator-page-nav {
+    position: static;
+    width: 100%;
+  }
+}

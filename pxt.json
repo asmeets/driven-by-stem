@@ -1,0 +1,62 @@
+{
+    "name": "Driven by STEM",
+    "version": "8.0.0",
+    "description": "Driven by STEM, enabled by Microsoft, is a game design project where you build and remix your own F1-inspired racing experience in MakeCode Arcade. As you play and change the game, you’ll explore real engineering tradeoffs like speed versus control, power versus efficiency, and risk versus consistency. The goal is not just to make the fastest car, but to make smart design choices and see how small code changes affect the whole race.\n\nThis project is meant to help you think like a game designer, software developer, and race engineer. You can test ideas, spot problems, improve your design, and learn how coding connects to real careers in technology, engineering, data, strategy, and accessibility.",
+    "dependencies": {
+        "device": "*",
+        "settings-blocks": "github:microsoft/pxt-settings-blocks#v1.0.0",
+        "Timers": "github:microsoft/arcade-timers#v1.1.0",
+        "pxt-status-bar": "github:jwunderl/pxt-status-bar#v0.4.2",
+        "sprite-scaling": "*"
+    },
+    "files": [
+        "README.md",
+        "assets.json",
+        "skillmap.md",
+        "main.blocks",
+        "main.ts",
+        "custom.ts",
+        "test-track.ts",
+        "images.g.jres",
+        "images.g.ts",
+        "tilemap.g.jres",
+        "tilemap.g.ts",
+        "tutorials/in-the-classroom/activity1-v5.md",
+        "tutorials/the-garage/activity1-v5.md",
+        "tutorials/the-garage/activity2-v5.md",
+        "tutorials/the-garage/activity3-v5.md",
+        "tutorials/on-the-road/activity1-v5.md",
+        "tutorials/on-the-road/activity2-v5.md",
+        "tutorials/on-the-road/activity3-v5.md",
+        "tutorials/the-finish-line/activity1-v5.md",
+        "tutorials/the-finish-line/activity2-v5.md",
+        "tutorials/the-finish-line/activity3-v5.md"
+    ],
+    "testDependencies": {},
+    "targetVersions": {
+        "target": "4.0.14",
+        "targetId": "arcade"
+    },
+    "supportedTargets": [
+        "arcade"
+    ],
+    "preferredEditor": "blocksprj",
+    "palette": [
+        "#000000",
+        "#FFFFFF",
+        "#FF2121",
+        "#FF93C4",
+        "#FF8135",
+        "#FFF609",
+        "#249CA3",
+        "#78DC52",
+        "#003FAD",
+        "#87F2FF",
+        "#8E2EC4",
+        "#A4839F",
+        "#5C406c",
+        "#E5CDC4",
+        "#91463d",
+        "#000000"
+    ]
+}
