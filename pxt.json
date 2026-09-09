@@ -41,7 +41,7 @@
     ],
     "testDependencies": {},
     "targetVersions": {
-        "target": "4.0.14",
+        "target": "4.1.23",
         "targetId": "arcade"
     },
     "supportedTargets": [
