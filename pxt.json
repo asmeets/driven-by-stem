@@ -32,12 +32,12 @@
         "tutorials/the-finish-line/activity1-v5.md",
         "tutorials/the-finish-line/activity2-v5.md",
         "tutorials/the-finish-line/activity3-v5.md",
-        "tutorials/stages/1-join-the-team.md",
-        "tutorials/stages/2-design.md",
-        "tutorials/stages/3-test.md",
-        "tutorials/stages/4-analyze.md",
-        "tutorials/stages/5-decide.md",
-        "tutorials/stages/6-race-and-reflect.md"
+        "tutorials/stages/1-join-the-team-v1.md",
+        "tutorials/stages/2-design-v1.md",
+        "tutorials/stages/3-test-v1.md",
+        "tutorials/stages/4-analyze-v1.md",
+        "tutorials/stages/5-decide-v1.md",
+        "tutorials/stages/6-race-and-reflect-v1.md"
     ],
     "testDependencies": {},
     "targetVersions": {

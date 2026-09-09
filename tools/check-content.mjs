@@ -79,6 +79,12 @@ for (const t of tutorials) {
         if (/controller\.A\.onEvent/.test(src)) fail(t, `binds controller.A, which the library reserves for start-line staging`)
     }
 
+    // 5b. cache-busting: MakeCode caches tutorial markdown by URL and a new
+    //     release tag does not clear it. Only a new filename does, so every
+    //     stage tutorial must carry a -v<N> suffix (see tools/bump-tutorial.mjs).
+    if (stageTutorials.includes(t) && !/-v\d+\.md$/.test(t))
+        fail(t, 'missing the -v<N> version suffix; MakeCode will serve a cached copy after edits (run tools/bump-tutorial.mjs)')
+
     // 6. validate markers must sit inside a blocks fence
     const fences = [...src.matchAll(/^```(\w[\w.]*)\n([\s\S]*?)^```$/gm)]
     const inBlocks = fences.filter(f => f[1] === 'blocks').map(f => f[2]).join('\n')
