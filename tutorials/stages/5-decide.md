@@ -9,13 +9,13 @@
 
 ![Morgan - strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
 
-**I'm Morgan, strategist.** The weather turns, grip drops, the pit lane opens — and you have to call it before anyone knows how it ends. Avery joins me on the sustainability side.
+**I'm Morgan, strategist.** The weather turns, grip drops, the pit lane opens. You have to call it before anyone knows how it ends. Avery joins me on the sustainability side.
 
 *This stage is scheduled for the full build. What follows is the specification it will be built against, taken from the approved Skills Map Summary.*
 
 ## {1. What this stage will be}
 
-**Stage Decide — in build**
+**Stage Decide, in build**
 
 ---
 
@@ -40,7 +40,7 @@ Conditional branching, event handling, timing windows, and designing for conditi
 
 **Career lens**
 
-strategist — Morgan.
+Strategist: Morgan.
 
 **Planned size**
 

@@ -329,7 +329,6 @@ namespace drivenByStemSupport {
         drawGarageGauge(canvas, "Cost", GARAGE_TEST_BED_GAUGE_DRAIN_Y, drainWidth, 2, safeDrain + "/5")
 
         canvas.printCenter("Garage Test Bed", 4, GARAGE_TEST_BED_TEXT_COLOR, image.font8)
-        canvas.printCenter("Check prediction", 15, GARAGE_TEST_BED_TEXT_COLOR, image.font8)
         canvas.print(speed > 100 ? "High speed setup" : "Balanced setup", GARAGE_TEST_BED_LABEL_X, 78, GARAGE_TEST_BED_TEXT_COLOR, image.font8)
         
         scene.setBackgroundImage(canvas)

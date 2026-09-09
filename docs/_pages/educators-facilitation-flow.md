@@ -585,7 +585,7 @@ End with a short, confident reflection that captures learning without draining t
 
 At an event, one device is often used by several groups in a row. A new group should start from a clean car, not inherit the last group's tuned setup.
 
-Earlier versions of this activity asked students to build a reset button into their own code. That step has been removed — it was maintenance work rather than learning, and it put a system-clearing control inside the reach of the person least likely to want it. Clearing between groups is now a facilitator action.
+Earlier versions of this activity asked students to build a reset button into their own code. That step has been removed. It was maintenance work rather than learning, and it put a system-clearing control within reach of the person least likely to want it. Clearing between groups is now a facilitator action.
 
 ### Between groups on a shared device
 

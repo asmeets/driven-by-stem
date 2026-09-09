@@ -15,7 +15,7 @@
 
 ## {1. What this stage will be}
 
-**Stage Test — in build**
+**Stage Test, in build**
 
 ---
 
@@ -40,7 +40,7 @@ Controlled comparison, isolating a single variable, reading instrumentation, and
 
 **Career lens**
 
-test engineer — Jordan.
+Test engineer: Jordan.
 
 **Planned size**
 

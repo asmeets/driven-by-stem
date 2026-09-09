@@ -31,7 +31,7 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 
 ![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
 
-**I'm Riley, performance engineer.** My whole job is one question: why did that change make it better — or worse?
+**I'm Riley, performance engineer.** My whole job is one question: why did that change make it better, or worse?
 
 Today you'll say what you think more speed will cost, then tune it and let the bench tell you whether you were right.
 
@@ -41,14 +41,14 @@ Today you'll say what you think more speed will cost, then tune it and let the b
 
 ---
 
-Your car already has a `driveSpeed` variable holding the speed saved from Join the Team. You are about to change it — but not before you say what you expect to happen.
+Your code will create one variable that controls how fast the car goes, and you are going to raise it. Before you do, say out loud what you think that will cost.
 
 I make the prediction first, out loud, every time. If you tune first and explain afterwards, you will explain whatever you happen to see. That is not evidence, it's a story.
 
 * :id card: With your team, finish this sentence out loud before you touch anything: *"If we raise the speed, then ______ will get better and ______ will get worse."*
 * :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `driveSpeed`.
 * :paper plane: Drag `||variables:set driveSpeed to [0]||` into `||loops(noclick):on start||`, directly **above** the `||drivenByStem:set base car speed to||` block.
-* :keyboard: Type `110` as its value — the tuned speed you are testing.
+* :keyboard: Type `110` as its value. That is the tuned speed you are testing.
 * :binoculars: Hold on to your prediction. You will check it against real numbers in Step 5.
 
 ~hint What's a variable? 📦
@@ -115,7 +115,7 @@ A number that nothing reads is just a number. When I tune a setup, the first thi
 
 ---
 
-If you still see `||drivenByStem:saved drive speed||` in the movement block, the tuning is not connected yet. The variable has to be *inside* `set base car speed to`, not just sitting above it.
+If you still see `||drivenByStem:saved drive speed||` in the movement block, the tuning is not connected yet. The variable has to be *inside* `set base car speed to`, not sitting above it.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
@@ -165,7 +165,7 @@ Speed is never free. On a real car it costs fuel, tyre life, brake temperature, 
 
 ---
 
-The `set <name> to` block does not appear in the Variables toolbox until the variable exists. If you cannot find one, use **Make a Variable** first, then look again — and check the spelling character by character, because `efficiencyrating` and `efficiencyRating` are two different variables.
+The `set <name> to` block does not appear in the Variables toolbox until the variable exists. If you cannot find one, use **Make a Variable** first, then look again. Check the spelling character by character, because `efficiencyrating` and `efficiencyRating` are two different variables.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
@@ -232,7 +232,7 @@ hint~
 
 ---
 
-If your tradeoff rule never seems to fire, check that `driveSpeed` is set *before* the `if` block runs. Order matters — the rule can only read a value that already exists.
+If your tradeoff rule never seems to fire, check that `driveSpeed` is set *before* the `if` block runs. Order matters, because the rule can only read a value that already exists.
 
 hint~
 
@@ -295,7 +295,7 @@ Your code will open the garage test bed, which reads your final speed, efficienc
 
 This is the moment Step 1 was for. You said what more speed would cost. Now the bench says what it actually cost.
 
-* :mouse pointer: Drag the mission `||game:splash||` block out of `||loops(noclick):on start||` and drop it in an empty part of the workspace. It has done its job, and test runs are faster without a banner in front of them — it stays in the workspace if you want it back.
+* :mouse pointer: Drag the mission `||game:splash||` block out of `||loops(noclick):on start||` and drop it in an empty part of the workspace. It has done its job, and test runs are faster without a banner in front of them. It stays in the workspace if you want it back.
 * :racing car: Drag `||drivenByStem:preview garage test bed||` to the **end** of `||loops(noclick):on start||`. The three variables are already wired in, so it reads your final values.
 * :game pad: Run the simulator and read the speed, energy, and cost numbers.
 * :id card: Say your Step 1 prediction out loud again, then compare. **Did more speed cost what you said it would?**
@@ -305,7 +305,7 @@ This is the moment Step 1 was for. You said what more speed would cost. Now the 
 
 ---
 
-Check three things. First, the preview block has to come *after* the `if driveSpeed > 100` rule, so it reads the final values rather than the starting ones. Second, make sure the mission splash is disconnected so it is not interrupting each run. Third, the arrows only move the gauge here — the real driving test is Jordan's, in the next stage.
+Check three things. First, the preview block has to come *after* the `if driveSpeed > 100` rule, so it reads the final values rather than the starting ones. Second, make sure the mission splash is disconnected so it is not interrupting each run. Third, the arrows only move the gauge here. The real driving test is Jordan's, in the next stage.
 
 ```blocks
 let driveSpeed = 110
@@ -345,7 +345,7 @@ drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
 
 Your code will record which engineering role your team is reading the data through.
 
-Four people can look at the same run and disagree about whether it went well, because they are each asking a different question. That is not a problem to fix — it is how a team covers everything.
+Four people can look at the same run and disagree about whether it went well, because they are each asking a different question. That is not a problem to fix. It is how a team covers everything.
 
 ```validation.local
 # BlocksExistValidator
@@ -353,7 +353,7 @@ Four people can look at the same run and disagree about whether it went well, be
 ```
 
 * :book: Open `||drivenByStem:Driven by STEM||` and add `||drivenByStem:set role lens to||` near the top of `||loops(noclick):on start||`.
-* :mouse pointer: Use the dropdown to pick your lens — **Performance Engineer**, **Strategist**, **Software Engineer**, or **Data Analyst**.
+* :mouse pointer: Use the dropdown to pick your lens: **Performance Engineer**, **Strategist**, **Software Engineer**, or **Data Analyst**.
 * :game pad: Run it and press **menu**. Your check button from Join the Team now reports the lens too.
 * :lightbulb: Change the lens and press **menu** again to see the same run framed a different way.
 
@@ -363,10 +363,10 @@ Four people can look at the same run and disagree about whether it went well, be
 
 There is no correct answer. Pick the lens that matches what your team is actually watching:
 
-- **Performance Engineer** — that's Riley. Is it faster, and what did the speed cost?
-- **Strategist** — Morgan. Was it the right call for the conditions?
-- **Software Engineer** — Sam. Did the system behave the way it was built to?
-- **Data Analyst** — Casey. Do the numbers support what we think happened?
+- **Performance Engineer.** That's Riley. Is it faster, and what did the speed cost?
+- **Strategist.** Morgan. Was it the right call for the conditions?
+- **Software Engineer.** Sam. Did the system behave the way it was built to?
+- **Data Analyst.** Casey. Do the numbers support what we think happened?
 
 You'll meet all four doing their real jobs later in the build.
 
@@ -423,7 +423,7 @@ This is the block Jordan's test track actually reads. If you skip it, the next s
 
 ---
 
-If a later stage does not seem to remember your setup, check *when* you save. `save team setup` has to run after your speed and efficiency values are final — that is why it lives inside the branch, not above the rule.
+If a later stage does not seem to remember your setup, check *when* you save. `save team setup` has to run after your speed and efficiency values are final. That is why it lives inside the branch, not above the rule.
 
 ```blocks
 let driveSpeed = 110
@@ -468,7 +468,7 @@ drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, driven
 
 ![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
 
-**You made a claim before you tested it, then let the bench settle it.** That order — predict, then measure — is the whole job.
+**You made a claim before you tested it, then let the bench settle it.** That order, predict and then measure, is the whole job.
 
 Jordan takes it to the track next.<br><br>Select **Done** to head into Test.
 

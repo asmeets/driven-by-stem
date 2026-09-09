@@ -1,5 +1,5 @@
 # driven-by-stem-preview
-* name: Driven by STEM, enabled by Microsoft — Revision Preview
+* name: Driven by STEM, enabled by Microsoft, Revision Preview
 * description: The revised six-stage experience. Stages 1 and 2 are built and playable. Stages 3 to 6 show the specification they will be built against. The live ten-activity experience is unchanged at the production link.
 * primarycolor: #ffd84d
 * secondarycolor: #000
@@ -11,7 +11,7 @@
 * bannerurl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/banner.png
 
 ## driven-by-stem-preview
-* name: Driven by STEM — Six Stages
+* name: Driven by STEM, Six Stages
 * description: Join the Team, Design, Test, Analyze, Decide, Race and Reflect. Stages 1 and 2 are ready to play; the remaining four are placeholders showing what each will contain.
 * layout: manual
 
@@ -41,7 +41,7 @@
 * name: Test
 * type: tutorial
 * allowcodecarryover: true
-* description: In build. One track, run twice, one variable changed — then read the two results side by side.
+* description: In build. One track, run twice, one variable changed. Then read the two results side by side.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-garage-shakedown.png
 * position: 4 6
 * tags: stage-3, in-build, test-engineering, comparison

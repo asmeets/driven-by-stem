@@ -15,7 +15,7 @@
 
 ## {1. What this stage will be}
 
-**Stage Race and Reflect — in build**
+**Stage Race and Reflect, in build**
 
 ---
 
@@ -40,7 +40,7 @@ Systems integration, reading across saved data, self-assessment, and explaining 
 
 **Career lens**
 
-systems engineer — Taylor.
+Systems engineer: Taylor.
 
 **Planned size**
 

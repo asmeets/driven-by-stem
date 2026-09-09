@@ -15,7 +15,7 @@
 
 ## {1. What this stage will be}
 
-**Stage Analyze — in build**
+**Stage Analyze, in build**
 
 ---
 
@@ -40,7 +40,7 @@ Counters and accumulation, collision detection, reading a live dashboard, and co
 
 **Career lens**
 
-telemetry analyst — Casey.
+Telemetry analyst: Casey.
 
 **Planned size**
 
