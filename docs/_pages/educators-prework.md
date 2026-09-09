@@ -46,6 +46,7 @@ For live events, put the short link on the projector, any printed materials, and
 - [ ] Review [Definitions]({{ site.baseurl }}/educators/definitions/) and choose which terms to teach directly and which to introduce only when they appear naturally.
 - [ ] Read [Accessibility]({{ site.baseurl }}/educators/accessibility/) if you will be working with shared devices, projector-heavy facilitation, or a mixed-experience group.
 - [ ] Decide whether to use the Garage Shakedown test track as a compare-and-explain checkpoint.
+- [ ] Decide how you will clear devices between groups, and read [Resetting Between Groups]({{ site.baseurl }}/educators/run-of-show/#resetting-between-groups) before the session.
 
 ## Recommended Dry Run
 
@@ -63,6 +64,7 @@ During the dry run, check these items:
 One simple backup plan should be ready in case devices or connectivity are uneven.
 
 - [ ] Keep one facilitator machine ready to demo a step live.
+- [ ] If several groups will share one device, have a private or incognito window ready for each handover so a new group starts from a clean car.
 - [ ] Be ready to pair learners into Driver and Navigator roles on a shared device.
 - [ ] Choose the shorter-format path to use if time is cut short: 60-minute classroom version or 30-minute event-floor version from [Agenda]({{ site.baseurl }}/educators/agenda/).
 - [ ] Decide which discussion element will be protected even if time is reduced: one prediction, one compare-and-explain pause, or one closing reflection.
