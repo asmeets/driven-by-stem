@@ -2,24 +2,25 @@
 
 ### @explicitHints true
 
-<!-- PREVIEW-STUB: not yet built. Placeholder for the Gate 1 review so the
-     six-stage shape is visible. Replaced by the full tutorial after Gate 1. -->
+<!-- PREVIEW-STUB: design specification only, no build yet. Present so the
+     six-stage shape is reviewable at the checkpoint. Replaced by the full
+     tutorial after the checkpoint review. -->
 
 ## Race and Reflect @showdialog
 
-![Taylor - systems engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/taylor.png)
+![Taylor - Systems Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/taylor.png)
 
 **I'm Taylor, systems engineer.** Everything you have built runs at once, and then we look at what it says about you.
 
-*This stage is scheduled for the full build. What follows is the specification it will be built against, taken from the approved Skills Map Summary.*
+*What follows is this stage's design, taken from the Skills Map Summary your team approved on 28 August. Playable code follows the checkpoint review.*
 
-## {1. What this stage will be}
+## {1. How this stage works}
 
-**Stage Race and Reflect, in build**
+**Stage Race and Reflect**
 
 ---
 
-This is a placeholder so you can see the whole six-stage shape during review. The tutorial itself is built after this checkpoint.
+The design is settled and the career lens, learner tasks, and pre-built systems below are the ones this stage will ship with.
 
 ```validation.local
 # BlocksExistValidator
@@ -42,7 +43,7 @@ Systems integration, reading across saved data, self-assessment, and explaining 
 
 Systems engineer: Taylor.
 
-**Planned size**
+**Size**
 
 10 coded steps, plus an opening card and a closing card.
 
@@ -52,8 +53,8 @@ Systems engineer: Taylor.
 
 * :arrow right: Select **Next**, then **Done**, to carry on through the map.
 
-## In build
+## Next in the build
 
-![Taylor - systems engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/taylor.png)
+![Taylor - Systems Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/taylor.png)
 
-This stage arrives with the full build after the two-module checkpoint is reviewed.
+Playable code for this stage follows the two-module checkpoint review.

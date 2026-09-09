@@ -1,6 +1,6 @@
 # driven-by-stem-preview
 * name: Driven by STEM, enabled by Microsoft, Revision Preview
-* description: The revised six-stage experience. Stages 1 and 2 are built and playable. Stages 3 to 6 show the specification they will be built against. The live ten-activity experience is unchanged at the production link.
+* description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect. Join the Team and Design are ready to play end to end. The remaining four stages open onto their approved designs, so the whole journey can be reviewed in one pass.
 * primarycolor: #ffd84d
 * secondarycolor: #000
 * tertiarycolor: #EAF3F8
@@ -12,7 +12,7 @@
 
 ## driven-by-stem-preview
 * name: Driven by STEM, Six Stages
-* description: Join the Team, Design, Test, Analyze, Decide, Race and Reflect. Stages 1 and 2 are ready to play; the remaining four are placeholders showing what each will contain.
+* description: Students join a race team as junior engineers and build a working race simulator. They choose their own dashboard units, predict what more speed will cost, run a controlled comparison, read their own race data, and make strategy calls when the weather turns.
 * layout: manual
 
 ### join-the-team
@@ -41,10 +41,10 @@
 * name: Test
 * type: tutorial
 * allowcodecarryover: true
-* description: In build. One track, run twice, one variable changed. Then read the two results side by side.
+* description: One track, run twice, one variable changed. Then read the two results side by side.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-garage-shakedown.png
 * position: 4 6
-* tags: stage-3, in-build, test-engineering, comparison
+* tags: stage-3, design-preview, test-engineering, comparison
 * next: analyze
 * url: github:asmeets/driven-by-stem/tutorials/stages/3-test
 
@@ -52,10 +52,10 @@
 * name: Analyze
 * type: tutorial
 * allowcodecarryover: true
-* description: In build. Drive a full session, then read collision count against score and efficiency.
+* description: Drive a full session, then read collision count against score and efficiency.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-hit-the-track.png
 * position: 6 5
-* tags: stage-4, in-build, telemetry, data
+* tags: stage-4, design-preview, telemetry, data
 * next: decide
 * url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze
 
@@ -63,10 +63,10 @@
 * name: Decide
 * type: tutorial
 * allowcodecarryover: true
-* description: In build. The weather turns, grip drops, and the pit lane opens. Make the call before you know how it ends.
+* description: The weather turns, grip drops, and the pit lane opens. Make the call before you know how it ends.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-changing-conditions.png
 * position: 8 6
-* tags: stage-5, in-build, strategy, conditionals
+* tags: stage-5, design-preview, strategy, conditionals
 * next: race-and-reflect
 * url: github:asmeets/driven-by-stem/tutorials/stages/5-decide
 
@@ -74,10 +74,10 @@
 * name: Race and Reflect
 * type: tutorial
 * allowcodecarryover: true
-* description: In build. Everything runs at once, then you find your own decisions inside the result.
+* description: Everything runs at once, then you find your own decisions inside the result.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-final-challenge.png
 * position: 10 5
-* tags: stage-6, in-build, systems, careers, reflection
+* tags: stage-6, design-preview, systems, careers, reflection
 * next: preview-finish
 * url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect
 

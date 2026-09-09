@@ -2,24 +2,25 @@
 
 ### @explicitHints true
 
-<!-- PREVIEW-STUB: not yet built. Placeholder for the Gate 1 review so the
-     six-stage shape is visible. Replaced by the full tutorial after Gate 1. -->
+<!-- PREVIEW-STUB: design specification only, no build yet. Present so the
+     six-stage shape is reviewable at the checkpoint. Replaced by the full
+     tutorial after the checkpoint review. -->
 
 ## Decide @showdialog
 
-![Morgan - strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
+![Morgan - Strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
 
 **I'm Morgan, strategist.** The weather turns, grip drops, the pit lane opens. You have to call it before anyone knows how it ends. Avery joins me on the sustainability side.
 
-*This stage is scheduled for the full build. What follows is the specification it will be built against, taken from the approved Skills Map Summary.*
+*What follows is this stage's design, taken from the Skills Map Summary your team approved on 28 August. Playable code follows the checkpoint review.*
 
-## {1. What this stage will be}
+## {1. How this stage works}
 
-**Stage Decide, in build**
+**Stage Decide**
 
 ---
 
-This is a placeholder so you can see the whole six-stage shape during review. The tutorial itself is built after this checkpoint.
+The design is settled and the career lens, learner tasks, and pre-built systems below are the ones this stage will ship with.
 
 ```validation.local
 # BlocksExistValidator
@@ -42,7 +43,7 @@ Conditional branching, event handling, timing windows, and designing for conditi
 
 Strategist: Morgan.
 
-**Planned size**
+**Size**
 
 9 coded steps, plus an opening card and a closing card.
 
@@ -52,8 +53,8 @@ Strategist: Morgan.
 
 * :arrow right: Select **Next**, then **Done**, to carry on through the map.
 
-## In build
+## Next in the build
 
-![Morgan - strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
+![Morgan - Strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
 
-This stage arrives with the full build after the two-module checkpoint is reviewed.
+Playable code for this stage follows the two-module checkpoint review.
