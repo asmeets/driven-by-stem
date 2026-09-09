@@ -308,9 +308,8 @@ Saying what a system should do and confirming it actually does it are two differ
 
 You will build this as a **button** rather than putting it in `on start`. A check you can run whenever you want is more useful than one that fires once and then gets in the way of every test afterwards.
 
-* :game pad: Open `||controller:Controller||` and drag `||controller:on [A] button pressed||` into an empty area of the workspace — not inside `on start`. Use its dropdown to change **A** to **menu**.
-* :racing car: Drag `||drivenByStem:show saved driver profile||` inside it so the project reads your team and car names back.
-* :game pad: Drag `||game:splash||` in below that. Open `||drivenByStem:Driven by STEM||` and drop `||drivenByStem:speed display unit||` into the first slot and `||drivenByStem:fuel display unit||` into the second.
+* :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace — **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag.
+* :binoculars: Read what is inside it before you run anything. `||drivenByStem:speed display unit||` and `||drivenByStem:fuel display unit||` are *blocks*, not typed words — that is what makes the readout follow your choice instead of just repeating it back.
 * :game pad: Run the simulator. Drive the car with the arrows, then press **menu**. Check three things: the profile shows **your** team and car names, the units match what you chose in Step 5, and the car answers the controls.
 * :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**. The readout should change with it — that is how you know the setting is really wired to the display.
 

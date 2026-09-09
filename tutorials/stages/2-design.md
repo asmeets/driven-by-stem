@@ -11,12 +11,11 @@
 ```template
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.GarageSetup)
+drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 game.splash("Race weekend", "Build a car you can explain.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = drivenByStem.savedDriveSpeed()
 drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
 drivenByStem.setTeamName("Apex Lab")
 drivenByStem.setCarName("Velocity")
@@ -47,8 +46,9 @@ Your car already has a `driveSpeed` variable holding the speed saved from Join t
 I make the prediction first, out loud, every time. If you tune first and explain afterwards, you will explain whatever you happen to see. That is not evidence, it's a story.
 
 * :id card: With your team, finish this sentence out loud before you touch anything: *"If we raise the speed, then ______ will get better and ______ will get worse."*
-* :mouse pointer: Find `||variables:set driveSpeed to||` in `||loops(noclick):on start||`. It currently reads `||drivenByStem:saved drive speed||`.
-* :keyboard: Drag the `||drivenByStem:saved drive speed||` bubble out of the slot and drop it on the toolbox. Type `110` in its place.
+* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `driveSpeed`.
+* :paper plane: Drag `||variables:set driveSpeed to [0]||` into `||loops(noclick):on start||`, directly **above** the `||drivenByStem:set base car speed to||` block.
+* :keyboard: Type `110` as its value — the tuned speed you are testing.
 * :binoculars: Hold on to your prediction. You will check it against real numbers in Step 5.
 
 ~hint What's a variable? 📦
@@ -67,12 +67,12 @@ hint~
 
 ---
 
-If your speed value keeps switching back, something is probably setting it again later. Scan `on start` and make sure there is only one `||variables:set driveSpeed to||` block.
+If your speed value keeps switching back, something is probably setting it again later. Scan `on start` and make sure there is only one `||variables:set driveSpeed to||` block, and that it sits above `set base car speed to`.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.GarageSetup)
+drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 game.splash("Race weekend", "Build a car you can explain.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
@@ -120,7 +120,7 @@ If you still see `||drivenByStem:saved drive speed||` in the movement block, the
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.GarageSetup)
+drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 game.splash("Race weekend", "Build a car you can explain.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
@@ -169,7 +169,7 @@ If a variable is missing from a dropdown, it usually has not been created yet, o
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.GarageSetup)
+drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 game.splash("Race weekend", "Build a car you can explain.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
@@ -370,7 +370,7 @@ There is no correct answer. Pick the lens that matches what your team is actuall
 You'll meet all four doing their real jobs later in the build.
 
 ```blocks
-drivenByStem.startStage(drivenByStem.RaceStage.GarageSetup)
+drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 let driveSpeed = 110
 drivenByStem.setBaseCarSpeed(driveSpeed)
 let efficiencyRating = drivenByStem.savedEfficiency()
