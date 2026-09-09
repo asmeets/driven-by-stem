@@ -20,7 +20,7 @@ drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 
 **I'm Kai, operations lead.** I make sure the car, the crew, and the data are ready before anyone turns a wheel.
 
-Today you take delivery of your car and set up your team — starting with how your dashboard reads.
+Today you take delivery of your car and set up your team, starting with how your dashboard reads.
 
 ## {1. Add a Mission Message}
 
@@ -44,7 +44,7 @@ As operations lead, I open every session with the goal stated out loud, so nobod
 
 Sometimes you will need to scroll to read all of a step. When you are ready to move on, select **Next**.
 
-Boxes like this one are hints. They hold extra help without crowding the main instructions — select the header to open or close one.
+Boxes like this one are hints. They hold extra help without crowding the main instructions. Select the header to open or close one.
 
 Any time you see highlighted text like `||game:splash " "||`, you can select the coloured part and the toolbox will open to exactly the category you need.
 
@@ -97,7 +97,7 @@ On my crew, the car is the thing everything else attaches to. Build it first and
 
 In Arcade, each character or image that does something is called a **SPRITE**.
 
-Sprites have properties that you can use and change — things like position, speed, and image are all properties of sprites.
+Sprites have properties that you can use and change. Position, speed, and image are all properties of a sprite.
 
 Your race car will be a sprite, too.
 
@@ -107,7 +107,7 @@ hint~
 
 ---
 
-**Sam again.** The strip down the left is the **toolbox** — it holds every block you can use, sorted into coloured categories. Scroll it; the custom **Driven by STEM** category sits farther down than you expect.
+**Sam again.** The strip down the left is the **toolbox**. It holds every block you can use, sorted into colored categories. Scroll it; the custom **Driven by STEM** category sits farther down than you expect.
 
 ![The Workspace](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/intro/workspace.png " " )
 
@@ -203,18 +203,18 @@ drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
 
 Your code will save your team name and car name, and your car will carry your own design.
 
-**Drew here, UX designer.** People take care of things they recognise as theirs. That is not decoration — it changes how carefully someone drives.
+**Drew here, UX designer.** People take care of things they recognize as theirs. That is not decoration. It changes how carefully someone drives.
 
 * :id card: Drag `||drivenByStem:set team name to||` into `||loops(noclick):on start||` and type your team's name.
 * :id card: Drag `||drivenByStem:set car name to||` in below and name your car.
-* :mouse pointer: Select the image inside your existing `||sprites(noclick):set raceCar to sprite of kind Player||` block and change a few colours, add a stripe, or add your number.
+* :mouse pointer: Select the image inside your existing `||sprites(noclick):set raceCar to sprite of kind Player||` block and change a few colors, add a stripe, or add your number.
 * :game pad: Run the simulator and make sure your edited car shows up.
 
 ~hint Car not changing? 🎨
 
 ---
 
-If your car is not changing, edit the image inside the existing `raceCar` sprite block from Step 2. If you drag in a second sprite block, you may end up customising the wrong car.
+If your car is not changing, edit the image inside the existing `raceCar` sprite block from Step 2. If you drag in a second sprite block, you may end up customizing the wrong car.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
@@ -252,7 +252,7 @@ drivenByStem.setCarName("Velocity")
 
 Your code will decide whether your dashboard reports speed in km/h or mph, and fuel in gallons or liters.
 
-This is the first decision you make that something later has to obey. Every readout your team sees from here on uses what you pick right now — so pick what your team actually reads fastest.
+This is the first decision you make that something later has to obey. Every readout your team sees from here on uses what you pick right now, so pick what your team reads fastest.
 
 * :racing car: Drag `||drivenByStem:set speed display unit to [mph]||` and `||drivenByStem:set fuel display unit to [gallons]||` into `||loops(noclick):on start||`.
 * :mouse pointer: Use the dropdowns to switch to `km/h` or `liters` if that is what your team prefers.
@@ -308,11 +308,10 @@ Saying what a system should do and confirming it actually does it are two differ
 
 You will build this as a **button** rather than putting it in `on start`. A check you can run whenever you want is more useful than one that fires once and then gets in the way of every test afterwards.
 
-* :game pad: Open `||controller:Controller||` and drag `||controller:on [A] button pressed||` into an empty area of the workspace — not inside `on start`. Use its dropdown to change **A** to **menu**.
-* :racing car: Drag `||drivenByStem:show saved driver profile||` inside it so the project reads your team and car names back.
-* :game pad: Drag `||game:splash||` in below that. Open `||drivenByStem:Driven by STEM||` and drop `||drivenByStem:speed display unit||` into the first slot and `||drivenByStem:fuel display unit||` into the second.
+* :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace, **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag.
+* :binoculars: Read what is inside it before you run anything. `||drivenByStem:speed display unit||` and `||drivenByStem:fuel display unit||` are *blocks*, not typed words. That is what makes the readout follow your choice instead of repeating it back.
 * :game pad: Run the simulator. Drive the car with the arrows, then press **menu**. Check three things: the profile shows **your** team and car names, the units match what you chose in Step 5, and the car answers the controls.
-* :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**. The readout should change with it — that is how you know the setting is really wired to the display.
+* :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**. The readout should change with it. That is how you know the setting is really wired to the display.
 
 ~hint One of the three checks failed 🔍
 
@@ -320,7 +319,7 @@ You will build this as a **button** rather than putting it in `on start`. A chec
 
 **Profile shows the wrong name?** The `set team name to` block has to run in `on start` *before* you press menu. Check it is connected.
 
-**Units wrong or blank?** Make sure you dropped the `speed display unit` and `fuel display unit` blocks into the splash slots rather than typing the words yourself. Typed text will not change when you change the dropdown — which is exactly the bug this check is designed to catch.
+**Units wrong or blank?** Make sure you dropped the `speed display unit` and `fuel display unit` blocks into the splash slots rather than typing the words yourself. Typed text will not change when you change the dropdown, which is exactly the bug this check is designed to catch.
 
 **Nothing happens when you press menu?** The event has to be a separate stack. Button events do not run when nested inside `on start`.
 
@@ -359,7 +358,7 @@ game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 
 **Drew here.** You just made a choice nobody notices when it's right and everybody notices when it's wrong. That's UX.
 
-Your units carry forward — Riley reads them next.<br><br>Select **Done** to head into Design.
+Your units carry forward. Riley reads them next.<br><br>Select **Done** to head into Design.
 
 ```assetjson
 {
