@@ -580,3 +580,24 @@ End with a short, confident reflection that captures learning without draining t
 - ask a short prediction question and send students back to action
 - use one visible team example instead of a broad explanation
 - rotate roles to reactivate participation
+
+## Resetting Between Groups
+
+At an event, one device is often used by several groups in a row. A new group should start from a clean car, not inherit the last group's tuned setup.
+
+Earlier versions of this activity asked students to build a reset button into their own code. That step has been removed — it was maintenance work rather than learning, and it put a system-clearing control inside the reach of the person least likely to want it. Clearing between groups is now a facilitator action.
+
+### Between groups on a shared device
+
+- [ ] Use the skillmap's own controls to restart the activity or clear progress for that node before handing the device over.
+- [ ] If the skillmap still shows the previous group's completed nodes, the browser session is still theirs. Open the skillmap in a new private or incognito window for the next group.
+- [ ] Confirm the next group starts at **Join the Team** with nothing marked complete.
+
+### How to tell a stale session apart from a fresh one
+
+A fresh start shows the default team name and a stock car. If the first group's team name, car design, or tuned speed appears in the new group's project, the session did not clear. Open a new private window and start again.
+
+### If groups will overlap
+
+- [ ] Have each group sign in, or give each group its own device or browser profile. Signed-in progress follows the account rather than the machine, which removes the problem entirely.
+- [ ] Where sign-in is not possible, plan one private window per group rather than resetting in place.
