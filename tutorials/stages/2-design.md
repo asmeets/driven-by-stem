@@ -156,15 +156,16 @@ Your code will create two variables: how efficient the setup is, and how much ea
 
 Speed is never free. On a real car it costs fuel, tyre life, brake temperature, and reliability. Here we track two of those costs so the tradeoff is something you can actually see.
 
-* :paper plane: Open `||variables:Variables||` and drag `||variables:set efficiencyRating to [0]||` into `||loops(noclick):on start||`. You may need to create `efficiencyRating` first.
-* :racing car: Open `||drivenByStem:Driven by STEM||` and drop `||drivenByStem:saved efficiency||` into the `0` slot so the rating starts from your team's saved baseline.
-* :paper plane: Drag `||variables:set efficiencyDrain to [1]||` in below it, creating `efficiencyDrain` if you need to. This one tracks how much each mistake costs.
+* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `efficiencyRating`. The `set` block only appears in the toolbox once the variable exists.
+* :paper plane: Drag `||variables:set efficiencyRating to [0]||` into `||loops(noclick):on start||`, below your `||variables:set driveSpeed to||` block.
+* :racing car: Open `||drivenByStem:Driven by STEM||` and drop `||drivenByStem:saved efficiency||` into the `0` slot, so the rating starts from your team's saved baseline instead of zero.
+* :paper plane: Make a second variable called `efficiencyDrain`, drag `||variables:set efficiencyDrain to [0]||` in below, and type `1` as its value. This one tracks what each mistake costs.
 
 ~hint Can't find your variable? ⌨️
 
 ---
 
-If a variable is missing from a dropdown, it usually has not been created yet, or the spelling differs. Use **Make a Variable** and check the name character by character.
+The `set <name> to` block does not appear in the Variables toolbox until the variable exists. If you cannot find one, use **Make a Variable** first, then look again — and check the spelling character by character, because `efficiencyrating` and `efficiencyRating` are two different variables.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
