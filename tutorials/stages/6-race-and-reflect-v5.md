@@ -96,7 +96,7 @@ game.onUpdateInterval(1000, function () {
     }
 })
 game.onUpdateInterval(2500, function () {
-    if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+    if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
         let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
         drivenByStem.placeOnTrack(puddle)
     }
@@ -130,7 +130,7 @@ Every system you've built still works. The final race is where they all run toge
 
 * :mouse pointer: Find `||drivenByStem:start race session [weather]||` at the end of `||loops(noclick):on start||`.
 * :mouse pointer: Use its dropdown to change **weather** to **final challenge**.
-* :game pad: Run the simulator. Your collision system, your pit calls, and your grip rule are all still running. Watch for rain partway through.
+* :game pad: Run the simulator and stage the car with **A**. Your collision system, your pit calls, your grip rule and your puddles are all still running. Watch for rain partway through.
 
 ~hint What's still running? ⚙️
 

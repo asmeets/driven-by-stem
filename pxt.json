@@ -35,9 +35,9 @@
         "tutorials/stages/1-join-the-team-v5.md",
         "tutorials/stages/2-design-v6.md",
         "tutorials/stages/3-test-v5.md",
-        "tutorials/stages/4-analyze-v4.md",
-        "tutorials/stages/5-decide-v4.md",
-        "tutorials/stages/6-race-and-reflect-v4.md"
+        "tutorials/stages/4-analyze-v5.md",
+        "tutorials/stages/5-decide-v5.md",
+        "tutorials/stages/6-race-and-reflect-v5.md"
     ],
     "testDependencies": {},
     "targetVersions": {
