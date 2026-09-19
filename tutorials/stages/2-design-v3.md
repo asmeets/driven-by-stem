@@ -194,13 +194,11 @@ hint~
 
 ```blockconfig.local
 let efficiencyRating = 0
-drivenByStem.savedEfficiency()
 let efficiencyDrain = 1
 ```
 
 ```ghost
 let efficiencyRating = 0
-drivenByStem.savedEfficiency()
 let efficiencyDrain = 1
 ```
 
