@@ -55,9 +55,9 @@
 * description: Drive a full session, then read collision count against score and efficiency.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-hit-the-track.png
 * position: 6 5
-* tags: stage-4, design-preview, telemetry, data
+* tags: stage-4, ready, telemetry, data
 * next: decide
-* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v2
 
 ### decide
 * name: Decide
