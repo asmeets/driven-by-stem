@@ -245,7 +245,7 @@ One run tells you what happened. Two runs tell you why.
 
 * :game pad: Find the `||controller:on [menu] button pressed||` block you built in Join the Team.
 * :racing car: Drag `||drivenByStem:show saved test comparison||` inside it, at the very top, above `||drivenByStem:show saved driver profile||`.
-* :game pad: Run the simulator and press **menu**. The comparison opens first, so you can read it again without driving another run.
+* :game pad: Run the simulator and press **menu**. The comparison opens first, so you can read it again without driving another run. Press **A** to close it and move on to your team profile and units.
 
 ~hint Can't find your menu block? 🔎
 

@@ -311,14 +311,17 @@ Great teams don't just build things. They test them, too.
 
 * :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace, **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag. Because it's a button, you can run the check any time, not just once at startup.
 * :binoculars: Read what is inside it before you run anything. `||drivenByStem:speed display unit||` and `||drivenByStem:fuel display unit||` are *blocks*, not typed words. That is what makes the readout follow your choice instead of repeating it back.
-* :game pad: Run the simulator. Drive the car with the arrows, then press **menu**. Check three things: the profile shows **your** team and car names, the units match what you chose in Step 5, and the car answers the controls.
-* :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**. The readout should change with it. That is how you know the setting is really wired to the display.
+* :game pad: Run the simulator. Drive the car with the arrows, then press **menu**. The first screen shows your team and car names. Press **A** to see the next screen, which shows your units.
+* :binoculars: Check three things: the first screen shows **your** team and car names, the second shows the units you chose in Step 5, and the car answers the controls.
+* :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**, then **A** to reach the units screen. The readout should change with it. That is how you know the setting is really wired to the display.
 
 ~hint One of the three checks failed 🔍
 
 ---
 
 **Profile shows the wrong name?** The `set team name to` block has to run in `on start` *before* you press menu. Check it is connected.
+
+**Don't see the units?** They're on the second screen. Press **A** to move past the first one.
 
 **Units wrong or blank?** Make sure you dropped the `speed display unit` and `fuel display unit` blocks into the splash slots rather than typing the words yourself. Typed text will not change when you change the dropdown, which is exactly the bug this check is designed to catch.
 

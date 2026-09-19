@@ -355,7 +355,7 @@ Performance Engineers, Strategists, Software Engineers, and Data Analysts can lo
 
 * :book: Open `||drivenByStem:Driven by STEM||` and add `||drivenByStem:set role lens to||` near the top of `||loops(noclick):on start||`.
 * :mouse pointer: Use the dropdown to pick your lens: **Performance Engineer**, **Strategist**, **Software Engineer**, or **Data Analyst**.
-* :game pad: Run it and press **menu**. Your check button from Join the Team now reports the lens too.
+* :game pad: Run it and press **menu**. The first screen now shows your role lens after your car name. Press **A** to move past each screen.
 * :lightbulb: Change the lens and press **menu** again to see the same run framed a different way.
 
 ~hint Which role should I pick? ✨
