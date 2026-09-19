@@ -1,6 +1,6 @@
 # driven-by-stem-preview
 * name: Driven by STEM, enabled by Microsoft, Revision Preview
-* description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect. Join the Team and Design are ready to play end to end. The remaining four stages open onto their approved designs, so the whole journey can be reviewed in one pass.
+* description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect.
 * primarycolor: #ffd84d
 * secondarycolor: #000
 * tertiarycolor: #EAF3F8
@@ -77,9 +77,9 @@
 * description: Everything runs at once, then you find your own decisions inside the result.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-final-challenge.png
 * position: 10 5
-* tags: stage-6, design-preview, systems, careers, reflection
+* tags: stage-6, ready, systems, careers, reflection
 * next: preview-finish
-* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v2
 
 ### preview-finish
 * name: Stand on the Podium!

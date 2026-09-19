@@ -410,12 +410,14 @@ namespace drivenByStem {
             controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
         }
 
-        if (stage == RaceStage.Weather) {
+        if (stage == RaceStage.Weather || stage == RaceStage.FinalChallenge) {
             // The weather generator. The session opens dry so students feel the
-            // change, then rain arrives partway through.
+            // change, then rain arrives partway through. The final race gets it
+            // too, so the grip rule built in Decide runs alongside everything else.
+            const rainAt = stage == RaceStage.Weather ? 8000 : 12000
             control.runInParallel(function () {
-                pause(8000)
-                if (stageIs(RaceStage.Weather)) {
+                pause(rainAt)
+                if (stageIs(stage)) {
                     setWeather(WeatherMode.Rain)
                     scene.setBackgroundImage(assets.image`weatherBg`)
                     game.splash("Rain lowers grip", "Adapt your driving.")
