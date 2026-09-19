@@ -114,11 +114,13 @@ drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Weather, function () {
 })
 ```
 
-## Race and Reflect @showdialog
+## Put It All Together @showdialog
 
 ![Taylor - Systems Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/taylor.png)
 
-**I'm Taylor, Systems Engineer.** A race car is dozens of systems that all have to work together, and my job is to make sure they do. When something goes wrong, I find out which system caused it.
+**I'm Taylor, Systems Engineer.**
+
+A race car is dozens of systems that all have to work together, and my job is to make sure they do. When something goes wrong, I find out which system caused it.
 
 Now you'll run the final race with every system you've built, then look back at what your decisions did.
 

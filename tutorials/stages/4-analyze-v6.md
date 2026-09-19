@@ -49,11 +49,13 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 ```
 
-## Analyze @showdialog
+## Measure the Race @showdialog
 
 ![Casey - Telemetry Analyst](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/casey.png)
 
-**I'm Casey, Telemetry Analyst.** During a race, the car sends the team thousands of numbers. My job is to turn that data into something the team can act on.
+**I'm Casey, Telemetry Analyst.**
+
+During a race, the car sends the team thousands of numbers. My job is to turn that data into something the team can act on.
 
 Now you'll drive a full race session, build the systems that record what happens, and read what the data says.
 

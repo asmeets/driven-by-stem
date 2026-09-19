@@ -46,11 +46,13 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 ```
 
-## Test @showdialog
+## Test the Setup @showdialog
 
 ![Jordan - Test Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/jordan.png)
 
-**I'm Jordan, Test Engineer.** I take the setup our engineers designed and find out what it really does on track. One run on its own tells you almost nothing. The answer is in the comparison.
+**I'm Jordan, Test Engineer.**
+
+I take the setup our engineers designed and find out what it really does on track. One run on its own tells you almost nothing. The answer is in the comparison.
 
 Now you'll take your car to the test track, run it, change one thing, and run it again.
 

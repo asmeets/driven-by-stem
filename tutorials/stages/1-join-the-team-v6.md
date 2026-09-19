@@ -53,7 +53,7 @@ Sometimes you will need to scroll to read all of a step. When you are ready to m
 
 Boxes like this one are hints. They hold extra help without crowding the main instructions. Select the header to open or close one.
 
-Any time you see highlighted text like `||game:splash " "||`, you can select the coloured part and the toolbox will open to exactly the category you need.
+Any time you see highlighted text like `||game:splash " "||`, you can select the colored part and the toolbox will open to exactly the category you need.
 
 hint~
 
