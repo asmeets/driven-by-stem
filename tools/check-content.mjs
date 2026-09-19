@@ -26,6 +26,7 @@ function walk(dir, out = []) {
 }
 const tutorials = walk('tutorials').sort()
 const stageTutorials = tutorials.filter(t => t.startsWith('tutorials/stages/'))
+const stagePins = []
 const skillmaps = readdirSync(ROOT).filter(f => /^skillmap.*\.md$/.test(f))
 
 // ---- 1. skillmap node urls resolve ------------------------------------
@@ -102,6 +103,20 @@ for (const t of tutorials) {
         for (const m of f[2].matchAll(/^drivenByStem\.(\w+)\(\)\s*$/gm))
             if (reporters.has(m[1])) fail(t, `\`\`\`${f[1]} has drivenByStem.${m[1]}() alone on a line; it is a reporter, so MakeCode cannot build a block from it and rejects the fence`)
 
+    // 6a2. the library version this stage compiles against
+    // MakeCode fetches a tutorial's markdown and resolves its extension through two
+    // different caches, so a project created right after a release can still be built
+    // against the previous one: new instructions, old behaviour, nothing on screen to
+    // say so. A ```package fence pins the pair together. Set it with
+    // `node tools/pin-version.mjs vX.Y.Z` and use the tag this commit ships in.
+    if (stageTutorials.includes(t)) {
+        const pins = fences.filter(f => f[1] === 'package').map(f => f[2].trim())
+        if (pins.length !== 1) fail(t, `expected exactly one \`\`\`package fence pinning the library version, found ${pins.length}`)
+        else if (!/^driven-by-stem=github:asmeets\/driven-by-stem#v\d+\.\d+\.\d+$/.test(pins[0]))
+            fail(t, `\`\`\`package says "${pins[0]}"; it has to pin a release tag, as in driven-by-stem=github:asmeets/driven-by-stem#v9.0.3`)
+        else stagePins.push([t, pins[0]])
+    }
+
     // 6b2. `let x = <literal>` inside blockconfig
     // pxt reads a variables_set config by looking for a <block> inside its <value>. A plain
     // number or string decompiles to a <shadow>, so the entry throws and the console fills
@@ -152,6 +167,17 @@ for (const f of [...tutorials, ...skillmaps]) {
         if (!existsSync(join(ROOT, m[1]))) fail(f, `asset URL does not resolve: ${m[1]}`)
 }
 
+// 13b. the on-screen build marker says the same thing the tutorials pin
+const libraryVersion = (customTs.match(/const LIBRARY_VERSION = "(v\d+\.\d+\.\d+)"/) || [])[1]
+if (!libraryVersion) fail('custom.ts', 'no LIBRARY_VERSION constant; the stage prompt has nothing to print')
+else if (stagePins.length && !stagePins.every(([, pin]) => pin.endsWith('#' + libraryVersion)))
+    fail('custom.ts', `LIBRARY_VERSION is ${libraryVersion} but the stages pin something else. Run node tools/pin-version.mjs ${libraryVersion}`)
+
+// 13. every stage names the same library version, or a student crossing from one
+// stage to the next changes libraries under their own carried-over code.
+const pinnedVersions = stagePins.map(([, pin]) => pin.split('#')[1]).filter((v, i, a) => a.indexOf(v) === i)
+if (pinnedVersions.length > 1) fail('tutorials/stages', `stages are pinned to different library versions: ${pinnedVersions.join(', ')}. Run node tools/pin-version.mjs vX.Y.Z`)
+
 // ---- report ------------------------------------------------------------
 for (const w of warnings) console.log(`  warn  ${w}`)
 if (errors.length) {
@@ -160,5 +186,6 @@ if (errors.length) {
     process.exit(1)
 }
 const stubs = tutorials.filter(t => read(t).includes('<!-- PREVIEW-STUB'))
+
 console.log(`\nOK - ${tutorials.length} tutorial files (${stageTutorials.length - stubs.length} built stages, ${stubs.length} preview stubs, ${tutorials.length - stageTutorials.length} legacy), ${skillmaps.length} skillmaps, ${distinct.length} asset payload hash, ${warnings.length} warning(s).`)
 if (stubs.length) console.log(`      stubs awaiting build: ${stubs.map(s => s.split('/').pop()).join(', ')}`)

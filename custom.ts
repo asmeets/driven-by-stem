@@ -370,6 +370,16 @@ namespace drivenByStem {
         settings.writeString(STAGE_KEY, stageName(stage))
     }
 
+    // Kept in step with the tutorials' ```package pin by tools/pin-version.mjs.
+    // It is drawn under the stage prompt so the build that is actually running can
+    // be read off the screen, instead of inferred from caches.
+    const LIBRARY_VERSION = "v9.0.3"
+
+    //% blockHidden=true
+    export function libraryVersion(): string {
+        return LIBRARY_VERSION
+    }
+
     //% blockHidden=true
     export function currentStageName(): string {
         return settings.readString(STAGE_KEY)

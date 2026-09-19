@@ -473,8 +473,12 @@ namespace drivenByStemSupport {
         activeTrack.stageKey = drivenByStem.currentStageName()
         activeTrack.sessionMode = true
         activeTrack.speedFloor = maxDriveSpeed * TEST_TRACK_SESSION_FLOOR_SHARE
-        hideCarUntilStage()
         trackStarted = true
+        // The car rolls to the line by itself and the lights run from there. A
+        // session that waited for A could be staged by the press that dismissed
+        // the setup splash, and the race would be under way before the student
+        // ever saw the track.
+        pullCarToStartLine()
     }
 
     /**
@@ -702,7 +706,7 @@ namespace drivenByStemSupport {
         })
 
         controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-            if (!(trackIsActive()) || trackHasLaunched() || activeTrack.stagedAtLine) {
+            if (!(trackIsActive()) || activeTrack.sessionMode || trackHasLaunched() || activeTrack.stagedAtLine) {
                 return
             }
 
@@ -753,13 +757,17 @@ namespace drivenByStemSupport {
         const accelerating = launched && controller.up.isPressed() && !controller.down.isPressed()
         const braking = launched && controller.down.isPressed() && !controller.up.isPressed()
 
-        if (!launched && !launchInputPressed()) {
-            activeTrack.falseStartLocked = false
-        }
+        // Jumping the lights is a test-track lesson. In a session, an early press
+        // is just an early press.
+        if (!session) {
+            if (!launched && !launchInputPressed()) {
+                activeTrack.falseStartLocked = false
+            }
 
-        if (activeTrack.stagedAtLine && !launched && launchInputPressed() && !activeTrack.falseStartLocked) {
-            triggerFalseStart()
-            return
+            if (activeTrack.stagedAtLine && !launched && launchInputPressed() && !activeTrack.falseStartLocked) {
+                triggerFalseStart()
+                return
+            }
         }
 
         if (launched) {
@@ -1047,6 +1055,9 @@ namespace drivenByStemSupport {
         canvas.fillRect(promptX + 2, promptY + 2, 76, 16, 12)
         canvas.print("Press A", pressAX, promptY + 2, 1, font)
         canvas.print("to Stage", toStageX, promptY + 10, 1, font)
+        // Which build is on screen, readable without opening a console.
+        const build = drivenByStem.libraryVersion()
+        canvas.print(build, promptX + 80 - build.length * image.font5.charWidth, promptY + 22, 1, image.font5)
     }
 
     function holdCarAtStart(): void {

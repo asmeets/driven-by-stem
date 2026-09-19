@@ -24,7 +24,7 @@
 * position: 0 6
 * tags: stage-1, ready, operations, ux, controls
 * next: design
-* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v6
 
 ### design
 * name: Design
@@ -35,7 +35,7 @@
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v6
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v7
 
 ### test
 * name: Test
@@ -46,7 +46,7 @@
 * position: 4 6
 * tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v6
 
 ### analyze
 * name: Analyze
@@ -57,7 +57,7 @@
 * position: 6 5
 * tags: stage-4, ready, telemetry, data
 * next: decide
-* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v6
 
 ### decide
 * name: Decide
@@ -68,7 +68,7 @@
 * position: 8 6
 * tags: stage-5, ready, strategy, conditionals
 * next: race-and-reflect
-* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v6
 
 ### race-and-reflect
 * name: Race and Reflect
@@ -79,7 +79,7 @@
 * position: 10 5
 * tags: stage-6, ready, systems, careers, reflection
 * next: preview-finish
-* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v6
 
 ### preview-finish
 * name: Stand on the Podium!

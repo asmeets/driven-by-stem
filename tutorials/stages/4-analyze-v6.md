@@ -1,7 +1,11 @@
-# Join the Team
+# Analyze
 
 ### @diffs true
 ### @explicitHints true
+
+```package
+driven-by-stem=github:asmeets/driven-by-stem#v9.0.3
+```
 
 ```validation.global
 # BlocksExistValidator
@@ -12,363 +16,397 @@
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-```
-
-## Welcome to the Team @showdialog
-
-![Kai - Operations Lead](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/kai.png)
-
-I'm Kai, Operations Lead.
-
-Every race starts long before the lights go out. I work with engineers, mechanics, and analysts to make sure the team has what it needs to perform at its best.
-
-Today, you'll join the team, get your car race-ready, and build your dashboard to help make smart decisions throughout the season.
-
-
-## {1. Share The Mission}
-
-**Your first job is to create a message for the team.**
-
----
-
-Use code to display a short mission statement that appears when the game starts and lets everyone know what they're working toward.
-
-Great teams do their best work when everyone knows the goal.
-
-* :game pad: Open `||game:Game||` and drag `||game:splash||` into `||loops(noclick):on start||`, under the blocks that are already there.
-* :keyboard: Type a short, one-sentence mission line like "Race weekend."
-* :keyboard: Select the + icon in the `||game:splash||` block to add a second line saying what you will do, like "Test it before we race."
-
-~hint New to these instructions? 🧭
-
----
-
-**Sam here, software engineer.** A few things worth knowing before you start dragging blocks.
-
-Sometimes you will need to scroll to read all of a step. When you are ready to move on, select **Next**.
-
-Boxes like this one are hints. They hold extra help without crowding the main instructions. Select the header to open or close one.
-
-Any time you see highlighted text like `||game:splash " "||`, you can select the coloured part and the toolbox will open to exactly the category you need.
-
-hint~
-
-~hint Message too long? ⚡
-
----
-
-Keep this message short. Each line fits about 24 characters on screen, and anything longer gets cut off. If a player has to read a paragraph at launch, it's too much.
-
-```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-//@highlight
-//@validate-exists
-game.splash("Race weekend", "Test it before we race.")
-```
-
-hint~
-
-```blockconfig.local
-game.splash("Your text here")
-```
-
-```ghost
-game.splash("Your text here")
-```
-
-## {2. Build the Car}
-
-**Every race team starts with a car.**
-
----
-
-Your code will add the race car that you'll use throughout the season.
-
-The car is at the center of everything we do. Let's get it ready for the track.
-
-* :paper plane: Open `||sprites:Sprites||` and drag `||sprites:set mySprite to sprite of kind Player||` into `||loops(noclick):on start||`.
-* :mouse pointer: Select the `mySprite` drop-down and choose `||variables(sprites):Rename variable...||`
-* :keyboard: Rename the variable to `raceCar`.
-* :mouse pointer: Select the blank image square, open **My Assets**, and choose `playerCar`. You can also draw your own car.
-* :keyboard: Select **Done** to lock in your choice.
-
-~hint What's a sprite? 💡
-
----
-
-In Arcade, each character or image that does something is called a **SPRITE**.
-
-Sprites have properties that you can use and change. Position, speed, and image are all properties of a sprite.
-
-Your race car will be a sprite, too.
-
-hint~
-
-~hint Can't find your way around the editor? 🔍
-
----
-
-**Sam again.** The strip down the left is the **toolbox**. It holds every block you can use, sorted into colored categories. Scroll it; the custom **Driven by STEM** category sits farther down than you expect.
-
-![The Workspace](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/intro/workspace.png " " )
-
-The **workspace** is the open area to the right. Only blocks connected inside `on start` (or inside an event) actually run.
-
-hint~
-
-~hint Variable names confusing? 🎯
-
----
-
-Use `raceCar` consistently. One mismatched name can make the right blocks feel wrong.
-
-```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
-//@highlight
-//@validate-exists
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-```
-
-hint~
-
-```blockconfig.local
-let mySprite = sprites.create(img`.`, SpriteKind.Player)
-```
-
-```ghost
-let mySprite = sprites.create(img`.`, SpriteKind.Player)
-```
-
-## {3. Test the Controls}
-
-**Your next job is to connect the driver to the car.**
-
----
-
-Your code will make the car move when the driver uses the controls.
-
-Before every race, teams test the controls to make sure everything works as expected.
-
-* :game pad: Drag `||controller:move [raceCar] with buttons vx [80] vy [80]||` into `||loops(noclick):on start||`.
-* :paper plane: Drag `||sprites:set [raceCar] stay in screen [On]||` under it so the car cannot drive off the edge.
-* :racing car: Open `||drivenByStem:Driven by STEM||` and drag `||drivenByStem:set base car speed to saved drive speed||` in below, so movement starts from your team's saved setup instead of a fixed number.
-* :game pad: Run the simulator and drive the car with the arrow keys.
-
-~hint Car won't move? 🔧
-
----
-
-If the car won't move, check which sprite the controller block is targeting. This is usually a naming issue.
-
-```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-//@highlight
-//@validate-exists
-controller.moveSprite(raceCar, 80, 80)
-//@highlight
-//@validate-exists
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-//@highlight
-//@validate-exists
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
-```
-
-hint~
-
-```blockconfig.local
-let raceCar: Sprite = null
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
-```
-
-```ghost
-let raceCar: Sprite = null
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
-```
-
-## {4. Make It Yours}
-
-**Now it's time to give your team and car their own identity.**
-
----
-
-Your code will save your team name, car name, and custom design.
-
-Teams take pride in what they create. When something feels like yours, you care about it more.
-
-* :id card: Drag `||drivenByStem:set team name to||` into `||loops(noclick):on start||` and type your team's name.
-* :id card: Drag `||drivenByStem:set car name to||` in below and name your car.
-* :mouse pointer: Select the image inside your existing `||sprites(noclick):set raceCar to sprite of kind Player||` block and change a few colors, add a stripe, or add your number.
-* :game pad: Run the simulator and make sure your edited car shows up.
-
-~hint Car not changing? 🎨
-
----
-
-If your car is not changing, edit the image inside the existing `raceCar` sprite block from Step 2. If you drag in a second sprite block, you may end up customizing the wrong car.
-
-```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
-//@highlight
-//@validate-exists
-drivenByStem.setTeamName("Apex Lab")
-//@validate-exists
-drivenByStem.setCarName("Velocity")
-```
-
-hint~
-
-```blockconfig.local
+let driveSpeed = 90
+drivenByStem.setBaseCarSpeed(driveSpeed)
 drivenByStem.setTeamName("Apex Lab")
 drivenByStem.setCarName("Velocity")
-```
-
-```ghost
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-```
-
-## {5. Set Up the Dashboard}
-
-**Your team needs information it can understand at a glance.**
-
----
-
-Your code will choose how the dashboard displays speed and fuel, using the units your team prefers.
-
-Good decisions start with clear information.
-
-* :racing car: Drag `||drivenByStem:set speed display unit to [mph]||` and `||drivenByStem:set fuel display unit to [gallons]||` into `||loops(noclick):on start||`.
-* :mouse pointer: Use the dropdowns to switch to `km/h` or `liters` if that is what your team prefers.
-* :id card: Agree on it as a team before you move on. Changing it later means your earlier numbers no longer compare.
-
-~hint Why does this matter? 🐛
-
----
-
-A dashboard that reports in units the driver doesn't think in costs time on every single glance.
-
-Picking units is a design decision with a consequence, and you will meet that consequence again: Riley's test bench and the shakedown track both read whatever you choose here.
-
-```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-//@highlight
-//@validate-exists
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-//@validate-exists
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-```
-
-hint~
-
-```blockconfig.local
 drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
 drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-```
-
-```ghost
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-```
-
-## {6. Run a System Check}
-
-**Before the season starts, make sure everything is working the way you planned.**
-
----
-
-Your code will display your dashboard settings so you can confirm they were saved correctly.
-
-Great teams don't just build things. They test them, too.
-
-* :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace, **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag. Because it's a button, you can run the check any time, not just once at startup.
-* :binoculars: Read what is inside it before you run anything. `||drivenByStem:speed display unit||` and `||drivenByStem:fuel display unit||` are *blocks*, not typed words. That is what makes the readout follow your choice instead of repeating it back.
-* :game pad: Run the simulator. Drive the car with the arrows, then press **menu**. The first screen shows your team and car names. Press **A** to see the next screen, which shows your units.
-* :binoculars: Check three things: the first screen shows **your** team and car names, the second shows the units you chose in Step 5, and the car answers the controls.
-* :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**, then **A** to reach the units screen. The readout should change with it. That is how you know the setting is really wired to the display.
-
-~hint One of the three checks failed 🔍
-
----
-
-**Profile shows the wrong name?** The `set team name to` block has to run in `on start` *before* you press menu. Check it is connected.
-
-**Don't see the units?** They're on the second screen. Press **A** to move past the first one.
-
-**Units wrong or blank?** Make sure you dropped the `speed display unit` and `fuel display unit` blocks into the splash slots rather than typing the words yourself. Typed text will not change when you change the dropdown, which is exactly the bug this check is designed to catch.
-
-**Nothing happens when you press menu?** The event has to be a separate stack. Button events do not run when nested inside `on start`.
-
-**Car doesn't move?** Go back to Step 3 and check that the controller block targets `raceCar`.
-
-```blocks
-//@highlight
-//@validate-exists
+let efficiencyRating = drivenByStem.savedEfficiency()
+let efficiencyDrain = 1
+if (driveSpeed > 100) {
+    efficiencyRating = drivenByStem.savedEfficiency() - 1
+    efficiencyDrain = 2
+    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
+    game.splash("Pace setup", "Raw pace. Watch energy.")
+} else {
+    efficiencyRating = drivenByStem.savedEfficiency()
+    efficiencyDrain = 1
+    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
+    game.splash("Balance setup", "Energy saved for later.")
+}
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    //@validate-exists
+    drivenByStem.showSavedTestComparison()
     drivenByStem.showSavedDriverProfile()
-    //@validate-exists
     game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 })
 ```
 
+## Analyze @showdialog
+
+![Casey - Telemetry Analyst](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/casey.png)
+
+**I'm Casey, Telemetry Analyst.** During a race, the car sends the team thousands of numbers. My job is to turn that data into something the team can act on.
+
+Now you'll drive a full race session, build the systems that record what happens, and read what the data says.
+
+## {1. Start the Session}
+
+**Your first job as a Telemetry Analyst is to get a full session running.**
+
+---
+
+Use code to leave the test track and start a timed race session.
+
+Testing happens in controlled conditions. Racing doesn't. The session is where you find out what holds up.
+
+* :racing car: Open `||drivenByStem:Driven by STEM||` and drag `||drivenByStem:start race session [track]||` to the very end of `||loops(noclick):on start||`, below `||drivenByStem:set next test focus||`.
+* :game pad: Run the simulator. You're on the same moving track you drove in Test. The car rolls up to the line by itself, five lights count down, and the race starts when they go out.
+* :game pad: The 30-second countdown starts with the lights, so the staging costs you nothing. Hold up to speed up, press down to slow, and steer with left and right.
+* :binoculars: Drive until the countdown runs out and read the session report. The road is empty for now. You'll fill it in over the next steps.
+
+~hint Still on the test track? 🏁
+
+---
+
+`start race session` has to be the last block in `on start`, below `start vehicle test track`. It takes over from the test track, the same way the test track took over from the garage bench.
+
+hint~
+
+~hint Did the race start without me? 🚦
+
+---
+
+There's nothing to press here. A session stages itself: the car rolls to the line, the lights run, and the race starts when they go out. Pressing **A** to stage belongs to Jordan's test track, where the standing start is the thing being measured.
+
+Once you have the car rolling it won't come to a full stop again, so the road keeps moving even when you let go of the controls.
+
+```blocks
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+//@highlight
+//@validate-exists
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
+```
+
 hint~
 
 ```blockconfig.local
-controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-drivenByStem.showSavedDriverProfile()
-game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
+```
+
+```ghost
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
+```
+
+## {2. Count the Collisions}
+
+**Your next job is to build a counter.**
+
+---
+
+Use code to make the two counters this session keeps.
+
+If you don't count something, you can't improve it.
+
+* :paper plane: Open `||variables:Variables||` and select **Make a Variable**. Name it `collisions`, then make a second one named `lastCollisionCount`.
+* :paper plane: Drag `||variables:set [collisions] to [0]||` into `||loops(noclick):on start||`, directly **above** `||drivenByStem:start race session||`.
+* :paper plane: Drag a second `||variables:set [collisions] to [0]||` under it, then use its dropdown to switch that one to `lastCollisionCount`.
+
+~hint Why two counters? 🔢
+
+---
+
+`collisions` counts every hit in the session. `lastCollisionCount` remembers what the count was a few seconds ago, so your code can tell whether you've been driving clean since then. You'll use it in Step 5.
+
+Both start at `0` so every session begins with a clean count.
+
+hint~
+
+~hint Both blocks say the same name? 🔁
+
+---
+
+The `set` block carries a dropdown of every variable you have made. Click the dropdown on the second block and choose `lastCollisionCount`. Step 5 compares the two by name, so one of each is what it needs.
+
+```blocks
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+//@highlight
+//@validate-exists
+let collisions = 0
+//@highlight
+//@validate-exists
+let lastCollisionCount = 0
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
+```
+
+hint~
+
+```ghost
+let collisions = 0
+let lastCollisionCount = 0
+```
+
+## {3. Add Traffic}
+
+**Your next job is to put obstacles on the track.**
+
+---
+
+Use code to put obstacles on the road at a steady rate during the session.
+
+A clean track can't test a setup. Real conditions can.
+
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [2000] ms||` block into an empty area of the workspace. The obstacle and the block that puts it on the road are already inside.
+* :binoculars: Read the `if` at the top: obstacles only appear while the stage is **track**. That keeps this spawner out of the stages that come after this one.
+* :binoculars: Read the second block. `||drivenByStem:put obstacle on the track ahead||` drops it at the far end of the road, so it arrives at your speed instead of landing on top of you.
+* :game pad: Run the simulator and drive. Obstacles now come up the road toward your car.
+
+~hint Too many obstacles? 🎛️
+
+---
+
+A bigger number in `every 2000 ms` spawns them less often. How fast they arrive is up to you: the quicker you drive, the less time you have to steer around each one.
+
+```blocks
+//@highlight
+//@validate-exists
+game.onUpdateInterval(2000, function () {
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+        //@highlight
+        //@validate-exists
+        let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+        //@highlight
+        //@validate-exists
+        drivenByStem.placeOnTrack(obstacle)
+    }
+})
+```
+
+hint~
+
+```blockconfig.local
+game.onUpdateInterval(2000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+drivenByStem.placeOnTrack(obstacle)
+}
 })
 ```
 
 ```ghost
-controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-drivenByStem.showSavedDriverProfile()
-game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
+game.onUpdateInterval(2000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+drivenByStem.placeOnTrack(obstacle)
+}
 })
 ```
 
-## You're Part of the Team
+## {4. Record Every Hit}
 
-![Drew - UX/Game Designer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/drew.png)
+**Your next job is to turn each collision into data.**
 
-Drew here.
+---
 
-Everything you've built so far, from your team name to your dashboard settings, carries forward into the season.
+Use code to count every collision and apply its cost to the car's energy.
 
-Every member of the team builds on the work of others. The choices you made will help shape what comes next.
+Every hit has a cost. Telemetry makes the cost visible.
 
-Next, Riley will show you how teams use information to make decisions.
+* :paper plane: Open `||sprites:Sprites||` and drag the pre-filled `||sprites:on sprite of kind Player overlaps otherSprite of kind Enemy||` block into an empty area of the workspace.
+* :binoculars: Read what it does: add one to `collisions`, take energy away based on your setup's `efficiencyDrain`, and clear the obstacle off the road.
+* :game pad: Run the simulator and hit an obstacle on purpose. Watch a heart disappear, and watch the speed readout drop. A hit costs you time as well as energy.
 
-➡️ Select **Done** to continue.
+~hint Why doesn't this one check the stage? 🔁
+
+---
+
+Hits cost energy in every race, not just this one. You're building this system once, and it keeps working in every stage after this.
+
+hint~
+
+~hint What if I run out of hearts? ❤️
+
+---
+
+The session ends early with an **Out of energy** message. Your results are still saved and shown, so you can see exactly what happened.
+
+```blocks
+//@highlight
+//@validate-exists
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    //@highlight
+    //@validate-exists
+    collisions += 1
+    //@highlight
+    //@validate-exists
+    drivenByStem.recordCollision(0, efficiencyDrain)
+    //@highlight
+    //@validate-exists
+    otherSprite.destroy()
+})
+```
+
+hint~
+
+```blockconfig.local
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+collisions += 1
+drivenByStem.recordCollision(0, efficiencyDrain)
+otherSprite.destroy()
+})
+```
+
+```ghost
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+collisions += 1
+drivenByStem.recordCollision(0, efficiencyDrain)
+otherSprite.destroy()
+})
+```
+
+## {5. Reward Clean Driving}
+
+**Your next job is to reward consistency.**
+
+---
+
+Use code to add points whenever the car goes a stretch without a collision.
+
+Fast laps matter, but clean laps win races.
+
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [4000] ms||` block into an empty area of the workspace.
+* :binoculars: Read the rule: every 4 seconds, if `collisions` hasn't changed since the last check, your team earns 2 points and 1 strategy point. Then it saves the current count to compare against next time.
+* :game pad: Run the simulator and drive cleanly. Watch your score climb.
+
+~hint Rewarding at the wrong times? 🔀
+
+---
+
+If it rewards you right after a hit, check that `lastCollisionCount` is set at the end of the block. If it never rewards you, check that the comparison uses `=`.
+
+```blocks
+//@highlight
+//@validate-exists
+game.onUpdateInterval(4000, function () {
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+        //@highlight
+        //@validate-exists
+        if (collisions == lastCollisionCount) {
+            //@highlight
+            //@validate-exists
+            info.changeScoreBy(2)
+            //@highlight
+            //@validate-exists
+            drivenByStem.awardStrategyPoints(1)
+        }
+        //@highlight
+        //@validate-exists
+        lastCollisionCount = collisions
+    }
+})
+```
+
+hint~
+
+```blockconfig.local
+game.onUpdateInterval(4000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+if (collisions == lastCollisionCount) {
+info.changeScoreBy(2)
+drivenByStem.awardStrategyPoints(1)
+}
+lastCollisionCount = collisions
+}
+})
+```
+
+```ghost
+game.onUpdateInterval(4000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+if (collisions == lastCollisionCount) {
+info.changeScoreBy(2)
+drivenByStem.awardStrategyPoints(1)
+}
+lastCollisionCount = collisions
+}
+})
+```
+
+## {6. Read the Data}
+
+**Your next job is to read what the session left behind.**
+
+---
+
+Use code to save the results and show collisions, score, and energy when the countdown ends.
+
+What you remember about a run and what the numbers say are often different. The numbers are what the team acts on.
+
+* :racing car: Open `||drivenByStem:Driven by STEM||` and drag the pre-filled `||drivenByStem:on [track] session ends||` block into an empty area of the workspace.
+* :id card: Before you run it, say out loud how many collisions you think you'll have.
+* :game pad: Run the simulator and drive the full session. When the countdown ends the session report appears first; press **A** and your own summary follows. Compare it to your guess.
+
+~hint Nothing happens at the end? ⏰
+
+---
+
+Check that the dropdown in `on [track] session ends` says **track**, the same stage your `start race session` block uses.
+
+```blocks
+//@highlight
+//@validate-exists
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+    //@highlight
+    //@validate-exists
+    drivenByStem.saveCurrentRunResults()
+    //@highlight
+    //@validate-exists
+    game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
+```
+
+hint~
+
+```blockconfig.local
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+drivenByStem.saveCurrentRunResults()
+game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
+```
+
+```ghost
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+drivenByStem.saveCurrentRunResults()
+game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
+```
+
+## You Turned a Race Into Data
+
+![Casey - Telemetry Analyst](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/casey.png)
+
+You counted every collision, rewarded clean driving, and read the results against your score and energy.
+
+That's telemetry work. The data doesn't care what you remember. It shows what actually happened.
+
+Next, Morgan and Avery will change the conditions and ask you to make the call.<br><br>➡️ Select **Done** to continue to Decide.
 
 ```assetjson
 {
