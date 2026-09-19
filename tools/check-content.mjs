@@ -102,6 +102,15 @@ for (const t of tutorials) {
         for (const m of f[2].matchAll(/^drivenByStem\.(\w+)\(\)\s*$/gm))
             if (reporters.has(m[1])) fail(t, `\`\`\`${f[1]} has drivenByStem.${m[1]}() alone on a line; it is a reporter, so MakeCode cannot build a block from it and rejects the fence`)
 
+    // 6b2. `let x = <literal>` inside blockconfig
+    // pxt reads a variables_set config by looking for a <block> inside its <value>. A plain
+    // number or string decompiles to a <shadow>, so the entry throws and the console fills
+    // with "Cannot read properties of undefined (reading 'getAttribute')". The ghost fence,
+    // which is what puts the block in the toolbox, is the right home for these lines.
+    if (stageTutorials.includes(t)) for (const f of fences.filter(f => f[1].startsWith('blockconfig')))
+        for (const m of f[2].matchAll(/^\s*let (\w+) = (-?\d+(?:\.\d+)?|"[^"]*"|true|false)\s*$/gm))
+            fail(t, `\`\`\`${f[1]} has \`let ${m[1]} = ${m[2]}\`; pxt cannot configure a variable set to a literal, so it drops the entry and logs an error. Keep the line in the \`\`\`ghost fence only`)
+
     // 6c. splash text is clipped at roughly 24 characters on the 160 px screen
     if (stageTutorials.includes(t)) {
         const body = src.slice(0, src.indexOf('```assetjson'))

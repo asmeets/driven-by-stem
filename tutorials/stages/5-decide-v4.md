@@ -1,4 +1,4 @@
-# Design
+# Decide
 
 ### @diffs true
 ### @explicitHints true
@@ -12,481 +12,506 @@
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
+let driveSpeed = 90
+drivenByStem.setBaseCarSpeed(driveSpeed)
 drivenByStem.setTeamName("Apex Lab")
 drivenByStem.setCarName("Velocity")
 drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
 drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
+let efficiencyRating = drivenByStem.savedEfficiency()
+let efficiencyDrain = 1
+if (driveSpeed > 100) {
+    efficiencyRating = drivenByStem.savedEfficiency() - 1
+    efficiencyDrain = 2
+    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
+    game.splash("Pace setup", "Raw pace. Watch energy.")
+} else {
+    efficiencyRating = drivenByStem.savedEfficiency()
+    efficiencyDrain = 1
+    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
+    game.splash("Balance setup", "Energy saved for later.")
+}
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+let collisions = 0
+let lastCollisionCount = 0
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+    drivenByStem.showSavedTestComparison()
     drivenByStem.showSavedDriverProfile()
     game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 })
+game.onUpdateInterval(2000, function () {
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+        let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+        drivenByStem.placeOnTrack(obstacle)
+    }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    collisions += 1
+    drivenByStem.recordCollision(0, efficiencyDrain)
+    otherSprite.destroy()
+})
+game.onUpdateInterval(4000, function () {
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+        if (collisions == lastCollisionCount) {
+            info.changeScoreBy(2)
+            drivenByStem.awardStrategyPoints(1)
+        }
+        lastCollisionCount = collisions
+    }
+})
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+    drivenByStem.saveCurrentRunResults()
+    game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
 ```
 
-## Engineer Performance @showdialog
+## Decide @showdialog
 
-![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
+![Morgan - Strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
 
-**I'm Riley, Performance Engineer.**
+**I'm Morgan, Strategist.** I decide when to pit and how to respond when the weather turns, usually before anyone knows how the race will end. Avery, our Sustainability Lead, makes sure every one of those calls uses the car's energy wisely.
 
-I help the team understand how changes to the car affect speed, handling, and performance. Every improvement has benefits, but it can also create new challenges.
+Now you'll race in changing conditions and write the rules that make the calls.
 
-Now you'll step into that role. Make predictions, test ideas, and discover how engineers evaluate tradeoffs before race day.
+## {1. Change the Conditions}
 
-
-## {1. Make a Prediction}
-
-**Your first job as a Performance Engineer is to make a prediction.**
+**Your first job as a Strategist is to race in conditions that change.**
 
 ---
 
-Use code to increase the car's speed and predict what might happen before you test it.
+Use code to switch your race session from the track to the weather session.
 
-If you explain the results after you've already seen them, you're telling a story. If you predict the results beforehand, you're testing an idea.
+Strategy starts with knowing what could change before it does.
 
-* :id card: With your team, finish this sentence out loud before you touch anything: *"If we raise the speed, then ______ will get better and ______ will get worse."*
-* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `driveSpeed`.
-* :paper plane: Drag `||variables:set driveSpeed to [0]||` into `||loops(noclick):on start||`, directly **above** the `||drivenByStem:set base car speed to||` block.
-* :keyboard: Type `110` as its value. That is the tuned speed you are testing.
-* :binoculars: Hold on to your prediction. You will check it against real numbers in Step 5.
+* :mouse pointer: Find `||drivenByStem:start race session [track]||` at the end of `||loops(noclick):on start||`.
+* :mouse pointer: Use its dropdown to change **track** to **weather**.
+* :game pad: Run the simulator. The session starts dry. A few seconds in, the sky goes gray, the road darkens, and rain streaks the screen.
 
-~hint What's a variable? 📦
+~hint Where did the obstacles go? 🌧️
 
 ---
 
-In programming, a **variable** is a named container that holds a value you can use and change.
-
-Think of it like a labelled box: you can put a number in the box, check what's in it, or replace what's inside. The label stays the same.
-
-`driveSpeed` is the box holding your car's speed setting.
-
-hint~
-
-~hint Speed keeps reverting? 👀
-
----
-
-If your speed value keeps switching back, something is probably setting it again later. Scan `on start` and make sure there is only one `||variables:set driveSpeed to||` block, and that it sits above `set base car speed to`.
+Your obstacle spawner from Analyze only runs during the **track** stage, so it stays switched off here. Your collision system still works, and you'll give it something new to hit in Step 6.
 
 ```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+let collisions = 0
+let lastCollisionCount = 0
 //@highlight
-//@validate-exists
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Weather)
 ```
 
 hint~
 
-```blockconfig.local
-let driveSpeed = 110
+## {2. Count Pit Stops}
+
+**Your next job is to track your pit decisions.**
+
+---
+
+Use code to create a variable that counts every pit stop the car makes.
+
+A strategist needs to know what was decided, not just what happened.
+
+* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `pitStopsVisited`.
+* :paper plane: Drag `||variables:set [pitStopsVisited] to [0]||` into `||loops(noclick):on start||`, directly **above** `||drivenByStem:start race session||`. Use the dropdown if it comes in pointing at another variable.
+
+~hint Why above start race session? 🔢
+
+---
+
+Counters reset before the session starts, so every race begins at zero. Your collision counters from Analyze sit in the same spot for the same reason.
+
+hint~
+
+~hint Named it something else? 🔎
+
+---
+
+Step 4 and Step 7 both read `pitStopsVisited` by name, so the spelling has to match. Rename it from the dropdown on any `set` block.
+
+```blocks
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+let collisions = 0
+let lastCollisionCount = 0
+//@highlight
+//@validate-exists
+let pitStopsVisited = 0
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Weather)
 ```
+
+hint~
 
 ```ghost
-let driveSpeed = 110
+let pitStopsVisited = 0
 ```
 
-## {2. Tune Your Car}
+## {3. Open the Pit Lane}
 
-**Your next job is to connect your setup changes to the car.**
-
----
-
-Use code to make sure changing the speed setting affects how the car performs on the track.
-
-A change only matters if it affects something you can measure. Before I test a setup, I make sure the change is connected to the result I'm trying to improve.
-
-* :racing car: Find the `||drivenByStem:set base car speed to||` block in `||loops(noclick):on start||`. It still reads `||drivenByStem:saved drive speed||`.
-* :mouse pointer: Drag that bubble out and drop `||variables:driveSpeed||` in its place.
-* :game pad: Run the simulator and drive. The car should feel quicker than it did in Join the Team.
-
-~hint Speed not changing? 🔌
+**Your next job is to give the driver a place to recover.**
 
 ---
 
-If you still see `||drivenByStem:saved drive speed||` in the movement block, the tuning is not connected yet. The variable has to be *inside* `set base car speed to`, not sitting above it.
+Use code to put pit markers on the road during the weather session.
+
+A pit stop costs time but can win back energy. Knowing when to take one is the job.
+
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [8000] ms||` block into an empty area of the workspace.
+* :binoculars: Read the `if`: pit markers only appear during the **weather** stage.
+* :binoculars: Read the second block. `||drivenByStem:put pitMarker on the track ahead||` puts the marker out at the far end of the road, somewhere across the width of the track.
+* :game pad: Run the simulator. A marker comes up the road every 8 seconds. Steer onto it before it goes by.
+
+~hint Missed the marker? ⏳
+
+---
+
+Once a marker passes the car it's gone, and the next one is 8 seconds away. That's deliberate. A pit window is short, and a strategist has to decide early, while the marker is still up the road.
 
 ```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = 110
 //@highlight
 //@validate-exists
-drivenByStem.setBaseCarSpeed(driveSpeed)
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-```
-
-hint~
-
-```blockconfig.local
-let driveSpeed = 0
-drivenByStem.setBaseCarSpeed(driveSpeed)
-```
-
-```ghost
-drivenByStem.setBaseCarSpeed(driveSpeed)
-```
-
-## {3. Measure the Change}
-
-**Your next job is to make sure your changes affect the car's performance.**
-
----
-
-Use code to connect the speed setting to the car so changing the value changes how it performs on the track.
-
-A change only matters if it affects something you can measure. Before I test a setup, I make sure the change is connected to the result I'm trying to improve.
-
-* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `efficiencyRating`. The `set` block only appears in the toolbox once the variable exists.
-* :paper plane: Drag `||variables:set efficiencyRating to [0]||` into `||loops(noclick):on start||`, below your `||variables:set driveSpeed to||` block.
-* :racing car: Open `||drivenByStem:Driven by STEM||` and drop `||drivenByStem:saved efficiency||` into the `0` slot, so the rating starts from your team's saved baseline instead of zero.
-* :paper plane: Make a second variable called `efficiencyDrain`, drag `||variables:set efficiencyDrain to [0]||` in below, and type `1` as its value. This one tracks what each mistake costs.
-
-~hint Can't find your variable? ⌨️
-
----
-
-The `set <name> to` block does not appear in the Variables toolbox until the variable exists. If you cannot find one, use **Make a Variable** first, then look again. Check the spelling character by character, because `efficiencyrating` and `efficiencyRating` are two different variables.
-
-```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Test it before we race.")
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(driveSpeed)
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-//@highlight
-//@validate-exists
-let efficiencyRating = drivenByStem.savedEfficiency()
-//@highlight
-//@validate-exists
-let efficiencyDrain = 1
-```
-
-hint~
-
-```blockconfig.local
-let efficiencyRating = 0
-let efficiencyDrain = 1
-```
-
-```ghost
-let efficiencyRating = 0
-let efficiencyDrain = 1
-```
-
-## {4. Define the Tradeoff}
-
-**Your next job is to define what performance will cost.**
-
----
-
-Use code to create a rule that connects speed to efficiency and the cost of mistakes.
-
-In Formula 1, every gain comes with a tradeoff. The goal isn't to eliminate costs, it's to understand them.
-
-* :paper plane: Open `||logic:Logic||` and drag the pre-filled `||logic:if else||` block into `||loops(noclick):on start||`, directly below `||variables:set efficiencyDrain to 1||`.
-* :binoculars: Read it back in plain language before you run it: *if drive speed is above 100, start with one less efficiency and make every mistake cost double; otherwise keep the baseline.*
-
-~hint What's a conditional?
-
----
-
-In programming, a **CONDITIONAL** (an if-else statement) lets your code make a decision and do different things depending on whether something is true.
-
-The structure is: **IF** (this is true) **THEN** do this, **ELSE** do that instead.
-
-Here you are building a rule: IF speed is high, THEN the car starts with less efficiency and each mistake costs more, ELSE it keeps the stronger baseline.
-
-hint~
-
-~hint Rule never kicks in?
-
----
-
-If your tradeoff rule never seems to fire, check that `driveSpeed` is set *before* the `if` block runs. Order matters, because the rule can only read a value that already exists.
-
-hint~
-
-~hint Need the minus block?
-
----
-
-The subtraction comes from `||math:Math||`. Drag in the `||math:0 + 0||` block, select the `+`, and switch it to `-`. Then put `||drivenByStem:saved efficiency||` on the left and `1` on the right.
-
-```blocks
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(driveSpeed)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-//@highlight
-//@validate-exists
-if (driveSpeed > 100) {
+game.onUpdateInterval(8000, function () {
+    //@highlight
     //@validate-exists
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-} else {
-    //@validate-exists
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-}
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather)) {
+        //@highlight
+        //@validate-exists
+        let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
+        //@highlight
+        //@validate-exists
+        drivenByStem.placeOnTrack(pitMarker)
+    }
+})
 ```
 
 hint~
 
 ```blockconfig.local
-let driveSpeed = 0
-let efficiencyDrain = 1
-let efficiencyRating = 5
-if (driveSpeed > 100) {
-efficiencyRating = drivenByStem.savedEfficiency() - 1
-efficiencyDrain = 2
-} else {
-efficiencyRating = drivenByStem.savedEfficiency()
-efficiencyDrain = 1
+game.onUpdateInterval(8000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather)) {
+let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
+drivenByStem.placeOnTrack(pitMarker)
 }
+})
 ```
 
 ```ghost
-if (driveSpeed > 100) {
-efficiencyRating = drivenByStem.savedEfficiency() - 1
-efficiencyDrain = 2
-} else {
-efficiencyRating = drivenByStem.savedEfficiency()
-efficiencyDrain = 1
+game.onUpdateInterval(8000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather)) {
+let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
+drivenByStem.placeOnTrack(pitMarker)
 }
+})
 ```
 
-## {5. Test the Results}
+## {4. Make the Pit Call}
 
-**Your next job is to see what the data says.**
-
----
-
-Use code to open the garage test bench and review your final speed, efficiency, and cost values.
-
-This is why Performance Engineers make predictions. The test bench doesn't tell you what you hoped would happen. It shows you what actually happened.
-
-* :mouse pointer: Drag the mission `||game:splash||` block out of `||loops(noclick):on start||` and drop it in an empty part of the workspace. It has done its job, and test runs are faster without a banner in front of them. It stays in the workspace if you want it back.
-* :racing car: Drag `||drivenByStem:preview garage test bed||` to the **end** of `||loops(noclick):on start||`. The three variables are already wired in, so it reads your final values.
-* :game pad: Run the simulator and watch the bench run a 20-lap test. Energy drains every lap, and when the tank runs low the car pits. At the end you get a **Bench test** report with your **race time**. Lower is faster.
-* :id card: Say your Step 1 prediction out loud again, then compare. **Did more speed cost what you said it would?**
-* :binoculars: Now go back to Step 1, set `driveSpeed` to `90`, and run it again. Which race time is lower? Write both down.
-* :lightbulb: Try `100`, then `101`. Use your tradeoff rule to work out why one extra point of speed changes the race so much.
-
-~hint Preview looks wrong? 🧪
+**Your next job is to decide what a pit stop is worth.**
 
 ---
 
-Check three things. First, the preview block has to come *after* the `if driveSpeed > 100` rule, so it reads the final values rather than the starting ones. Second, make sure the mission splash is disconnected so it is not interrupting each run. Third, the arrows don't change anything here. The bench runs the test on its own. The real driving test is Jordan's, in the next stage.
+Use code to reward a pit stop based on the setup your team chose in Design.
+
+The right call depends on your setup. A pace car and a balanced car need different things from the pit lane.
+
+* :paper plane: Open `||sprites:Sprites||` and drag the pre-filled `||sprites:on sprite of kind Player overlaps otherSprite of kind Food||` block into an empty area of the workspace.
+* :binoculars: Read the `if`: a **Pace** setup earns 5 points for a stop, and a **Balance** setup wins back 2 hearts of energy. Every stop also earns a strategy point.
+* :game pad: Run the simulator and steer onto a pit marker. Watch what your setup gets.
+
+~hint Which setup am I? 🔧
+
+---
+
+Your setup comes from `driveSpeed` in `on start`. Above 100 is **Pace**, and 100 or below is **Balance**. You changed it to 90 in Test, so you're running **Balance** unless you changed it back.
 
 ```blocks
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(driveSpeed)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-}
 //@highlight
 //@validate-exists
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+    //@highlight
+    //@validate-exists
+    pitStopsVisited += 1
+    //@highlight
+    //@validate-exists
+    drivenByStem.recordPitStopVisit()
+    //@highlight
+    //@validate-exists
+    drivenByStem.awardStrategyPoints(1)
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.setupFocusIs(drivenByStem.SetupFocus.Pace)) {
+        //@highlight
+        //@validate-exists
+        info.changeScoreBy(5)
+    } else {
+        //@highlight
+        //@validate-exists
+        info.changeLifeBy(2)
+    }
+    //@highlight
+    //@validate-exists
+    otherSprite.destroy()
+})
 ```
-
-hint~
-
-~hint Why did the slower car win? 🏁
-
----
-
-A faster car finishes each lap sooner, but it burns more energy per lap, so it runs out sooner and has to pit more often. Every pit stop costs 20 seconds. Add up the laps and the pit stops, and a slower setup can finish the race first.
-
-That's the tradeoff your rule describes. The bench just made it visible.
 
 hint~
 
 ```blockconfig.local
-let driveSpeed = 0
-let efficiencyDrain = 1
-let efficiencyRating = 5
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+pitStopsVisited += 1
+drivenByStem.recordPitStopVisit()
+drivenByStem.awardStrategyPoints(1)
+if (drivenByStem.setupFocusIs(drivenByStem.SetupFocus.Pace)) {
+info.changeScoreBy(5)
+} else {
+info.changeLifeBy(2)
+}
+otherSprite.destroy()
+})
 ```
 
 ```ghost
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+pitStopsVisited += 1
+drivenByStem.recordPitStopVisit()
+drivenByStem.awardStrategyPoints(1)
+if (drivenByStem.setupFocusIs(drivenByStem.SetupFocus.Pace)) {
+info.changeScoreBy(5)
+} else {
+info.changeLifeBy(2)
+}
+otherSprite.destroy()
+})
 ```
 
-## {6. See Through a Different Lens}
+## {5. Adjust for Grip}
 
-**Your next job is to view the results from a different perspective.**
+**Your next job is to make the car respond to the weather.**
 
 ---
 
-Use code to choose an engineering role and see how they interpret the same data.
+Use code to lower the car's top speed when the track is wet and restore it when it dries.
 
-Performance Engineers, Strategists, Software Engineers, and Data Analysts can look at the same results and notice different things. That's how teams make better decisions together.
+Less grip means less speed. Pushing harder in the rain doesn't make the car faster. It makes it crash.
+
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [1000] ms||` grip block into an empty area of the workspace.
+* :binoculars: Read the `if`: while it's raining, the car's top speed is `driveSpeed - 30`. When it dries, it goes back to the full `driveSpeed`.
+* :game pad: Run the simulator. When the rain arrives, watch the speed readout in the corner fall, and feel the car stop pulling.
+
+~hint Why no stage check? 🌦️
+
+---
+
+Grip depends on the weather, not the stage. Like your collision system, this rule keeps working in every race that comes after this one.
+
+```blocks
+//@highlight
+//@validate-exists
+game.onUpdateInterval(1000, function () {
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+        //@highlight
+        //@validate-exists
+        drivenByStem.setBaseCarSpeed(driveSpeed - 30)
+    } else {
+        //@highlight
+        //@validate-exists
+        drivenByStem.setBaseCarSpeed(driveSpeed)
+    }
+})
+```
+
+hint~
+
+```blockconfig.local
+game.onUpdateInterval(1000, function () {
+if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+drivenByStem.setBaseCarSpeed(driveSpeed - 30)
+} else {
+drivenByStem.setBaseCarSpeed(driveSpeed)
+}
+})
+```
+
+```ghost
+game.onUpdateInterval(1000, function () {
+if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+drivenByStem.setBaseCarSpeed(driveSpeed - 30)
+} else {
+drivenByStem.setBaseCarSpeed(driveSpeed)
+}
+})
+```
+
+## {6. Add Puddles}
+
+**Your next job is to add the hazards rain creates.**
+
+---
+
+Use code to put puddles on the road, but only once it's raining.
+
+Rain changes more than grip. It changes where it's safe to drive.
+
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [2500] ms||` puddle block into an empty area of the workspace.
+* :binoculars: Read the `if`: puddles only appear when the stage is **weather** *and* the weather is **rain**. Both have to be true.
+* :game pad: Run the simulator. Puddles come up the road once the rain starts, and hitting one costs energy and speed, just like an obstacle.
+
+~hint Why do puddles cost energy? 💧
+
+---
+
+Puddles are the same kind of sprite as obstacles, **Enemy**, so your collision system from Analyze already handles them. You didn't have to write any new code for that.
+
+```blocks
+//@highlight
+//@validate-exists
+game.onUpdateInterval(2500, function () {
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+        //@highlight
+        //@validate-exists
+        let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
+        //@highlight
+        //@validate-exists
+        drivenByStem.placeOnTrack(puddle)
+    }
+})
+```
+
+hint~
+
+```blockconfig.local
+game.onUpdateInterval(2500, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
+drivenByStem.placeOnTrack(puddle)
+}
+})
+```
+
+```ghost
+game.onUpdateInterval(2500, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
+let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
+drivenByStem.placeOnTrack(puddle)
+}
+})
+```
+
+## {7. Reward Adapting Well}
+
+**Your next job is to reward the team for adapting well.**
+
+---
+
+Use code to award a strategy point when the car gets through the rain cleanly, then save the results.
+
+A good strategy isn't the one that looked right at the start. It's the one that held up when conditions changed.
+
+* :racing car: Open `||drivenByStem:Driven by STEM||` and drag the pre-filled `||drivenByStem:on [weather] session ends||` block into an empty area of the workspace.
+* :binoculars: Read the rule: if it rained and you had one collision or fewer, your team earns a strategy point. Then the results are saved and shown.
+* :game pad: Run the simulator and drive the full session.
+
+~hint Didn't earn the point? 🎯
+
+---
+
+It needs both things to be true: the rain has to have arrived, and you need one collision or fewer. Puddles count as collisions.
+
+```blocks
+//@highlight
+//@validate-exists
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Weather, function () {
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain) && collisions <= 1) {
+        //@highlight
+        //@validate-exists
+        drivenByStem.awardStrategyPoints(1)
+    }
+    //@highlight
+    //@validate-exists
+    drivenByStem.saveCurrentRunResults()
+    //@highlight
+    //@validate-exists
+    game.splash("Pit stops: " + pitStopsVisited, "Strategy points: " + drivenByStem.savedStrategyPoints())
+})
+```
+
+hint~
+
+```blockconfig.local
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Weather, function () {
+if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain) && collisions <= 1) {
+drivenByStem.awardStrategyPoints(1)
+}
+drivenByStem.saveCurrentRunResults()
+game.splash("Pit stops: " + pitStopsVisited, "Strategy points: " + drivenByStem.savedStrategyPoints())
+})
+```
+
+```ghost
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Weather, function () {
+if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain) && collisions <= 1) {
+drivenByStem.awardStrategyPoints(1)
+}
+drivenByStem.saveCurrentRunResults()
+game.splash("Pit stops: " + pitStopsVisited, "Strategy points: " + drivenByStem.savedStrategyPoints())
+})
+```
+
+## {8. Try Both Strategies}
+
+**Your next job is to test your strategy.**
+
+---
+
+Drive the same session twice: once taking every pit stop, and once skipping them all.
+
+A strategist has to make the call before anyone knows how it ends. Testing both is how you learn which call to make next time.
 
 ```validation.local
 # BlocksExistValidator
 * Enabled: false
 ```
 
-* :book: Open `||drivenByStem:Driven by STEM||` and add `||drivenByStem:set role lens to||` near the top of `||loops(noclick):on start||`.
-* :mouse pointer: Use the dropdown to pick your lens: **Performance Engineer**, **Strategist**, **Software Engineer**, or **Data Analyst**.
-* :game pad: Run it. When the bench test finishes, the last lines of the report show what your role notices about the run.
-* :lightbulb: Change the lens and run it again. The numbers stay the same, but each role notices something different. Try all four.
+* :game pad: Run the session and steer onto every pit marker you can reach. Write down your strategy points when it ends.
+* :game pad: Run it again and avoid every pit marker. Write down your strategy points again.
+* :id card: Which strategy scored better for your setup? Would a **Pace** setup make the same call? To find out, set `driveSpeed` above 100 and try both again.
 
-~hint Which role should I pick? ✨
+~hint Results look random? 🎲
 
 ---
 
-There is no correct answer. Pick the lens that matches what your team is actually watching:
-
-- **Performance Engineer.** That's Riley. How much time would more speed buy?
-- **Strategist.** Morgan. What did the pit stops cost the race?
-- **Software Engineer.** Sam. Did the code do what your rule says?
-- **Data Analyst.** Casey. Do the numbers add up to the result?
-
-You'll meet all four doing their real jobs later in the build.
-
-```blocks
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(driveSpeed)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-}
-//@highlight
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
-```
+Obstacles and pit markers appear in random places, so no two runs are identical. Look for a pattern across a couple of runs rather than trusting just one.
 
 hint~
 
-```blockconfig.local
-drivenByStem.setRoleLens(drivenByStem.RoleLens.SoftwareEngineer)
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.setRoleLens(drivenByStem.RoleLens.Strategist)
-drivenByStem.setRoleLens(drivenByStem.RoleLens.DataAnalyst)
-```
+## You Made the Call
 
-```ghost
-drivenByStem.setRoleLens(drivenByStem.RoleLens.SoftwareEngineer)
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.setRoleLens(drivenByStem.RoleLens.Strategist)
-drivenByStem.setRoleLens(drivenByStem.RoleLens.DataAnalyst)
-```
+![Avery - Sustainability Lead](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/avery.png)
 
-## {7. Document the Decision}
+**Avery here, Sustainability Lead.** You made decisions before you knew how they'd turn out, and you adjusted when the rain arrived. Every pit stop and every slowdown was a choice about how to spend the car's energy.
 
-**Your next job is to record the setup you chose.**
+That's strategy. The right call depends on the conditions, and the conditions keep moving.
 
----
-
-Use code to save whether your team selected a Pace setup or a Balanced setup.
-
-Good decisions are documented. When teams know what was tested and why it was chosen, they can build on that work instead of starting over.
-
-* :racing car: Drag `||drivenByStem:save team setup [Pace]||` into the **`if`** branch of your `||logic:if||` block, below `||variables:set efficiencyDrain to 2||`.
-* :mouse pointer: Right-click it, choose **Duplicate**, drag the copy into the **`else`** branch, and switch its dropdown to **Balance**.
-* :game pad: Add a `||game:splash||` in each branch saying what that choice means for the team. Keep each line under 24 characters so it fits on screen.
-* :game pad: Run it once at `110` and once at `90`, and watch which branch reports back.
-
-~hint Setup not saving? ⏱️
-
----
-
-If a later stage does not seem to remember your setup, check *when* you save. `save team setup` has to run after your speed and efficiency values are final. That is why it lives inside the branch, not above the rule.
-
-```blocks
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(driveSpeed)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-    //@highlight
-    //@validate-exists
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-    //@validate-exists
-    game.splash("Pace setup", "Raw pace. Watch energy.")
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-    //@validate-exists
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "Energy saved for later.")
-}
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
-```
-
-hint~
-
-```blockconfig.local
-let driveSpeed = 0
-let efficiencyDrain = 1
-let efficiencyRating = 5
-drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-```
-
-```ghost
-drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-```
-
-## You've Completed the Engineering Loop
-
-![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
-
-You made a prediction, tested your idea, and used data to make a decision.
-
-That's how engineers solve problems. They ask questions, test ideas, and learn from the results.
-
-Next, Jordan will take your setup to the track.
-
-➡️ Select **Done** to continue to **Test**.
+Next, Taylor will bring every system you've built together for the final race.<br><br>➡️ Select **Done** to continue to Race and Reflect.
 
 ```assetjson
 {
