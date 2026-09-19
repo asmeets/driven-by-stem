@@ -208,6 +208,8 @@ namespace drivenByStemSupport {
     let benchStatus = ""
     let benchFinished = false
     let vehicleTrackOriginalImage: Image = null
+    let sessionReport = ""
+    let sessionLaunchHandler: () => void = null
 
     export function startGarageTestBed(): void {
         previewGarageTestBed(drivenByStem.savedDriveSpeed(), drivenByStem.savedEfficiency(), drivenByStem.savedEfficiencyCost())
@@ -383,6 +385,7 @@ namespace drivenByStemSupport {
         sessionMode: boolean
         stageKey: string
         speedFloor: number
+        floorArmed: boolean
         announcement: string
         announcementMilliseconds: number
 
@@ -417,6 +420,7 @@ namespace drivenByStemSupport {
             this.sessionMode = false
             this.stageKey = ""
             this.speedFloor = 0
+            this.floorArmed = false
             this.announcement = ""
             this.announcementMilliseconds = 0
         }
@@ -469,8 +473,7 @@ namespace drivenByStemSupport {
         activeTrack.stageKey = drivenByStem.currentStageName()
         activeTrack.sessionMode = true
         activeTrack.speedFloor = maxDriveSpeed * TEST_TRACK_SESSION_FLOOR_SHARE
-        activeTrack.speed = maxDriveSpeed * TEST_TRACK_SESSION_START_SHARE
-        activeTrack.raceStarted = true
+        hideCarUntilStage()
         trackStarted = true
     }
 
@@ -483,10 +486,41 @@ namespace drivenByStemSupport {
             return
         }
 
+        sessionReport = buildSessionReport()
         activeTrack.active = false
         trackStarted = false
         clearObstacles()
         restoreVehicleTrackCarImage()
+    }
+
+    /**
+     * Show the session's own result. Every session ends with this, whether or not
+     * the student has built their `on [stage] session ends` block yet.
+     */
+    export function showSessionReport(): void {
+        if (!sessionReport) {
+            return
+        }
+
+        const report = sessionReport
+        sessionReport = ""
+        drivenByStem.showResultsDialog(report)
+    }
+
+    /**
+     * Run code the moment the lights go out, so the session clock measures racing
+     * and not the time a student spends staging the car.
+     */
+    export function onTrackSessionLaunch(handler: () => void): void {
+        sessionLaunchHandler = handler
+    }
+
+    function buildSessionReport(): string {
+        return "Session over"
+            + "\n- Time: " + formatElapsedTime(activeTrack.elapsedMilliseconds)
+            + "\n- Score: " + info.score()
+            + "\n- Energy: " + info.life()
+            + "\n- Top speed: " + formatSpeed(activeTrack.topSpeed, activeTrack.displayUnit)
     }
 
     /**
@@ -713,24 +747,19 @@ namespace drivenByStemSupport {
         const vergeColor = wet ? TEST_TRACK_WET_VERGE_COLOR : TEST_TRACK_VERGE_COLOR
         const roadColor = wet ? TEST_TRACK_WET_ROAD_COLOR : TEST_TRACK_ROAD_COLOR
 
-        if (!session) {
-            updateStarterSequence(deltaTime)
-        }
-
+        updateStarterSequence(deltaTime)
         const launched = trackHasLaunched()
         const steeringDelta = launched ? controller.dx(30000) : 0
         const accelerating = launched && controller.up.isPressed() && !controller.down.isPressed()
         const braking = launched && controller.down.isPressed() && !controller.up.isPressed()
 
-        if (!session) {
-            if (!launched && !launchInputPressed()) {
-                activeTrack.falseStartLocked = false
-            }
+        if (!launched && !launchInputPressed()) {
+            activeTrack.falseStartLocked = false
+        }
 
-            if (activeTrack.stagedAtLine && !launched && launchInputPressed() && !activeTrack.falseStartLocked) {
-                triggerFalseStart()
-                return
-            }
+        if (activeTrack.stagedAtLine && !launched && launchInputPressed() && !activeTrack.falseStartLocked) {
+            triggerFalseStart()
+            return
         }
 
         if (launched) {
@@ -836,6 +865,7 @@ namespace drivenByStemSupport {
             // The session's own dashboard owns the top strip: hearts, clock and
             // score. The speed readout tucks into the bottom corner.
             drawSessionSpeed(canvas)
+            drawStarterOverlay(canvas)
         } else {
             drawHudStrip(canvas)
             drawFuelHudLabel(canvas)
@@ -901,8 +931,13 @@ namespace drivenByStemSupport {
         activeTrack.raceStarted = true
         activeTrack.speed = 0
         activeTrack.topSpeed = 0
+        activeTrack.floorArmed = false
         activeTrack.goFlashMilliseconds = TEST_TRACK_GO_FLASH_MILLISECONDS
         playGoTone()
+
+        if (activeTrack.sessionMode && sessionLaunchHandler) {
+            sessionLaunchHandler()
+        }
     }
 
     function pullCarToStartLine(): void {
@@ -1038,7 +1073,9 @@ namespace drivenByStemSupport {
         activeTrack.falseStartLocked = true
         activeTrack.elapsedMilliseconds += TEST_TRACK_FALSE_START_PENALTY_MILLISECONDS
         scene.cameraShake(2, 200)
-        game.splash("False start", "+5.0 s penalty")
+        // A race session is timed by its own countdown, so a false start there
+        // costs the staging time rather than seconds on a run sheet.
+        game.splash("False start", activeTrack.sessionMode ? "Stage again." : "+5.0 s penalty")
         restartStarterSequence()
     }
 
@@ -1384,7 +1421,13 @@ namespace drivenByStemSupport {
 
         const outOfGas = !activeTrack.sessionMode && activeTrack.gasRemaining <= 0
         const maximumTrackSpeed = outOfGas ? 0 : activeTrack.maxDriveSpeed
-        const minimumTrackSpeed = outOfGas || offRoad ? 0 : Math.min(activeTrack.speedFloor, maximumTrackSpeed)
+        // The floor keeps a session's road moving, but only after the student has
+        // got the car up to speed once. A standing start stays a standing start.
+        if (!activeTrack.floorArmed && activeTrack.speed >= activeTrack.speedFloor) {
+            activeTrack.floorArmed = true
+        }
+        const holdSpeed = activeTrack.floorArmed && !outOfGas && !offRoad
+        const minimumTrackSpeed = holdSpeed ? Math.min(activeTrack.speedFloor, maximumTrackSpeed) : 0
         activeTrack.speed = clampToRange(activeTrack.speed + speedChange, minimumTrackSpeed, maximumTrackSpeed)
         return offRoad
     }

@@ -383,19 +383,15 @@ namespace drivenByStem {
     // Ends the current race session exactly once, however it ends: run this
     // stage's session-end handler, then switch to review so every stage-checked
     // spawner stops, and clear what is left on track.
-    function finishSession(): void {
+    function finishSession(message: string): void {
         if (!sessionRunning) {
             return
         }
         sessionRunning = false
         info.stopCountdown()
         drivenByStemSupport.endTrackSession()
+
         const current = settings.readString(STAGE_KEY)
-        for (let i = 0; i < sessionEndStages.length; i++) {
-            if (sessionEndStages[i] == current) {
-                sessionEndHandlers[i]()
-            }
-        }
         startStage(RaceStage.Review)
         for (let hazard of sprites.allOfKind(SpriteKind.Enemy)) {
             hazard.destroy()
@@ -403,6 +399,22 @@ namespace drivenByStem {
         for (let marker of sprites.allOfKind(SpriteKind.Food)) {
             marker.destroy()
         }
+
+        // A session ends inside the HUD's own render pass, and anything that waits
+        // for a button press cannot run there: the loop it waits on is the loop it
+        // is blocking. The review gets its own fiber, so the report and the team's
+        // own session-end code both actually appear.
+        control.runInParallel(function () {
+            if (message) {
+                game.splash(message, "The session is over.")
+            }
+            drivenByStemSupport.showSessionReport()
+            for (let i = 0; i < sessionEndStages.length; i++) {
+                if (sessionEndStages[i] == current) {
+                    sessionEndHandlers[i]()
+                }
+            }
+        })
     }
 
     function installSessionEndHook(): void {
@@ -411,7 +423,7 @@ namespace drivenByStem {
         }
         sessionEndHookInstalled = true
         info.onCountdownEnd(function () {
-            finishSession()
+            finishSession("")
         })
         // Without this, Arcade's default when life reaches zero is game over,
         // which skips the session-end handler entirely: no saved results and no
@@ -422,11 +434,7 @@ namespace drivenByStem {
                 return
             }
             info.stopCountdown()
-            // Stop the road before the message, so the car isn't still driving
-            // itself into traffic behind the splash.
-            drivenByStemSupport.endTrackSession()
-            game.splash("Out of energy", "The session is over.")
-            finishSession()
+            finishSession("Out of energy")
         })
     }
 
@@ -443,28 +451,39 @@ namespace drivenByStem {
     export function startRaceSession(stage: RaceStage): void {
         setWeather(WeatherMode.Dry)
         startStage(stage)
+
+        const seconds = stage == RaceStage.Weather ? 25 : 30
+        const rainAt = stage == RaceStage.Weather ? 8000 : 12000
+        const bringsRain = stage == RaceStage.Weather || stage == RaceStage.FinalChallenge
+
+        // The clock starts when the lights go out, so staging the car costs a
+        // student nothing, and the rain is measured in racing time.
+        drivenByStemSupport.onTrackSessionLaunch(function () {
+            info.startCountdown(seconds)
+            info.showCountdown(true)
+
+            if (bringsRain) {
+                // The session opens dry so students feel the change, then rain
+                // arrives partway through. The final race gets it too, so the grip
+                // rule built in Decide runs alongside everything else.
+                control.runInParallel(function () {
+                    pause(rainAt)
+                    if (stageIs(stage)) {
+                        setWeather(WeatherMode.Rain)
+                        // A banner on the road rather than a dialog: the car is
+                        // still driving, and a race shouldn't stop to be read.
+                        if (!(drivenByStemSupport.announceOnTrack("RAIN: less grip"))) {
+                            game.splash("Rain lowers grip", "Adapt your driving.")
+                        }
+                    }
+                })
+            }
+        })
+
         // The session runs on the same moving track as the shakedown, so the
         // road runs under the car and the traffic the student spawns arrives
         // down the road rather than sliding across a picture of one.
         drivenByStemSupport.startTrackSession()
-
-        if (stage == RaceStage.Weather || stage == RaceStage.FinalChallenge) {
-            // The weather generator. The session opens dry so students feel the
-            // change, then rain arrives partway through. The final race gets it
-            // too, so the grip rule built in Decide runs alongside everything else.
-            const rainAt = stage == RaceStage.Weather ? 8000 : 12000
-            control.runInParallel(function () {
-                pause(rainAt)
-                if (stageIs(stage)) {
-                    setWeather(WeatherMode.Rain)
-                    // A banner on the road rather than a dialog: the car is still
-                    // driving, and a race shouldn't stop to be read.
-                    if (!(drivenByStemSupport.announceOnTrack("RAIN: less grip"))) {
-                        game.splash("Rain lowers grip", "Adapt your driving.")
-                    }
-                }
-            })
-        }
 
         installSessionEndHook()
         sessionRunning = true
@@ -472,8 +491,7 @@ namespace drivenByStem {
         info.setLife(Math.max(1, savedEfficiency()))
         info.showScore(true)
         info.showLife(true)
-        info.startCountdown(stage == RaceStage.Weather ? 25 : 30)
-        info.showCountdown(true)
+        info.showCountdown(false)
     }
 
     /**
