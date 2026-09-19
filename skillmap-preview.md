@@ -66,9 +66,9 @@
 * description: The weather turns, grip drops, and the pit lane opens. Make the call before you know how it ends.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-changing-conditions.png
 * position: 8 6
-* tags: stage-5, design-preview, strategy, conditionals
+* tags: stage-5, ready, strategy, conditionals
 * next: race-and-reflect
-* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v2
 
 ### race-and-reflect
 * name: Race and Reflect

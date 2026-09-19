@@ -313,6 +313,12 @@ namespace drivenByStem {
         // the baseline on every re-run, cycling 5, 4, 3, 2, 1 with no code change.
         settings.writeNumber(DRIVE_SPEED_KEY, defaultSpeed)
         settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(defaultEfficiency, 5))
+        // Run-level tallies. Left alone they grew across every run forever, so
+        // comparing one strategy against another compared nothing.
+        settings.writeNumber(STRATEGY_KEY, 0)
+        settings.writeNumber(COLLISION_KEY, 0)
+        settings.writeNumber(PIT_STOPS_KEY, 0)
+        settings.writeString(WEATHER_KEY, "dry")
         ensureNumberSetting(STRATEGY_KEY, 0)
         ensureNumberSetting(DRAIN_KEY, 1)
         ensureStringSetting(WEATHER_KEY, "dry")
@@ -384,7 +390,8 @@ namespace drivenByStem {
     /**
      * Leave the garage and the test track and start a timed race session. Sets the
      * stage, the track, dry weather, the dashboard and the countdown, and hands the
-     * car back to the driver at the saved speed.
+     * car back to the driver at the saved speed. A weather session turns to rain
+     * partway through.
      */
     //% block="start race session $stage"
     //% blockId=raceday_start_race_session
@@ -401,6 +408,19 @@ namespace drivenByStem {
             car.setFlag(SpriteFlag.Invisible, false)
             car.setFlag(SpriteFlag.StayInScreen, true)
             controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
+        }
+
+        if (stage == RaceStage.Weather) {
+            // The weather generator. The session opens dry so students feel the
+            // change, then rain arrives partway through.
+            control.runInParallel(function () {
+                pause(8000)
+                if (stageIs(RaceStage.Weather)) {
+                    setWeather(WeatherMode.Rain)
+                    scene.setBackgroundImage(assets.image`weatherBg`)
+                    game.splash("Rain lowers grip", "Adapt your driving.")
+                }
+            })
         }
 
         installSessionEndHook()
