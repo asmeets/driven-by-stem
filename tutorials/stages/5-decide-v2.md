@@ -27,12 +27,12 @@ if (driveSpeed > 100) {
     efficiencyRating = drivenByStem.savedEfficiency() - 1
     efficiencyDrain = 2
     drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-    game.splash("Pace setup", "You chose raw pace. Monitor energy use.")
+    game.splash("Pace setup", "Raw pace. Watch energy.")
 } else {
     efficiencyRating = drivenByStem.savedEfficiency()
     efficiencyDrain = 1
     drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "You chose a more efficient setup.")
+    game.splash("Balance setup", "Energy saved for later.")
 }
 drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
 drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)

@@ -35,7 +35,7 @@ Great teams do their best work when everyone knows the goal.
 
 * :game pad: Open `||game:Game||` and drag `||game:splash||` into `||loops(noclick):on start||`, under the blocks that are already there.
 * :keyboard: Type a short, one-sentence mission line like "Race weekend."
-* :keyboard: Select the + icon in the `||game:splash||` block to add a second line saying what you will do, like "Build a car you can explain."
+* :keyboard: Select the + icon in the `||game:splash||` block to add a second line saying what you will do, like "Test it before we race."
 
 ~hint New to these instructions? 🧭
 
@@ -55,7 +55,7 @@ hint~
 
 ---
 
-Keep this message short. If a player has to read a paragraph at launch, it's too much.
+Keep this message short. Each line fits about 24 characters on screen, and anything longer gets cut off. If a player has to read a paragraph at launch, it's too much.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
@@ -63,7 +63,7 @@ drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 //@highlight
 //@validate-exists
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 ```
 
 hint~
@@ -126,7 +126,7 @@ Use `raceCar` consistently. One mismatched name can make the right blocks feel w
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 //@highlight
 //@validate-exists
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
@@ -167,7 +167,7 @@ If the car won't move, check which sprite the controller block is targeting. Thi
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 //@highlight
 //@validate-exists
@@ -221,7 +221,7 @@ If your car is not changing, edit the image inside the existing `raceCar` sprite
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
@@ -271,7 +271,7 @@ Picking units is a design decision with a consequence, and you will meet that co
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)

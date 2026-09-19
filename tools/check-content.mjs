@@ -102,6 +102,14 @@ for (const t of tutorials) {
         for (const m of f[2].matchAll(/^drivenByStem\.(\w+)\(\)\s*$/gm))
             if (reporters.has(m[1])) fail(t, `\`\`\`${f[1]} has drivenByStem.${m[1]}() alone on a line; it is a reporter, so MakeCode cannot build a block from it and rejects the fence`)
 
+    // 6c. splash text is clipped at roughly 24 characters on the 160 px screen
+    if (stageTutorials.includes(t)) {
+        const body = src.slice(0, src.indexOf('```assetjson'))
+        for (const m of body.matchAll(/game\.splash\(("[^"]*")(?:\s*,\s*("[^"]*"))?\)/g))
+            for (const lit of [m[1], m[2]].filter(Boolean))
+                if (lit.length - 2 > 24) fail(t, `splash text ${lit} is ${lit.length - 2} characters; the simulator clips anything past about 24`)
+    }
+
     // 7. hint balance
     const openH = (src.match(/^~hint /gm) || []).length
     const closeH = (src.match(/^hint~$/gm) || []).length

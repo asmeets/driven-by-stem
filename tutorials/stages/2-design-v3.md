@@ -12,7 +12,7 @@
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
@@ -74,7 +74,7 @@ If your speed value keeps switching back, something is probably setting it again
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
@@ -122,7 +122,7 @@ If you still see `||drivenByStem:saved drive speed||` in the movement block, the
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
@@ -172,7 +172,7 @@ The `set <name> to` block does not appear in the Variables toolbox until the var
 scene.setBackgroundImage(assets.image`garageBg`)
 drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-game.splash("Race weekend", "Build a car you can explain.")
+game.splash("Race weekend", "Test it before we race.")
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
@@ -415,7 +415,7 @@ Good decisions are documented. When teams know what was tested and why it was ch
 
 * :racing car: Drag `||drivenByStem:save team setup [Pace]||` into the **`if`** branch of your `||logic:if||` block, below `||variables:set efficiencyDrain to 2||`.
 * :mouse pointer: Right-click it, choose **Duplicate**, drag the copy into the **`else`** branch, and switch its dropdown to **Balance**.
-* :game pad: Add a `||game:splash||` in each branch saying what that choice means for the team.
+* :game pad: Add a `||game:splash||` in each branch saying what that choice means for the team. Keep each line under 24 characters so it fits on screen.
 * :game pad: Run it once at `110` and once at `90`, and watch which branch reports back.
 
 ~hint Setup not saving? ⏱️
@@ -436,13 +436,13 @@ if (driveSpeed > 100) {
     //@validate-exists
     drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
     //@validate-exists
-    game.splash("Pace setup", "You chose raw pace. Monitor energy use.")
+    game.splash("Pace setup", "Raw pace. Watch energy.")
 } else {
     efficiencyRating = drivenByStem.savedEfficiency()
     efficiencyDrain = 1
     //@validate-exists
     drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "You chose a more efficient setup.")
+    game.splash("Balance setup", "Energy saved for later.")
 }
 drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
 drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
