@@ -370,6 +370,11 @@ namespace drivenByStem {
         settings.writeString(STAGE_KEY, stageName(stage))
     }
 
+    //% blockHidden=true
+    export function currentStageName(): string {
+        return settings.readString(STAGE_KEY)
+    }
+
     let sessionEndStages: string[] = []
     let sessionEndHandlers: (() => void)[] = []
     let sessionEndHookInstalled = false
@@ -384,6 +389,7 @@ namespace drivenByStem {
         }
         sessionRunning = false
         info.stopCountdown()
+        drivenByStemSupport.endTrackSession()
         const current = settings.readString(STAGE_KEY)
         for (let i = 0; i < sessionEndStages.length; i++) {
             if (sessionEndStages[i] == current) {
@@ -416,6 +422,9 @@ namespace drivenByStem {
                 return
             }
             info.stopCountdown()
+            // Stop the road before the message, so the car isn't still driving
+            // itself into traffic behind the splash.
+            drivenByStemSupport.endTrackSession()
             game.splash("Out of energy", "The session is over.")
             finishSession()
         })
@@ -432,17 +441,12 @@ namespace drivenByStem {
     //% stage.defl=RaceStage.Track
     //% group="Session" weight=91
     export function startRaceSession(stage: RaceStage): void {
-        drivenByStemSupport.leaveTestTrack()
         setWeather(WeatherMode.Dry)
         startStage(stage)
-        scene.setBackgroundImage(stage == RaceStage.FinalChallenge ? assets.image`finishBg` : assets.image`trackBg`)
-
-        const car = sprites.allOfKind(SpriteKind.Player)[0]
-        if (car) {
-            car.setFlag(SpriteFlag.Invisible, false)
-            car.setFlag(SpriteFlag.StayInScreen, true)
-            controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
-        }
+        // The session runs on the same moving track as the shakedown, so the
+        // road runs under the car and the traffic the student spawns arrives
+        // down the road rather than sliding across a picture of one.
+        drivenByStemSupport.startTrackSession()
 
         if (stage == RaceStage.Weather || stage == RaceStage.FinalChallenge) {
             // The weather generator. The session opens dry so students feel the
@@ -453,8 +457,11 @@ namespace drivenByStem {
                 pause(rainAt)
                 if (stageIs(stage)) {
                     setWeather(WeatherMode.Rain)
-                    scene.setBackgroundImage(assets.image`weatherBg`)
-                    game.splash("Rain lowers grip", "Adapt your driving.")
+                    // A banner on the road rather than a dialog: the car is still
+                    // driving, and a race shouldn't stop to be read.
+                    if (!(drivenByStemSupport.announceOnTrack("RAIN: less grip"))) {
+                        game.splash("Rain lowers grip", "Adapt your driving.")
+                    }
                 }
             })
         }
@@ -487,6 +494,26 @@ namespace drivenByStem {
         }
         sessionEndStages.push(name)
         sessionEndHandlers.push(handler)
+    }
+
+    /**
+     * Put a sprite on the road ahead of the car during a race session, so it
+     * arrives down the track at racing speed instead of sliding across the
+     * screen. Clears the sprite away when no session is running.
+     */
+    //% block="put $target on the track ahead"
+    //% blockId=raceday_place_on_track
+    //% target.shadow=variables_get
+    //% target.defl=obstacle
+    //% group="Session" weight=89
+    export function placeOnTrack(target: Sprite): void {
+        if (!(target)) {
+            return
+        }
+
+        if (!(drivenByStemSupport.placeOnTrack(target))) {
+            target.destroy()
+        }
     }
 
     /**
@@ -563,6 +590,13 @@ namespace drivenByStem {
     //% speed.defl=80 speed.min=0 speed.max=200
     //% group="Session" weight=98
     export function setBaseCarSpeed(speed: number): void {
+        // On the moving track this is the car's top speed, read in the team's
+        // own dashboard units. In the garage it is how fast the car answers the
+        // arrows. Same block, same number, whichever screen is up.
+        if (drivenByStemSupport.setTrackSpeedLimit(speed)) {
+            return
+        }
+
         const car = sprites.allOfKind(SpriteKind.Player)[0]
         if (!(car)) {
             return

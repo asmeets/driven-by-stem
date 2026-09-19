@@ -64,8 +64,9 @@ Use code to leave the test track and start a timed race session.
 Testing happens in controlled conditions. Racing doesn't. The session is where you find out what holds up.
 
 * :racing car: Open `||drivenByStem:Driven by STEM||` and drag `||drivenByStem:start race session [track]||` to the very end of `||loops(noclick):on start||`, below `||drivenByStem:set next test focus||`.
-* :game pad: Run the simulator. The dashboard now shows your score, your energy as hearts, and a 30-second countdown.
-* :binoculars: Drive until the countdown runs out. The track is empty for now. You'll fill it in over the next steps.
+* :game pad: Run the simulator. You're on the same moving track you drove in Test, and the dashboard adds your score, your energy as hearts, and a 30-second countdown.
+* :game pad: Hold the up arrow to speed up, press down to slow, and steer with left and right. The car never drops below a quarter of its top speed, so the session keeps rolling.
+* :binoculars: Drive until the countdown runs out. The road is empty for now. You'll fill it in over the next steps.
 
 ~hint Still on the test track? 🏁
 
@@ -99,12 +100,11 @@ drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
 
 ---
 
-Use code to create the variables that will count collisions during the session.
+Use code to start the two counters this session keeps.
 
 If you don't count something, you can't improve it.
 
-* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `collisions`.
-* :paper plane: Make a second variable named `lastCollisionCount`.
+* :paper plane: Open `||variables:Variables||`. Both counters are made for you: `collisions` and `lastCollisionCount`.
 * :paper plane: Drag `||variables:set collisions to [0]||` and `||variables:set lastCollisionCount to [0]||` into `||loops(noclick):on start||`, directly **above** `||drivenByStem:start race session||`.
 
 ~hint Why two counters? 🔢
@@ -114,6 +114,14 @@ If you don't count something, you can't improve it.
 `collisions` counts every hit in the session. `lastCollisionCount` remembers what the count was a few seconds ago, so your code can tell whether you've been driving clean since then. You'll use it in Step 5.
 
 Both start at `0` so every session begins with a clean count.
+
+hint~
+
+~hint Not in the Variables drawer? 🔎
+
+---
+
+Select **Make a Variable** and add them yourself, spelled exactly `collisions` and `lastCollisionCount`. Step 5 reads both by name, so the spelling has to match.
 
 ```blocks
 drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
@@ -147,19 +155,20 @@ let lastCollisionCount = 0
 
 ---
 
-Use code to spawn obstacles at a steady rate during the session.
+Use code to put obstacles on the road at a steady rate during the session.
 
 A clean track can't test a setup. Real conditions can.
 
-* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [2000] ms||` block into an empty area of the workspace. The obstacle, its random position, and its speed are already inside.
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [2000] ms||` block into an empty area of the workspace. The obstacle and the block that puts it on the road are already inside.
 * :binoculars: Read the `if` at the top: obstacles only appear while the stage is **track**. That keeps this spawner out of the stages that come after this one.
-* :game pad: Run the simulator and drive. Obstacles now come down the track toward your car.
+* :binoculars: Read the second block. `||drivenByStem:put obstacle on the track ahead||` drops it at the far end of the road, so it arrives at your speed instead of landing on top of you.
+* :game pad: Run the simulator and drive. Obstacles now come up the road toward your car.
 
 ~hint Too many obstacles? 🎛️
 
 ---
 
-Change one setting at a time. A bigger number in `every 2000 ms` spawns them less often, and a smaller `vy` makes them move slower.
+A bigger number in `every 2000 ms` spawns them less often. How fast they arrive is up to you: the quicker you drive, the less time you have to steer around each one.
 
 ```blocks
 //@highlight
@@ -173,13 +182,7 @@ game.onUpdateInterval(2000, function () {
         let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
         //@highlight
         //@validate-exists
-        obstacle.setPosition(randint(10, 150), 0)
-        //@highlight
-        //@validate-exists
-        obstacle.vy = 60
-        //@highlight
-        //@validate-exists
-        obstacle.lifespan = 2500
+        drivenByStem.placeOnTrack(obstacle)
     }
 })
 ```
@@ -190,9 +193,7 @@ hint~
 game.onUpdateInterval(2000, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
 let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
-obstacle.setPosition(randint(10, 150), 0)
-obstacle.vy = 60
-obstacle.lifespan = 2500
+drivenByStem.placeOnTrack(obstacle)
 }
 })
 ```
@@ -201,9 +202,7 @@ obstacle.lifespan = 2500
 game.onUpdateInterval(2000, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
 let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
-obstacle.setPosition(randint(10, 150), 0)
-obstacle.vy = 60
-obstacle.lifespan = 2500
+drivenByStem.placeOnTrack(obstacle)
 }
 })
 ```
@@ -219,8 +218,8 @@ Use code to count every collision and apply its cost to the car's energy.
 Every hit has a cost. Telemetry makes the cost visible.
 
 * :paper plane: Open `||sprites:Sprites||` and drag the pre-filled `||sprites:on sprite of kind Player overlaps otherSprite of kind Enemy||` block into an empty area of the workspace.
-* :binoculars: Read what it does: add one to `collisions`, take energy away based on your setup's `efficiencyDrain`, and remove the obstacle.
-* :game pad: Run the simulator and hit an obstacle on purpose. Watch a heart disappear.
+* :binoculars: Read what it does: add one to `collisions`, take energy away based on your setup's `efficiencyDrain`, and clear the obstacle off the road.
+* :game pad: Run the simulator and hit an obstacle on purpose. Watch a heart disappear, and watch the speed readout drop. A hit costs you time as well as energy.
 
 ~hint Why doesn't this one check the stage? 🔁
 
@@ -398,7 +397,6 @@ You counted every collision, rewarded clean driving, and read the results agains
 That's telemetry work. The data doesn't care what you remember. It shows what actually happened.
 
 Next, Morgan and Avery will change the conditions and ask you to make the call.<br><br>➡️ Select **Done** to continue to Decide.
-
 
 ```assetjson
 {

@@ -64,6 +64,18 @@ A setup only matters once it has been tested where the car actually runs.
 * :game pad: Run the simulator. When the car appears, press **A** to roll it up to the start line.
 * :game pad: Wait for the lights to go out, then hold the up arrow to accelerate. The down arrow brakes, and left and right steer.
 
+~hint Does my driveSpeed matter here? 🏎️
+
+---
+
+Yes. `driveSpeed` is the car's **top speed** on the track, read in the units your team picked in Join the Team. Set `90` and the car tops out at 90 mph, or 90 km/h, depending on your dashboard.
+
+Your efficiency sets the size of the gas tank, and your cost sets how fast it burns. Speed spends gas as well: the faster you go, the more every stretch of road costs you, exactly as Riley's bench said it would.
+
+The report at the end of each run shows your limit right under the top speed you actually reached.
+
+hint~
+
 ~hint Track not starting? 🏁
 
 ---
@@ -108,16 +120,6 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
     game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 })
 ```
-
-hint~
-
-~hint Does my driveSpeed matter here? 🏎️
-
----
-
-Yes. Your `driveSpeed` from Design sets the car's **speed limit** on the track: three times `driveSpeed`, so `90` gives a limit of 270 km/h, about 168 mph. Your efficiency sets the size of the gas tank, and your cost sets how fast it burns.
-
-The report at the end of each run shows your speed limit right under the top speed you actually reached.
 
 hint~
 
@@ -174,9 +176,9 @@ If you change two things at once, you won't know which one made the difference. 
 
 ---
 
-The car has a top-speed limit. Any drive speed above 126 hits that limit, so two fast settings above it look exactly the same on track.
+`90` drops under the `100` mark in your own tradeoff rule, so the car switches to the cheaper setup. That makes one change show up in two places: your pace and your gas.
 
-You can pick any value from 80 to 125, as long as it's different from your baseline.
+You can pick any number you like, as long as it's different from your baseline. The track itself tops out at 150 mph, or 240 km/h, so anything above that drives the same.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
@@ -330,7 +332,7 @@ A result nobody writes down is a test you'll have to run again.
 
 ---
 
-A good finding names the change and the result together, like *"Dropping to 90 saved gas and cost 4 seconds."* Someone who wasn't there should be able to read it and know what to test next.
+A good finding names the change and the result together, like *"Dropping to 90 saved gas and cost a second."* Someone who wasn't there should be able to read it and know what to test next.
 
 ```blocks
 scene.setBackgroundImage(assets.image`garageBg`)
@@ -390,7 +392,6 @@ You set a baseline, changed one variable, and compared the results.
 That's how test engineers turn a hunch into evidence. They don't trust a single run. They trust the comparison.
 
 Next, Casey will take your car into a full race session.<br><br>➡️ Select **Done** to continue to Analyze.
-
 
 ```assetjson
 {

@@ -49,9 +49,7 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 game.onUpdateInterval(2000, function () {
     if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
         let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
-        obstacle.setPosition(randint(10, 150), 0)
-        obstacle.vy = 60
-        obstacle.lifespan = 2500
+        drivenByStem.placeOnTrack(obstacle)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -94,7 +92,7 @@ Strategy starts with knowing what could change before it does.
 
 * :mouse pointer: Find `||drivenByStem:start race session [track]||` at the end of `||loops(noclick):on start||`.
 * :mouse pointer: Use its dropdown to change **track** to **weather**.
-* :game pad: Run the simulator. The session starts dry. A few seconds in, the rain arrives.
+* :game pad: Run the simulator. The session starts dry. A few seconds in, the sky goes gray, the road darkens, and rain streaks the screen.
 
 ~hint Where did the obstacles go? 🌧️
 
@@ -125,7 +123,7 @@ Use code to create a variable that counts every pit stop the car makes.
 
 A strategist needs to know what was decided, not just what happened.
 
-* :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `pitStopsVisited`.
+* :paper plane: Open `||variables:Variables||`. `pitStopsVisited` is made for you, the same as your two collision counters.
 * :paper plane: Drag `||variables:set pitStopsVisited to [0]||` into `||loops(noclick):on start||`, directly **above** `||drivenByStem:start race session||`.
 
 ~hint Why above start race session? 🔢
@@ -133,6 +131,14 @@ A strategist needs to know what was decided, not just what happened.
 ---
 
 Counters reset before the session starts, so every race begins at zero. Your collision counters from Analyze sit in the same spot for the same reason.
+
+hint~
+
+~hint Not in the Variables drawer? 🔎
+
+---
+
+Select **Make a Variable** and add it yourself, spelled exactly `pitStopsVisited`. Step 4 and Step 7 both read it by name.
 
 ```blocks
 drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
@@ -163,19 +169,20 @@ let pitStopsVisited = 0
 
 ---
 
-Use code to put pit markers on the track during the weather session.
+Use code to put pit markers on the road during the weather session.
 
 A pit stop costs time but can win back energy. Knowing when to take one is the job.
 
 * :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [8000] ms||` block into an empty area of the workspace.
 * :binoculars: Read the `if`: pit markers only appear during the **weather** stage.
-* :game pad: Run the simulator. A pit marker appears every 8 seconds, then disappears if nobody takes it.
+* :binoculars: Read the second block. `||drivenByStem:put pitMarker on the track ahead||` puts the marker out at the far end of the road, somewhere across the width of the track.
+* :game pad: Run the simulator. A marker comes up the road every 8 seconds. Steer onto it before it goes by.
 
-~hint Markers vanish too fast? ⏳
+~hint Missed the marker? ⏳
 
 ---
 
-A marker stays for 4 seconds, set by `lifespan = 4000`. That's deliberate. A pit window is short, and a strategist has to decide quickly.
+Once a marker passes the car it's gone, and the next one is 8 seconds away. That's deliberate. A pit window is short, and a strategist has to decide early, while the marker is still up the road.
 
 ```blocks
 //@highlight
@@ -189,10 +196,7 @@ game.onUpdateInterval(8000, function () {
         let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
         //@highlight
         //@validate-exists
-        pitMarker.setPosition(randint(20, 140), randint(20, 100))
-        //@highlight
-        //@validate-exists
-        pitMarker.lifespan = 4000
+        drivenByStem.placeOnTrack(pitMarker)
     }
 })
 ```
@@ -203,8 +207,7 @@ hint~
 game.onUpdateInterval(8000, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather)) {
 let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
-pitMarker.setPosition(randint(20, 140), randint(20, 100))
-pitMarker.lifespan = 4000
+drivenByStem.placeOnTrack(pitMarker)
 }
 })
 ```
@@ -213,8 +216,7 @@ pitMarker.lifespan = 4000
 game.onUpdateInterval(8000, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather)) {
 let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
-pitMarker.setPosition(randint(20, 140), randint(20, 100))
-pitMarker.lifespan = 4000
+drivenByStem.placeOnTrack(pitMarker)
 }
 })
 ```
@@ -231,7 +233,7 @@ The right call depends on your setup. A pace car and a balanced car need differe
 
 * :paper plane: Open `||sprites:Sprites||` and drag the pre-filled `||sprites:on sprite of kind Player overlaps otherSprite of kind Food||` block into an empty area of the workspace.
 * :binoculars: Read the `if`: a **Pace** setup earns 5 points for a stop, and a **Balance** setup wins back 2 hearts of energy. Every stop also earns a strategy point.
-* :game pad: Run the simulator and drive through a pit marker. Watch what your setup gets.
+* :game pad: Run the simulator and steer onto a pit marker. Watch what your setup gets.
 
 ~hint Which setup am I? 🔧
 
@@ -305,13 +307,13 @@ otherSprite.destroy()
 
 ---
 
-Use code to slow the car when the track is wet and restore its speed when it dries.
+Use code to lower the car's top speed when the track is wet and restore it when it dries.
 
 Less grip means less speed. Pushing harder in the rain doesn't make the car faster. It makes it crash.
 
 * :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [1000] ms||` grip block into an empty area of the workspace.
-* :binoculars: Read the `if`: when the weather is rain, the car moves at `driveSpeed - 30`. Otherwise it moves at full `driveSpeed`.
-* :game pad: Run the simulator. When the rain arrives, feel the car slow down.
+* :binoculars: Read the `if`: while it's raining, the car's top speed is `driveSpeed - 30`. When it dries, it goes back to the full `driveSpeed`.
+* :game pad: Run the simulator. When the rain arrives, watch the speed readout in the corner fall, and feel the car stop pulling.
 
 ~hint Why no stage check? 🌦️
 
@@ -328,11 +330,11 @@ game.onUpdateInterval(1000, function () {
     if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
         //@highlight
         //@validate-exists
-        controller.moveSprite(raceCar, driveSpeed - 30, driveSpeed - 30)
+        drivenByStem.setBaseCarSpeed(driveSpeed - 30)
     } else {
         //@highlight
         //@validate-exists
-        controller.moveSprite(raceCar, driveSpeed, driveSpeed)
+        drivenByStem.setBaseCarSpeed(driveSpeed)
     }
 })
 ```
@@ -342,9 +344,9 @@ hint~
 ```blockconfig.local
 game.onUpdateInterval(1000, function () {
 if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
-controller.moveSprite(raceCar, driveSpeed - 30, driveSpeed - 30)
+drivenByStem.setBaseCarSpeed(driveSpeed - 30)
 } else {
-controller.moveSprite(raceCar, driveSpeed, driveSpeed)
+drivenByStem.setBaseCarSpeed(driveSpeed)
 }
 })
 ```
@@ -352,9 +354,9 @@ controller.moveSprite(raceCar, driveSpeed, driveSpeed)
 ```ghost
 game.onUpdateInterval(1000, function () {
 if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
-controller.moveSprite(raceCar, driveSpeed - 30, driveSpeed - 30)
+drivenByStem.setBaseCarSpeed(driveSpeed - 30)
 } else {
-controller.moveSprite(raceCar, driveSpeed, driveSpeed)
+drivenByStem.setBaseCarSpeed(driveSpeed)
 }
 })
 ```
@@ -365,13 +367,13 @@ controller.moveSprite(raceCar, driveSpeed, driveSpeed)
 
 ---
 
-Use code to put puddles on the track, but only once it's raining.
+Use code to put puddles on the road, but only once it's raining.
 
 Rain changes more than grip. It changes where it's safe to drive.
 
 * :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [2500] ms||` puddle block into an empty area of the workspace.
 * :binoculars: Read the `if`: puddles only appear when the stage is **weather** *and* the weather is **rain**. Both have to be true.
-* :game pad: Run the simulator. Puddles show up once the rain starts, and hitting one costs energy, just like an obstacle.
+* :game pad: Run the simulator. Puddles come up the road once the rain starts, and hitting one costs energy and speed, just like an obstacle.
 
 ~hint Why do puddles cost energy? 💧
 
@@ -391,13 +393,7 @@ game.onUpdateInterval(2500, function () {
         let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
         //@highlight
         //@validate-exists
-        puddle.setPosition(randint(10, 150), 0)
-        //@highlight
-        //@validate-exists
-        puddle.vy = 40
-        //@highlight
-        //@validate-exists
-        puddle.lifespan = 3000
+        drivenByStem.placeOnTrack(puddle)
     }
 })
 ```
@@ -408,9 +404,7 @@ hint~
 game.onUpdateInterval(2500, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
 let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
-puddle.setPosition(randint(10, 150), 0)
-puddle.vy = 40
-puddle.lifespan = 3000
+drivenByStem.placeOnTrack(puddle)
 }
 })
 ```
@@ -419,9 +413,7 @@ puddle.lifespan = 3000
 game.onUpdateInterval(2500, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
 let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
-puddle.setPosition(randint(10, 150), 0)
-puddle.vy = 40
-puddle.lifespan = 3000
+drivenByStem.placeOnTrack(puddle)
 }
 })
 ```
@@ -503,7 +495,7 @@ A strategist has to make the call before anyone knows how it ends. Testing both 
 * Enabled: false
 ```
 
-* :game pad: Run the session and drive through every pit marker you can reach. Write down your strategy points when it ends.
+* :game pad: Run the session and steer onto every pit marker you can reach. Write down your strategy points when it ends.
 * :game pad: Run it again and avoid every pit marker. Write down your strategy points again.
 * :id card: Which strategy scored better for your setup? Would a **Pace** setup make the same call? To find out, set `driveSpeed` above 100 and try both again.
 
@@ -524,7 +516,6 @@ hint~
 That's strategy. The right call depends on the conditions, and the conditions keep moving.
 
 Next, Taylor will bring every system you've built together for the final race.<br><br>➡️ Select **Done** to continue to Race and Reflect.
-
 
 ```assetjson
 {

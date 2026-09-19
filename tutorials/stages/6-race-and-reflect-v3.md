@@ -50,9 +50,7 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 game.onUpdateInterval(2000, function () {
     if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
         let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
-        obstacle.setPosition(randint(10, 150), 0)
-        obstacle.vy = 60
-        obstacle.lifespan = 2500
+        drivenByStem.placeOnTrack(obstacle)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
@@ -76,8 +74,7 @@ drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
 game.onUpdateInterval(8000, function () {
     if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather)) {
         let pitMarker = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
-        pitMarker.setPosition(randint(20, 140), randint(20, 100))
-        pitMarker.lifespan = 4000
+        drivenByStem.placeOnTrack(pitMarker)
     }
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
@@ -93,17 +90,15 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSpr
 })
 game.onUpdateInterval(1000, function () {
     if (drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
-        controller.moveSprite(raceCar, driveSpeed - 30, driveSpeed - 30)
+        drivenByStem.setBaseCarSpeed(driveSpeed - 30)
     } else {
-        controller.moveSprite(raceCar, driveSpeed, driveSpeed)
+        drivenByStem.setBaseCarSpeed(driveSpeed)
     }
 })
 game.onUpdateInterval(2500, function () {
     if (drivenByStem.stageIs(drivenByStem.RaceStage.Weather) && drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)) {
         let puddle = sprites.create(assets.image`rainPuddle`, SpriteKind.Enemy)
-        puddle.setPosition(randint(10, 150), 0)
-        puddle.vy = 40
-        puddle.lifespan = 3000
+        drivenByStem.placeOnTrack(puddle)
     }
 })
 drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Weather, function () {
@@ -163,19 +158,19 @@ hint~
 
 ---
 
-Use code to put obstacles on the track during the final race.
+Use code to put obstacles on the road during the final race.
 
 Systems are easy to trust when nothing goes wrong. The final race tests them under pressure.
 
 * :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [1500] ms||` block into an empty area of the workspace.
-* :binoculars: Read the `if`: these obstacles only appear during the **final challenge**, and they come faster than in Analyze.
-* :game pad: Run the simulator. Your collision system from Analyze already counts every hit.
+* :binoculars: Read the `if`: these obstacles only appear during the **final challenge**, and they come every 1.5 seconds instead of every 2, so the road is busier than it was in Analyze.
+* :game pad: Run the simulator. Your collision system from Analyze already counts every hit, and the rain still arrives partway through.
 
 ~hint Too hard? 🎛️
 
 ---
 
-Raise `1500` to spawn obstacles less often. The final race should be hard, but not impossible.
+Raise `1500` to spawn obstacles less often. Backing `driveSpeed` off in `on start` gives you more time to read the road too. The final race should be hard, but not impossible.
 
 ```blocks
 //@highlight
@@ -189,13 +184,7 @@ game.onUpdateInterval(1500, function () {
         let hazard = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
         //@highlight
         //@validate-exists
-        hazard.setPosition(randint(10, 150), 0)
-        //@highlight
-        //@validate-exists
-        hazard.vy = 70
-        //@highlight
-        //@validate-exists
-        hazard.lifespan = 2500
+        drivenByStem.placeOnTrack(hazard)
     }
 })
 ```
@@ -206,9 +195,7 @@ hint~
 game.onUpdateInterval(1500, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.FinalChallenge)) {
 let hazard = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
-hazard.setPosition(randint(10, 150), 0)
-hazard.vy = 70
-hazard.lifespan = 2500
+drivenByStem.placeOnTrack(hazard)
 }
 })
 ```
@@ -217,9 +204,7 @@ hazard.lifespan = 2500
 game.onUpdateInterval(1500, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.FinalChallenge)) {
 let hazard = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
-hazard.setPosition(randint(10, 150), 0)
-hazard.vy = 70
-hazard.lifespan = 2500
+drivenByStem.placeOnTrack(hazard)
 }
 })
 ```
@@ -230,19 +215,19 @@ hazard.lifespan = 2500
 
 ---
 
-Use code to put pit opportunities on the track during the final race.
+Use code to put pit opportunities on the road during the final race.
 
 Good systems plan for things going wrong, not just for things going right.
 
 * :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [7000] ms||` block into an empty area of the workspace.
 * :binoculars: Read the `if`: these pit markers only appear during the **final challenge**. Your pit call from Decide decides what each one is worth.
-* :game pad: Run the simulator and use the pit lane to win back what the obstacles take.
+* :game pad: Run the simulator and steer onto the markers to win back what the obstacles take.
 
 ~hint Why no new overlap block? 🔁
 
 ---
 
-Your pit call from Decide has no stage check, so it already handles every pit marker in every race. You only needed to put markers on the track.
+Your pit call from Decide has no stage check, so it already handles every pit marker in every race. You only needed to put markers on the road.
 
 ```blocks
 //@highlight
@@ -256,10 +241,7 @@ game.onUpdateInterval(7000, function () {
         let pitOpportunity = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
         //@highlight
         //@validate-exists
-        pitOpportunity.setPosition(randint(20, 140), randint(20, 100))
-        //@highlight
-        //@validate-exists
-        pitOpportunity.lifespan = 4000
+        drivenByStem.placeOnTrack(pitOpportunity)
     }
 })
 ```
@@ -270,8 +252,7 @@ hint~
 game.onUpdateInterval(7000, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.FinalChallenge)) {
 let pitOpportunity = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
-pitOpportunity.setPosition(randint(20, 140), randint(20, 100))
-pitOpportunity.lifespan = 4000
+drivenByStem.placeOnTrack(pitOpportunity)
 }
 })
 ```
@@ -280,8 +261,7 @@ pitOpportunity.lifespan = 4000
 game.onUpdateInterval(7000, function () {
 if (drivenByStem.stageIs(drivenByStem.RaceStage.FinalChallenge)) {
 let pitOpportunity = sprites.create(assets.image`pitMarker`, SpriteKind.Food)
-pitOpportunity.setPosition(randint(20, 140), randint(20, 100))
-pitOpportunity.lifespan = 4000
+drivenByStem.placeOnTrack(pitOpportunity)
 }
 })
 ```
@@ -742,7 +722,6 @@ You built a working race simulator, one decision at a time. Here's the team you 
 - **Taylor, Systems Engineer:** you ran every system together.
 
 Events, variables, and saved data carried every choice you made from the first stage to the last. These are real jobs, and you've done a version of each one.<br><br>➡️ Select **Done** to claim your certificate.
-
 
 ```assetjson
 {

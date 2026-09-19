@@ -1,5 +1,5 @@
 # driven-by-stem-preview
-* name: Driven by STEM, enabled by Microsoft, Revision Preview
+* name: Driven by STEM, enabled by Microsoft
 * description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect.
 * primarycolor: #ffd84d
 * secondarycolor: #000
@@ -11,7 +11,7 @@
 * bannerurl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/banner.png
 
 ## driven-by-stem-preview
-* name: Driven by STEM, Six Stages
+* name: Driven by STEM
 * description: Students join a race team as junior engineers and build a working race simulator. They choose their own dashboard units, predict what more speed will cost, run a controlled comparison, read their own race data, and make strategy calls when the weather turns.
 * layout: manual
 
