@@ -44,9 +44,9 @@
 * description: One track, run twice, one variable changed. Then read the two results side by side.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-garage-shakedown.png
 * position: 4 6
-* tags: stage-3, design-preview, test-engineering, comparison
+* tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v2
 
 ### analyze
 * name: Analyze
