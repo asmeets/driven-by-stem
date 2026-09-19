@@ -255,6 +255,32 @@ namespace drivenByStemSupport {
         }
     }
 
+    // Each role lens reads the same bench result and notices something different,
+    // in the voice of the mentor who holds that role. Every reading fits on the
+    // report's first page (at most 11 of 12 lines) at any realistic speed.
+    function benchLensReading(lapsPerTank: number): string {
+        const lens = drivenByStem.roleLens()
+        const speed = Math.max(1, garagePreviewBaseSpeed)
+        let reading: string
+        if (lens == "strategist") {
+            reading = benchPits == 0
+                ? "No pit stops: all " + BENCH_RACE_LAPS + " laps on one tank."
+                : countOf(benchPits, "pit stop") + " cost " + (benchPits * BENCH_PIT_SECONDS) + " s. Fewer stops can beat faster laps."
+        } else if (lens == "software engineer") {
+            reading = "Speed " + Math.round(speed) + " ran with cost " + garagePreviewDrain + ". Is that what your rule says?"
+        } else if (lens == "data analyst") {
+            reading = "Tank lasts " + countOf(lapsPerTank, "lap") + ", so " + BENCH_RACE_LAPS + " laps needs " + countOf(benchPits, "refill") + "."
+        } else {
+            const saving = roundToTenth(benchLapSeconds - BENCH_LAP_DISTANCE / (speed + 10))
+            reading = "10 more speed would save " + saving + " s a lap. Worth the energy?"
+        }
+        return lens.charAt(0).toUpperCase() + lens.substr(1) + ":\n" + reading
+    }
+
+    function countOf(n: number, word: string): string {
+        return n + " " + word + (n == 1 ? "" : "s")
+    }
+
     function finishBenchRun(completed: boolean): void {
         benchFinished = true
         const raceSeconds = Math.round(benchRaceSeconds)
@@ -268,6 +294,7 @@ namespace drivenByStemSupport {
                 + "\nPit stops: " + benchPits
                 + "\nRace time: " + raceSeconds + " s"
                 + "\nLower race time wins."
+                + "\n" + benchLensReading(lapsPerTank)
             : "Bench test"
                 + "\nEnergy per lap: " + roundToTenth(benchEnergyPerLap)
                 + "\nTank: " + benchTank
