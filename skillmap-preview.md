@@ -24,7 +24,7 @@
 * position: 0 6
 * tags: stage-1, ready, operations, ux, controls
 * next: design
-* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v3
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v4
 
 ### design
 * name: Design
@@ -35,7 +35,7 @@
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v3
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v4
 
 ### test
 * name: Test
@@ -46,7 +46,7 @@
 * position: 4 6
 * tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v3
 
 ### analyze
 * name: Analyze

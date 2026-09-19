@@ -30,10 +30,6 @@ namespace drivenByStemSupport {
     const GARAGE_TEST_BED_TEXT_COLOR = 15
     const GARAGE_TEST_BED_ROLLER_COLOR = 15
     const GARAGE_TEST_BED_ROLLER_STRIPE_COLOR = 1
-    const GARAGE_TEST_BED_SLIDE_SPEED = 45
-    const GARAGE_TEST_BED_STEER_BONUS = 18
-    const GARAGE_TEST_BED_REV_BONUS = 24
-    const GARAGE_TEST_BED_BRAKE_PENALTY = 20
 
     const TEST_TRACK_LENGTH_MULTIPLIER = 1
     const TEST_TRACK_DURATION_SECONDS = 60
@@ -160,6 +156,30 @@ namespace drivenByStemSupport {
     let garagePreviewEfficiency = 0
     let garagePreviewDrain = 0
     let garagePreviewOriginalImage: Image = null
+
+    // The bench runs a 20-lap test on its own, so students see what their speed,
+    // efficiency and cost actually do rather than an echo of the numbers they
+    // typed. Each lap burns cost x (speed / 50)^2 energy from a tank of
+    // efficiency x 10; when the tank can't cover the next lap the car pits.
+    // Race time = laps x (1000 / speed) + 20 s per pit stop. Lower wins.
+    const BENCH_RACE_LAPS = 20
+    const BENCH_PIT_SECONDS = 20
+    const BENCH_LAP_DISTANCE = 1000
+    const BENCH_ENERGY_SPEED_SCALE = 50
+    const BENCH_TANK_PER_EFFICIENCY = 10
+    const BENCH_SPINUP_MS = 600
+    const BENCH_MS_PER_RACE_SECOND = 18
+    const BENCH_PIT_PAUSE_MS = 400
+    let benchNextEventAt = 0
+    let benchLaps = 0
+    let benchPits = 0
+    let benchEnergy = 0
+    let benchTank = 0
+    let benchEnergyPerLap = 0
+    let benchLapSeconds = 0
+    let benchRaceSeconds = 0
+    let benchStatus = ""
+    let benchFinished = false
     let vehicleTrackOriginalImage: Image = null
 
     export function startGarageTestBed(): void {
@@ -177,7 +197,7 @@ namespace drivenByStemSupport {
         garagePreviewDrain = drain
         garagePreviewOriginalImage = playerCar.image.clone()
 
-        controller.moveSprite(playerCar, GARAGE_TEST_BED_SLIDE_SPEED, 0)
+        controller.moveSprite(playerCar, 0, 0)
         playerCar.setImage(rotateImageClockwise(garagePreviewOriginalImage))
         playerCar.setFlag(SpriteFlag.StayInScreen, true)
         playerCar.setFlag(SpriteFlag.Invisible, false)
@@ -187,7 +207,79 @@ namespace drivenByStemSupport {
         info.stopCountdown()
         info.showCountdown(false)
         info.showScore(false)
-        renderGarageTestBed(playerCar, speed, efficiency, drain)
+        startBenchRun(speed, efficiency, drain)
+        renderGarageTestBed(playerCar, speed, benchEnergy, benchTank, drain, benchStatus)
+    }
+
+    function startBenchRun(speed: number, efficiency: number, drain: number): void {
+        const benchSpeed = Math.max(1, speed)
+        const speedFactor = benchSpeed / BENCH_ENERGY_SPEED_SCALE
+        benchTank = Math.max(1, efficiency) * BENCH_TANK_PER_EFFICIENCY
+        benchLapSeconds = BENCH_LAP_DISTANCE / benchSpeed
+        benchEnergyPerLap = Math.max(0, drain) * speedFactor * speedFactor
+        benchEnergy = benchTank
+        benchLaps = 0
+        benchPits = 0
+        benchRaceSeconds = 0
+        benchFinished = false
+        benchStatus = speed > 100 ? "High speed setup" : "Balanced setup"
+        benchNextEventAt = game.runtime() + BENCH_SPINUP_MS
+    }
+
+    function advanceBenchRun(): void {
+        if (benchFinished) {
+            return
+        }
+        if (benchEnergyPerLap > benchTank) {
+            finishBenchRun(false)
+            return
+        }
+        const now = game.runtime()
+        while (!benchFinished && now >= benchNextEventAt) {
+            if (benchEnergy < benchEnergyPerLap) {
+                benchEnergy = benchTank
+                benchPits += 1
+                benchRaceSeconds += BENCH_PIT_SECONDS
+                benchStatus = "PIT STOP " + benchPits
+                benchNextEventAt += BENCH_PIT_PAUSE_MS
+            } else {
+                benchEnergy -= benchEnergyPerLap
+                benchLaps += 1
+                benchRaceSeconds += benchLapSeconds
+                benchStatus = "Lap " + benchLaps + "/" + BENCH_RACE_LAPS + "  Pits " + benchPits
+                benchNextEventAt += Math.max(1, benchLapSeconds * BENCH_MS_PER_RACE_SECOND)
+                if (benchLaps >= BENCH_RACE_LAPS) {
+                    finishBenchRun(true)
+                }
+            }
+        }
+    }
+
+    function finishBenchRun(completed: boolean): void {
+        benchFinished = true
+        const raceSeconds = Math.round(benchRaceSeconds)
+        const lapsPerTank = benchEnergyPerLap > 0 ? Math.floor(benchTank / benchEnergyPerLap) : BENCH_RACE_LAPS
+        benchStatus = completed ? "Race time " + raceSeconds + " s" : "Can't finish a lap"
+        const report = completed
+            ? "Bench test: " + BENCH_RACE_LAPS + " laps"
+                + "\nLap time: " + roundToTenth(benchLapSeconds) + " s"
+                + "\nEnergy per lap: " + roundToTenth(benchEnergyPerLap)
+                + "\nLaps per tank: " + lapsPerTank
+                + "\nPit stops: " + benchPits
+                + "\nRace time: " + raceSeconds + " s"
+                + "\nLower race time wins."
+            : "Bench test"
+                + "\nEnergy per lap: " + roundToTenth(benchEnergyPerLap)
+                + "\nTank: " + benchTank
+                + "\nThis setup can't finish one lap on a full tank."
+                + "\nLower the speed or the cost."
+        control.runInParallel(function () {
+            // Only report if the bench is still the active screen. When a later
+            // stage's test track or race session takes over, this never shows.
+            if (garagePreviewActive) {
+                drivenByStem.showResultsDialog(report)
+            }
+        })
     }
 
     class TestTrackObstacleData {
@@ -318,13 +410,14 @@ namespace drivenByStemSupport {
         return playerCar
     }
 
-    function renderGarageTestBed(playerCar: Sprite, speed: number, efficiency: number, drain: number): void {
+    function renderGarageTestBed(playerCar: Sprite, speed: number, energy: number, energyMax: number, drain: number, status: string): void {
         const canvas = image.create(GARAGE_TEST_BED_WIDTH, GARAGE_TEST_BED_HEIGHT)
         const safeSpeed = clampToRange(speed, 0, GARAGE_TEST_BED_SPEED_MAX)
-        const safeEfficiency = clampToRange(efficiency, 0, 10)
+        const safeMax = Math.max(1, energyMax)
+        const safeEnergy = clampToRange(energy, 0, safeMax)
         const safeDrain = clampToRange(drain, 0, 5)
         const speedWidth = integerDivide(safeSpeed * GARAGE_TEST_BED_GAUGE_WIDTH, GARAGE_TEST_BED_SPEED_MAX)
-        const efficiencyWidth = integerDivide(safeEfficiency * GARAGE_TEST_BED_GAUGE_WIDTH, 10)
+        const energyWidth = Math.floor(safeEnergy * GARAGE_TEST_BED_GAUGE_WIDTH / safeMax)
         const drainWidth = integerDivide(safeDrain * GARAGE_TEST_BED_GAUGE_WIDTH, 5)
 
         canvas.fill(GARAGE_TEST_BED_PANEL_COLOR)
@@ -336,12 +429,12 @@ namespace drivenByStemSupport {
             canvas.fillRect(x, GARAGE_TEST_BED_ROLLER_Y + 1, 4, 6, GARAGE_TEST_BED_ROLLER_STRIPE_COLOR)
         }
 
-        drawGarageGauge(canvas, "Speed", GARAGE_TEST_BED_GAUGE_SPEED_Y, speedWidth, 8, safeSpeed + "")
-        drawGarageGauge(canvas, "Energy", GARAGE_TEST_BED_GAUGE_EFFICIENCY_Y, efficiencyWidth, 7, safeEfficiency + "/10")
+        drawGarageGauge(canvas, "Speed", GARAGE_TEST_BED_GAUGE_SPEED_Y, speedWidth, 8, Math.round(speed) + "")
+        drawGarageGauge(canvas, "Energy", GARAGE_TEST_BED_GAUGE_EFFICIENCY_Y, energyWidth, 7, Math.round(safeEnergy) + "/" + safeMax)
         drawGarageGauge(canvas, "Cost", GARAGE_TEST_BED_GAUGE_DRAIN_Y, drainWidth, 2, safeDrain + "/5")
 
         canvas.printCenter("Garage Test Bed", 4, GARAGE_TEST_BED_TEXT_COLOR, image.font8)
-        canvas.print(speed > 100 ? "High speed setup" : "Balanced setup", GARAGE_TEST_BED_LABEL_X, 78, GARAGE_TEST_BED_TEXT_COLOR, image.font8)
+        canvas.print(status, GARAGE_TEST_BED_LABEL_X, 78, GARAGE_TEST_BED_TEXT_COLOR, image.font8)
         
         scene.setBackgroundImage(canvas)
         playerCar.y = GARAGE_TEST_BED_CAR_Y
@@ -365,23 +458,11 @@ namespace drivenByStemSupport {
             return
         }
 
-        let previewSpeed = garagePreviewBaseSpeed
         playerCar.x = clampToRange(playerCar.x, GARAGE_TEST_BED_CAR_MIN_X, GARAGE_TEST_BED_CAR_MAX_X)
         playerCar.y = GARAGE_TEST_BED_CAR_Y
 
-        if (controller.left.isPressed() || controller.right.isPressed()) {
-            previewSpeed += GARAGE_TEST_BED_STEER_BONUS + Math.abs(playerCar.x - TEST_TRACK_CAR_SCREEN_X)
-        }
-
-        if (controller.up.isPressed()) {
-            previewSpeed += GARAGE_TEST_BED_REV_BONUS
-        }
-
-        if (controller.down.isPressed()) {
-            previewSpeed = Math.max(0, previewSpeed - GARAGE_TEST_BED_BRAKE_PENALTY)
-        }
-
-        renderGarageTestBed(playerCar, previewSpeed, garagePreviewEfficiency, garagePreviewDrain)
+        advanceBenchRun()
+        renderGarageTestBed(playerCar, garagePreviewBaseSpeed, benchEnergy, benchTank, garagePreviewDrain, benchStatus)
     }
 
     function ensureHooksInstalled(): void {
