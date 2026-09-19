@@ -228,6 +228,14 @@ Every hit has a cost. Telemetry makes the cost visible.
 
 Hits cost energy in every race, not just this one. You're building this system once, and it keeps working in every stage after this.
 
+hint~
+
+~hint What if I run out of hearts? ❤️
+
+---
+
+The session ends early with an **Out of energy** message. Your results are still saved and shown, so you can see exactly what happened.
+
 ```blocks
 //@highlight
 //@validate-exists

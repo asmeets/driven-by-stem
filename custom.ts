@@ -362,6 +362,31 @@ namespace drivenByStem {
     let sessionEndStages: string[] = []
     let sessionEndHandlers: (() => void)[] = []
     let sessionEndHookInstalled = false
+    let sessionRunning = false
+
+    // Ends the current race session exactly once, however it ends: run this
+    // stage's session-end handler, then switch to review so every stage-checked
+    // spawner stops, and clear what is left on track.
+    function finishSession(): void {
+        if (!sessionRunning) {
+            return
+        }
+        sessionRunning = false
+        info.stopCountdown()
+        const current = settings.readString(STAGE_KEY)
+        for (let i = 0; i < sessionEndStages.length; i++) {
+            if (sessionEndStages[i] == current) {
+                sessionEndHandlers[i]()
+            }
+        }
+        startStage(RaceStage.Review)
+        for (let hazard of sprites.allOfKind(SpriteKind.Enemy)) {
+            hazard.destroy()
+        }
+        for (let marker of sprites.allOfKind(SpriteKind.Food)) {
+            marker.destroy()
+        }
+    }
 
     function installSessionEndHook(): void {
         if (sessionEndHookInstalled) {
@@ -369,21 +394,19 @@ namespace drivenByStem {
         }
         sessionEndHookInstalled = true
         info.onCountdownEnd(function () {
-            const current = settings.readString(STAGE_KEY)
-            for (let i = 0; i < sessionEndStages.length; i++) {
-                if (sessionEndStages[i] == current) {
-                    sessionEndHandlers[i]()
-                }
+            finishSession()
+        })
+        // Without this, Arcade's default when life reaches zero is game over,
+        // which skips the session-end handler entirely: no saved results and no
+        // review, for exactly the student who most needs one. Running out of
+        // energy now ends the session early instead of ending the game.
+        info.onLifeZero(function () {
+            if (!sessionRunning) {
+                return
             }
-            // The session is over: switch to review so every stage-checked spawner
-            // stops, and clear what is left on track.
-            startStage(RaceStage.Review)
-            for (let hazard of sprites.allOfKind(SpriteKind.Enemy)) {
-                hazard.destroy()
-            }
-            for (let marker of sprites.allOfKind(SpriteKind.Food)) {
-                marker.destroy()
-            }
+            info.stopCountdown()
+            game.splash("Out of energy", "The session is over.")
+            finishSession()
         })
     }
 
@@ -426,6 +449,7 @@ namespace drivenByStem {
         }
 
         installSessionEndHook()
+        sessionRunning = true
         info.setScore(0)
         info.setLife(Math.max(1, savedEfficiency()))
         info.showScore(true)
