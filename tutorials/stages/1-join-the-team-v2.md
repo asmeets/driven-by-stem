@@ -14,16 +14,18 @@ drivenByStem.loadRaceProfile(80, 5)
 drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 ```
 
-## Join the Team @showdialog
+## Welcome to the Team @showdialog
 
 ![Kai - Operations Lead](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/kai.png)
 
-**I'm Kai, Operations Lead.** Every race starts long before the lights go out. I work with engineers, mechanics, and analysts to make sure the team has what it needs to perform at its best.
+I'm Kai, Operations Lead.
+
+Every race starts long before the lights go out. I work with engineers, mechanics, and analysts to make sure the team has what it needs to perform at its best.
 
 Today, you'll join the team, get your car race-ready, and build your dashboard to help make smart decisions throughout the season.
 
 
-## {1. Share the Mission}
+## {1. Share The Mission}
 
 **Your first job is to create a message for the team.**
 
@@ -307,9 +309,7 @@ Your code will display your dashboard settings so you can confirm they were save
 
 Great teams don't just build things. They test them, too.
 
-You'll build this as a button, so you can run the check whenever you want instead of once at startup.
-
-* :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace, **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag.
+* :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace, **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag. Because it's a button, you can run the check any time, not just once at startup.
 * :binoculars: Read what is inside it before you run anything. `||drivenByStem:speed display unit||` and `||drivenByStem:fuel display unit||` are *blocks*, not typed words. That is what makes the readout follow your choice instead of repeating it back.
 * :game pad: Run the simulator. Drive the car with the arrows, then press **menu**. Check three things: the profile shows **your** team and car names, the units match what you chose in Step 5, and the car answers the controls.
 * :mouse pointer: Now change one unit dropdown in Step 5 and run it again. Press **menu**. The readout should change with it. That is how you know the setting is really wired to the display.
@@ -357,11 +357,15 @@ game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 
 ![Drew - UX/Game Designer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/drew.png)
 
-**Drew here.** Everything you've built so far, from your team name to your dashboard settings, carries forward into the season.
+Drew here.
+
+Everything you've built so far, from your team name to your dashboard settings, carries forward into the season.
 
 Every member of the team builds on the work of others. The choices you made will help shape what comes next.
 
-Next, Riley will show you how teams use information to make decisions.<br><br>➡️ Select **Done** to continue.
+Next, Riley will show you how teams use information to make decisions.
+
+➡️ Select **Done** to continue.
 
 ```assetjson
 {

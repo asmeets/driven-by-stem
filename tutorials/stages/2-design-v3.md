@@ -27,11 +27,13 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 ```
 
-## Design @showdialog
+## Engineer Performance @showdialog
 
 ![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
 
-**I'm Riley, Performance Engineer.** I help the team understand how changes to the car affect speed, handling, and performance. Every improvement has benefits, but it can also create new challenges.
+**I'm Riley, Performance Engineer.**
+
+I help the team understand how changes to the car affect speed, handling, and performance. Every improvement has benefits, but it can also create new challenges.
 
 Now you'll step into that role. Make predictions, test ideas, and discover how engineers evaluate tradeoffs before race day.
 
@@ -42,7 +44,7 @@ Now you'll step into that role. Make predictions, test ideas, and discover how e
 
 ---
 
-Use code to increase the car's speed, and predict what might happen before you test it.
+Use code to increase the car's speed and predict what might happen before you test it.
 
 If you explain the results after you've already seen them, you're telling a story. If you predict the results beforehand, you're testing an idea.
 
@@ -149,13 +151,13 @@ drivenByStem.setBaseCarSpeed(driveSpeed)
 
 ## {3. Measure the Change}
 
-**Your next job is to set up what you'll measure.**
+**Your next job is to make sure your changes affect the car's performance.**
 
 ---
 
-Use code to create variables for the car's efficiency and the cost of a mistake.
+Use code to connect the speed setting to the car so changing the value changes how it performs on the track.
 
-Speed is never free. In Formula 1 it costs fuel, tyre life, and brake temperature. Track those costs and the tradeoff becomes something you can see instead of something you argue about.
+A change only matters if it affects something you can measure. Before I test a setup, I make sure the change is connected to the result I'm trying to improve.
 
 * :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `efficiencyRating`. The `set` block only appears in the toolbox once the variable exists.
 * :paper plane: Drag `||variables:set efficiencyRating to [0]||` into `||loops(noclick):on start||`, below your `||variables:set driveSpeed to||` block.
@@ -471,7 +473,9 @@ You made a prediction, tested your idea, and used data to make a decision.
 
 That's how engineers solve problems. They ask questions, test ideas, and learn from the results.
 
-Next, Jordan will take your setup to the track.<br><br>➡️ Select **Done** to continue to Test.
+Next, Jordan will take your setup to the track.
+
+➡️ Select **Done** to continue to **Test**.
 
 ```assetjson
 {
