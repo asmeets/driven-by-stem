@@ -222,7 +222,7 @@ Same track, same driver, one change. That's what makes a test fair.
 ```
 
 * :game pad: The simulator restarted with your new speed. Press **A**, wait for the lights, and drive the way you did for your baseline.
-* :binoculars: Let the run end on its own. When it does, the **Test comparison** opens by itself, right after the report.
+* :binoculars: Let the run end on its own. When it does, the **Test comparison** opens by itself, right after the report. It runs to more than one page, so press **A** to turn each page and up to go back.
 * :id card: Check it against the numbers you wrote down. Which run was faster? Which one burned less gas?
 
 ~hint No comparison appeared? 🔍
@@ -245,7 +245,8 @@ One run tells you what happened. Two runs tell you why.
 
 * :game pad: Find the `||controller:on [menu] button pressed||` block you built in Join the Team.
 * :racing car: Drag `||drivenByStem:show saved test comparison||` inside it, at the very top, above `||drivenByStem:show saved driver profile||`.
-* :game pad: Run the simulator and press **menu**. The comparison opens first, so you can read it again without driving another run. Press **A** to close it and move on to your team profile and units.
+* :game pad: Run the simulator and press **menu**. The comparison opens first, so you can read it again without driving another run.
+* :mouse pointer: Keep pressing **A** to move through each screen: the comparison, which runs to more than one page, then your team profile, then your units. Press up to go back a page.
 
 ~hint Can't find your menu block? 🔎
 
