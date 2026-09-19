@@ -24,7 +24,7 @@
 * position: 0 6
 * tags: stage-1, ready, operations, ux, controls
 * next: design
-* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v3
 
 ### design
 * name: Design
