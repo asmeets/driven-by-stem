@@ -298,16 +298,21 @@ namespace drivenByStem {
     }
 
     /**
-     * Load a race profile, or create one if this device has not saved setup data yet.
+     * Start this run from a known race profile: the drive speed and efficiency
+     * every later setup choice is measured from.
      */
     //% block="load race profile with drive speed $defaultSpeed and efficiency $defaultEfficiency"
     //% blockId=raceday_load_profile
     //% defaultSpeed.defl=80 defaultEfficiency.defl=5
     //% group="Session" weight=40
     export function loadRaceProfile(defaultSpeed: number, defaultEfficiency: number): void {
-        ensureNumberSetting(DRIVE_SPEED_KEY, defaultSpeed)
-        ensureNumberSetting(EFFICIENCY_KEY, defaultEfficiency)
-        settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(readNumberSetting(EFFICIENCY_KEY, defaultEfficiency), defaultEfficiency))
+        // Every run starts from the profile's stated values. The tutorial code
+        // re-derives the team's setup from them each run through save team setup,
+        // so nothing a previous run wrote (a pace penalty, collision losses) can
+        // leak forward. Before this, the pace rule "saved efficiency - 1" lowered
+        // the baseline on every re-run, cycling 5, 4, 3, 2, 1 with no code change.
+        settings.writeNumber(DRIVE_SPEED_KEY, defaultSpeed)
+        settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(defaultEfficiency, 5))
         ensureNumberSetting(STRATEGY_KEY, 0)
         ensureNumberSetting(DRAIN_KEY, 1)
         ensureStringSetting(WEATHER_KEY, "dry")
