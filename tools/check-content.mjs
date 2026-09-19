@@ -53,6 +53,9 @@ for (const sm of skillmaps) if (!pxt.files.includes(sm)) fail('pxt.json', `skill
 const assetHashes = new Map()
 const customTs = read('custom.ts')
 const exported = new Set([...customTs.matchAll(/export (?:function|enum) (\w+)/g)].map(m => m[1]))
+// Reporters return a value. Alone on a line inside blockconfig/ghost they decompile to
+// nothing, and MakeCode fails the whole fence ("Failed to resolve blockconfig").
+const reporters = new Set([...customTs.matchAll(/export function (\w+)\([^)]*\)\s*:\s*(?!void)(\w+)/g)].map(m => m[1]))
 const assetNames = new Set([...read('images.g.jres').matchAll(/"displayName":\s*"([^"]+)"/g)].map(m => m[1]))
 
 for (const t of tutorials) {
@@ -91,6 +94,21 @@ for (const t of tutorials) {
     const totalMarkers = (src.match(/^\/\/@(validate-exists|highlight)$/gm) || []).length
     const blockMarkers = (inBlocks.match(/^\/\/@(validate-exists|highlight)$/gm) || []).length
     if (totalMarkers !== blockMarkers) fail(t, `${totalMarkers - blockMarkers} @validate/@highlight marker(s) sit outside a \`\`\`blocks fence`)
+
+    // 6b. bare reporters in blockconfig / ghost
+    // Scoped to the six stages: the ten legacy v1 activities are frozen until cutover and
+    // carry the same defect (activity2-v5.md), so flagging them would only add noise.
+    if (stageTutorials.includes(t)) for (const f of fences.filter(f => f[1] === 'blockconfig.local' || f[1] === 'ghost'))
+        for (const m of f[2].matchAll(/^drivenByStem\.(\w+)\(\)\s*$/gm))
+            if (reporters.has(m[1])) fail(t, `\`\`\`${f[1]} has drivenByStem.${m[1]}() alone on a line; it is a reporter, so MakeCode cannot build a block from it and rejects the fence`)
+
+    // 6c. splash text is clipped at roughly 24 characters on the 160 px screen
+    if (stageTutorials.includes(t)) {
+        const body = src.slice(0, src.indexOf('```assetjson'))
+        for (const m of body.matchAll(/game\.splash\(("[^"]*")(?:\s*,\s*("[^"]*"))?\)/g))
+            for (const lit of [m[1], m[2]].filter(Boolean))
+                if (lit.length - 2 > 24) fail(t, `splash text ${lit} is ${lit.length - 2} characters; the simulator clips anything past about 24`)
+    }
 
     // 7. hint balance
     const openH = (src.match(/^~hint /gm) || []).length

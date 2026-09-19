@@ -1,6 +1,6 @@
 # driven-by-stem-preview
 * name: Driven by STEM, enabled by Microsoft, Revision Preview
-* description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect. Join the Team and Design are ready to play end to end. The remaining four stages open onto their approved designs, so the whole journey can be reviewed in one pass.
+* description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect.
 * primarycolor: #ffd84d
 * secondarycolor: #000
 * tertiarycolor: #EAF3F8
@@ -24,7 +24,7 @@
 * position: 0 6
 * tags: stage-1, ready, operations, ux, controls
 * next: design
-* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v3
 
 ### design
 * name: Design
@@ -35,7 +35,7 @@
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v3
 
 ### test
 * name: Test
@@ -44,9 +44,9 @@
 * description: One track, run twice, one variable changed. Then read the two results side by side.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-garage-shakedown.png
 * position: 4 6
-* tags: stage-3, design-preview, test-engineering, comparison
+* tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v2
 
 ### analyze
 * name: Analyze
@@ -55,9 +55,9 @@
 * description: Drive a full session, then read collision count against score and efficiency.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-hit-the-track.png
 * position: 6 5
-* tags: stage-4, design-preview, telemetry, data
+* tags: stage-4, ready, telemetry, data
 * next: decide
-* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v2
 
 ### decide
 * name: Decide
@@ -66,9 +66,9 @@
 * description: The weather turns, grip drops, and the pit lane opens. Make the call before you know how it ends.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-changing-conditions.png
 * position: 8 6
-* tags: stage-5, design-preview, strategy, conditionals
+* tags: stage-5, ready, strategy, conditionals
 * next: race-and-reflect
-* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v2
 
 ### race-and-reflect
 * name: Race and Reflect
@@ -77,9 +77,9 @@
 * description: Everything runs at once, then you find your own decisions inside the result.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-final-challenge.png
 * position: 10 5
-* tags: stage-6, design-preview, systems, careers, reflection
+* tags: stage-6, ready, systems, careers, reflection
 * next: preview-finish
-* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v2
 
 ### preview-finish
 * name: Stand on the Podium!

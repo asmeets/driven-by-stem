@@ -298,16 +298,27 @@ namespace drivenByStem {
     }
 
     /**
-     * Load a race profile, or create one if this device has not saved setup data yet.
+     * Start this run from a known race profile: the drive speed and efficiency
+     * every later setup choice is measured from.
      */
     //% block="load race profile with drive speed $defaultSpeed and efficiency $defaultEfficiency"
     //% blockId=raceday_load_profile
     //% defaultSpeed.defl=80 defaultEfficiency.defl=5
-    //% group="Session" weight=100
+    //% group="Session" weight=40
     export function loadRaceProfile(defaultSpeed: number, defaultEfficiency: number): void {
-        ensureNumberSetting(DRIVE_SPEED_KEY, defaultSpeed)
-        ensureNumberSetting(EFFICIENCY_KEY, defaultEfficiency)
-        settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(readNumberSetting(EFFICIENCY_KEY, defaultEfficiency), defaultEfficiency))
+        // Every run starts from the profile's stated values. The tutorial code
+        // re-derives the team's setup from them each run through save team setup,
+        // so nothing a previous run wrote (a pace penalty, collision losses) can
+        // leak forward. Before this, the pace rule "saved efficiency - 1" lowered
+        // the baseline on every re-run, cycling 5, 4, 3, 2, 1 with no code change.
+        settings.writeNumber(DRIVE_SPEED_KEY, defaultSpeed)
+        settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(defaultEfficiency, 5))
+        // Run-level tallies. Left alone they grew across every run forever, so
+        // comparing one strategy against another compared nothing.
+        settings.writeNumber(STRATEGY_KEY, 0)
+        settings.writeNumber(COLLISION_KEY, 0)
+        settings.writeNumber(PIT_STOPS_KEY, 0)
+        settings.writeString(WEATHER_KEY, "dry")
         ensureNumberSetting(STRATEGY_KEY, 0)
         ensureNumberSetting(DRAIN_KEY, 1)
         ensureStringSetting(WEATHER_KEY, "dry")
@@ -343,9 +354,128 @@ namespace drivenByStem {
      */
     //% block="start stage $stage"
     //% blockId=raceday_start_stage
-    //% group="Session" weight=99
+    //% group="Session" weight=35
     export function startStage(stage: RaceStage): void {
         settings.writeString(STAGE_KEY, stageName(stage))
+    }
+
+    let sessionEndStages: string[] = []
+    let sessionEndHandlers: (() => void)[] = []
+    let sessionEndHookInstalled = false
+    let sessionRunning = false
+
+    // Ends the current race session exactly once, however it ends: run this
+    // stage's session-end handler, then switch to review so every stage-checked
+    // spawner stops, and clear what is left on track.
+    function finishSession(): void {
+        if (!sessionRunning) {
+            return
+        }
+        sessionRunning = false
+        info.stopCountdown()
+        const current = settings.readString(STAGE_KEY)
+        for (let i = 0; i < sessionEndStages.length; i++) {
+            if (sessionEndStages[i] == current) {
+                sessionEndHandlers[i]()
+            }
+        }
+        startStage(RaceStage.Review)
+        for (let hazard of sprites.allOfKind(SpriteKind.Enemy)) {
+            hazard.destroy()
+        }
+        for (let marker of sprites.allOfKind(SpriteKind.Food)) {
+            marker.destroy()
+        }
+    }
+
+    function installSessionEndHook(): void {
+        if (sessionEndHookInstalled) {
+            return
+        }
+        sessionEndHookInstalled = true
+        info.onCountdownEnd(function () {
+            finishSession()
+        })
+        // Without this, Arcade's default when life reaches zero is game over,
+        // which skips the session-end handler entirely: no saved results and no
+        // review, for exactly the student who most needs one. Running out of
+        // energy now ends the session early instead of ending the game.
+        info.onLifeZero(function () {
+            if (!sessionRunning) {
+                return
+            }
+            info.stopCountdown()
+            game.splash("Out of energy", "The session is over.")
+            finishSession()
+        })
+    }
+
+    /**
+     * Leave the garage and the test track and start a timed race session. Sets the
+     * stage, the track, dry weather, the dashboard and the countdown, and hands the
+     * car back to the driver at the saved speed. A weather session turns to rain
+     * partway through.
+     */
+    //% block="start race session $stage"
+    //% blockId=raceday_start_race_session
+    //% stage.defl=RaceStage.Track
+    //% group="Session" weight=91
+    export function startRaceSession(stage: RaceStage): void {
+        drivenByStemSupport.leaveTestTrack()
+        setWeather(WeatherMode.Dry)
+        startStage(stage)
+        scene.setBackgroundImage(stage == RaceStage.FinalChallenge ? assets.image`finishBg` : assets.image`trackBg`)
+
+        const car = sprites.allOfKind(SpriteKind.Player)[0]
+        if (car) {
+            car.setFlag(SpriteFlag.Invisible, false)
+            car.setFlag(SpriteFlag.StayInScreen, true)
+            controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
+        }
+
+        if (stage == RaceStage.Weather || stage == RaceStage.FinalChallenge) {
+            // The weather generator. The session opens dry so students feel the
+            // change, then rain arrives partway through. The final race gets it
+            // too, so the grip rule built in Decide runs alongside everything else.
+            const rainAt = stage == RaceStage.Weather ? 8000 : 12000
+            control.runInParallel(function () {
+                pause(rainAt)
+                if (stageIs(stage)) {
+                    setWeather(WeatherMode.Rain)
+                    scene.setBackgroundImage(assets.image`weatherBg`)
+                    game.splash("Rain lowers grip", "Adapt your driving.")
+                }
+            })
+        }
+
+        installSessionEndHook()
+        sessionRunning = true
+        info.setScore(0)
+        info.setLife(Math.max(1, savedEfficiency()))
+        info.showScore(true)
+        info.showLife(true)
+        info.startCountdown(stage == RaceStage.Weather ? 25 : 30)
+        info.showCountdown(true)
+    }
+
+    /**
+     * Run code when a race session's countdown reaches zero. Each stage can have
+     * its own handler, so adding one never means editing another stage's code.
+     */
+    //% block="on $stage session ends"
+    //% blockId=raceday_on_session_end
+    //% stage.defl=RaceStage.Track
+    //% group="Session" weight=90
+    export function onRaceSessionEnd(stage: RaceStage, handler: () => void): void {
+        const name = stageName(stage)
+        for (let i = 0; i < sessionEndStages.length; i++) {
+            if (sessionEndStages[i] == name) {
+                sessionEndHandlers[i] = handler
+                return
+            }
+        }
+        sessionEndStages.push(name)
+        sessionEndHandlers.push(handler)
     }
 
     /**

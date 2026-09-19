@@ -254,6 +254,18 @@ namespace drivenByStemSupport {
         }
     }
 
+    /**
+     * Tear down the garage test bed and the test track so a race session can take
+     * over the screen. Safe to call when neither is running.
+     */
+    export function leaveTestTrack(): void {
+        resetTrack()
+        const playerCar = sprites.allOfKind(SpriteKind.Player)[0]
+        if (playerCar) {
+            playerCar.setFlag(SpriteFlag.Invisible, false)
+        }
+    }
+
     export function startVehicleTestTrack(): void {
         ensureTrackTables()
         ensureHooksInstalled()
