@@ -306,11 +306,11 @@ namespace drivenByStem {
     //% defaultSpeed.defl=80 defaultEfficiency.defl=5
     //% group="Session" weight=40
     export function loadRaceProfile(defaultSpeed: number, defaultEfficiency: number): void {
-        // Every run starts from the profile's stated values. The tutorial code
-        // re-derives the team's setup from them each run through save team setup,
-        // so nothing a previous run wrote (a pace penalty, collision losses) can
-        // leak forward. Before this, the pace rule "saved efficiency - 1" lowered
-        // the baseline on every re-run, cycling 5, 4, 3, 2, 1 with no code change.
+        // This block sits at the top of every student's on start, so it is the one
+        // place that resets the run's baseline. The tutorial code then re-derives
+        // the team's setup from it through save team setup. Before the reset, the
+        // pace rule "saved efficiency - 1" lowered the baseline on every re-run,
+        // cycling 5, 4, 3, 2, 1 with no code change.
         settings.writeNumber(DRIVE_SPEED_KEY, defaultSpeed)
         settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(defaultEfficiency, 5))
         // Run-level tallies. Left alone they grew across every run forever, so
@@ -319,6 +319,17 @@ namespace drivenByStem {
         settings.writeNumber(COLLISION_KEY, 0)
         settings.writeNumber(PIT_STOPS_KEY, 0)
         settings.writeString(WEATHER_KEY, "dry")
+        ensureRaceProfile()
+    }
+
+    // Make sure every profile value exists, without changing any value the run
+    // has already set. The library's own blocks call this, never loadRaceProfile:
+    // they run after the student's save team setup, and resetting there wiped the
+    // team's speed and efficiency back to 80 and 5 an instant before the test
+    // track and race session read them.
+    function ensureRaceProfile(): void {
+        ensureNumberSetting(DRIVE_SPEED_KEY, 80)
+        ensureNumberSetting(EFFICIENCY_KEY, 5)
         ensureNumberSetting(STRATEGY_KEY, 0)
         ensureNumberSetting(DRAIN_KEY, 1)
         ensureStringSetting(WEATHER_KEY, "dry")
@@ -328,8 +339,8 @@ namespace drivenByStem {
         ensureNumberSetting(PIT_STOPS_KEY, 0)
         ensureNumberSetting(LAST_SCORE_KEY, 0)
         ensureNumberSetting(PREVIOUS_SCORE_KEY, 0)
-        ensureNumberSetting(LAST_EFFICIENCY_KEY, defaultEfficiency)
-        ensureNumberSetting(PREVIOUS_EFFICIENCY_KEY, defaultEfficiency)
+        ensureNumberSetting(LAST_EFFICIENCY_KEY, 5)
+        ensureNumberSetting(PREVIOUS_EFFICIENCY_KEY, 5)
         ensureNumberSetting(LAST_TIME_KEY, 0)
         ensureNumberSetting(PREVIOUS_TIME_KEY, 0)
         ensureNumberSetting(LAST_TOP_SPEED_KEY, 0)
@@ -359,6 +370,11 @@ namespace drivenByStem {
         settings.writeString(STAGE_KEY, stageName(stage))
     }
 
+    //% blockHidden=true
+    export function currentStageName(): string {
+        return settings.readString(STAGE_KEY)
+    }
+
     let sessionEndStages: string[] = []
     let sessionEndHandlers: (() => void)[] = []
     let sessionEndHookInstalled = false
@@ -373,6 +389,7 @@ namespace drivenByStem {
         }
         sessionRunning = false
         info.stopCountdown()
+        drivenByStemSupport.endTrackSession()
         const current = settings.readString(STAGE_KEY)
         for (let i = 0; i < sessionEndStages.length; i++) {
             if (sessionEndStages[i] == current) {
@@ -405,6 +422,9 @@ namespace drivenByStem {
                 return
             }
             info.stopCountdown()
+            // Stop the road before the message, so the car isn't still driving
+            // itself into traffic behind the splash.
+            drivenByStemSupport.endTrackSession()
             game.splash("Out of energy", "The session is over.")
             finishSession()
         })
@@ -421,17 +441,12 @@ namespace drivenByStem {
     //% stage.defl=RaceStage.Track
     //% group="Session" weight=91
     export function startRaceSession(stage: RaceStage): void {
-        drivenByStemSupport.leaveTestTrack()
         setWeather(WeatherMode.Dry)
         startStage(stage)
-        scene.setBackgroundImage(stage == RaceStage.FinalChallenge ? assets.image`finishBg` : assets.image`trackBg`)
-
-        const car = sprites.allOfKind(SpriteKind.Player)[0]
-        if (car) {
-            car.setFlag(SpriteFlag.Invisible, false)
-            car.setFlag(SpriteFlag.StayInScreen, true)
-            controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
-        }
+        // The session runs on the same moving track as the shakedown, so the
+        // road runs under the car and the traffic the student spawns arrives
+        // down the road rather than sliding across a picture of one.
+        drivenByStemSupport.startTrackSession()
 
         if (stage == RaceStage.Weather || stage == RaceStage.FinalChallenge) {
             // The weather generator. The session opens dry so students feel the
@@ -442,8 +457,11 @@ namespace drivenByStem {
                 pause(rainAt)
                 if (stageIs(stage)) {
                     setWeather(WeatherMode.Rain)
-                    scene.setBackgroundImage(assets.image`weatherBg`)
-                    game.splash("Rain lowers grip", "Adapt your driving.")
+                    // A banner on the road rather than a dialog: the car is still
+                    // driving, and a race shouldn't stop to be read.
+                    if (!(drivenByStemSupport.announceOnTrack("RAIN: less grip"))) {
+                        game.splash("Rain lowers grip", "Adapt your driving.")
+                    }
                 }
             })
         }
@@ -476,6 +494,26 @@ namespace drivenByStem {
         }
         sessionEndStages.push(name)
         sessionEndHandlers.push(handler)
+    }
+
+    /**
+     * Put a sprite on the road ahead of the car during a race session, so it
+     * arrives down the track at racing speed instead of sliding across the
+     * screen. Clears the sprite away when no session is running.
+     */
+    //% block="put $target on the track ahead"
+    //% blockId=raceday_place_on_track
+    //% target.shadow=variables_get
+    //% target.defl=obstacle
+    //% group="Session" weight=89
+    export function placeOnTrack(target: Sprite): void {
+        if (!(target)) {
+            return
+        }
+
+        if (!(drivenByStemSupport.placeOnTrack(target))) {
+            target.destroy()
+        }
     }
 
     /**
@@ -517,7 +555,7 @@ namespace drivenByStem {
     //% blockId=raceday_start_garage_test_bed
     //% group="Session" weight=15
     export function startGarageTestBed(): void {
-        loadRaceProfile(80, 5)
+        ensureRaceProfile()
         drivenByStemSupport.startGarageTestBed()
     }
 
@@ -529,7 +567,7 @@ namespace drivenByStem {
     //% speed.defl=80 efficiency.defl=5 drain.defl=1
     //% group="Session" weight=93
     export function previewGarageTestBed(speed: number, efficiency: number, drain: number): void {
-        loadRaceProfile(80, 5)
+        ensureRaceProfile()
         drivenByStemSupport.previewGarageTestBed(speed, efficiency, drain)
     }
 
@@ -540,7 +578,7 @@ namespace drivenByStem {
     //% blockId=raceday_start_vehicle_test_track
     //% group="Session" weight=92
     export function startVehicleTestTrack(): void {
-        loadRaceProfile(80, 5)
+        ensureRaceProfile()
         drivenByStemSupport.startVehicleTestTrack()
     }
 
@@ -552,6 +590,13 @@ namespace drivenByStem {
     //% speed.defl=80 speed.min=0 speed.max=200
     //% group="Session" weight=98
     export function setBaseCarSpeed(speed: number): void {
+        // On the moving track this is the car's top speed, read in the team's
+        // own dashboard units. In the garage it is how fast the car answers the
+        // arrows. Same block, same number, whichever screen is up.
+        if (drivenByStemSupport.setTrackSpeedLimit(speed)) {
+            return
+        }
+
         const car = sprites.allOfKind(SpriteKind.Player)[0]
         if (!(car)) {
             return

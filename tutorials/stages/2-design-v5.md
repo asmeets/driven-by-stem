@@ -366,8 +366,8 @@ Performance Engineers, Strategists, Software Engineers, and Data Analysts can lo
 
 * :book: Open `||drivenByStem:Driven by STEM||` and add `||drivenByStem:set role lens to||` near the top of `||loops(noclick):on start||`.
 * :mouse pointer: Use the dropdown to pick your lens: **Performance Engineer**, **Strategist**, **Software Engineer**, or **Data Analyst**.
-* :game pad: Run it and press **menu**. The first screen now shows your role lens after your car name. Press **A** to move past each screen.
-* :lightbulb: Change the lens and press **menu** again to see the same run framed a different way.
+* :game pad: Run it. When the bench test finishes, the last lines of the report show what your role notices about the run.
+* :lightbulb: Change the lens and run it again. The numbers stay the same, but each role notices something different. Try all four.
 
 ~hint Which role should I pick? ✨
 
@@ -375,10 +375,10 @@ Performance Engineers, Strategists, Software Engineers, and Data Analysts can lo
 
 There is no correct answer. Pick the lens that matches what your team is actually watching:
 
-- **Performance Engineer.** That's Riley. Is it faster, and what did the speed cost?
-- **Strategist.** Morgan. Was it the right call for the conditions?
-- **Software Engineer.** Sam. Did the system behave the way it was built to?
-- **Data Analyst.** Casey. Do the numbers support what we think happened?
+- **Performance Engineer.** That's Riley. How much time would more speed buy?
+- **Strategist.** Morgan. What did the pit stops cost the race?
+- **Software Engineer.** Sam. Did the code do what your rule says?
+- **Data Analyst.** Casey. Do the numbers add up to the result?
 
 You'll meet all four doing their real jobs later in the build.
 

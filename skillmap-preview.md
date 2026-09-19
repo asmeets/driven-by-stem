@@ -1,5 +1,5 @@
 # driven-by-stem-preview
-* name: Driven by STEM, enabled by Microsoft, Revision Preview
+* name: Driven by STEM, enabled by Microsoft
 * description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect.
 * primarycolor: #ffd84d
 * secondarycolor: #000
@@ -11,7 +11,7 @@
 * bannerurl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/banner.png
 
 ## driven-by-stem-preview
-* name: Driven by STEM, Six Stages
+* name: Driven by STEM
 * description: Students join a race team as junior engineers and build a working race simulator. They choose their own dashboard units, predict what more speed will cost, run a controlled comparison, read their own race data, and make strategy calls when the weather turns.
 * layout: manual
 
@@ -35,7 +35,7 @@
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v4
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v5
 
 ### test
 * name: Test
@@ -46,7 +46,7 @@
 * position: 4 6
 * tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v3
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v4
 
 ### analyze
 * name: Analyze
@@ -57,7 +57,7 @@
 * position: 6 5
 * tags: stage-4, ready, telemetry, data
 * next: decide
-* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v3
 
 ### decide
 * name: Decide
@@ -68,7 +68,7 @@
 * position: 8 6
 * tags: stage-5, ready, strategy, conditionals
 * next: race-and-reflect
-* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v3
 
 ### race-and-reflect
 * name: Race and Reflect
@@ -79,7 +79,7 @@
 * position: 10 5
 * tags: stage-6, ready, systems, careers, reflection
 * next: preview-finish
-* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v3
 
 ### preview-finish
 * name: Stand on the Podium!

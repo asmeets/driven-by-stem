@@ -44,8 +44,13 @@ namespace drivenByStemSupport {
     const TEST_TRACK_CURVE_STRENGTH = 7
     const TEST_TRACK_MAX_OBSTACLES = 5
     const TEST_TRACK_SCORE_DIVISOR = 120
-    const TEST_TRACK_MIN_SPEED_CAP = 110
-    const TEST_TRACK_MAX_SPEED = 378
+    // The car's top speed is whatever driveSpeed says, read in the team's own
+    // dashboard units: 90 means 90 mph, or 90 km/h. Track speeds are held in
+    // world units per second, which is km/h x this factor, so the physics stay
+    // honest across both units and the dashboard can read back the setting.
+    const TEST_TRACK_WORLD_PER_KMH = 1.8
+    const TEST_TRACK_MAX_SETTING_MPH = 150
+    const TEST_TRACK_MAX_SETTING_KMH = 240
     const TEST_TRACK_OFFROAD_DRAG = 200
     const TEST_TRACK_STEER_DRAG = 20
     const TEST_TRACK_ACCELERATION = 50
@@ -57,13 +62,35 @@ namespace drivenByStemSupport {
     const TEST_TRACK_HUD_TEXT_Y = 6
     const TEST_TRACK_CURB_LIGHT_COLOR = 1
     const TEST_TRACK_CURB_DARK_COLOR = 15
-    const TEST_TRACK_COLLISION_SPEED_LOSS = 90
+    // A hit costs a share of the car's own top speed, so it stings the same
+    // whether the team set 90 km/h or 150 mph.
+    const TEST_TRACK_COLLISION_LOSS_SHARE = 0.3
+    const TEST_TRACK_COLLISION_MIN_LOSS = 60
+    const TEST_TRACK_SKY_COLOR = 9
+    const TEST_TRACK_VERGE_COLOR = 6
+    const TEST_TRACK_ROAD_COLOR = 11
+    const TEST_TRACK_WET_SKY_COLOR = 11
+    const TEST_TRACK_WET_VERGE_COLOR = 8
+    const TEST_TRACK_WET_ROAD_COLOR = 12
+    const TEST_TRACK_RAIN_STREAKS = 14
+    const TEST_TRACK_RAIN_STREAK_HEIGHT = 4
+    // Race sessions roll off the line already moving, and never drop below a
+    // quarter of top speed, so the road always reads as a road.
+    const TEST_TRACK_SESSION_START_SHARE = 0.5
+    const TEST_TRACK_SESSION_FLOOR_SHARE = 0.25
+    const TEST_TRACK_SESSION_SPRITE_SPREAD = 34
+    const TEST_TRACK_ANNOUNCEMENT_MILLISECONDS = 2600
+    const TEST_TRACK_ANNOUNCEMENT_Y = 30
     const TEST_TRACK_FALSE_START_PENALTY_MILLISECONDS = 5000
     const TEST_TRACK_GAS_MULTIPLIER = 10
     const TEST_TRACK_MIN_GAS = 30
     const TEST_TRACK_MAX_GAS = 100
-    const TEST_TRACK_BASE_GAS_DRAIN = 1.5
-    const TEST_TRACK_SPEED_GAS_DIVISOR = 220
+    // Gas goes by distance covered, not by time on track, and the cost of a
+    // stretch of road grows with the square of speed. That is the same rule as
+    // Riley's bench in Design, so a slower setup always saves gas and a faster
+    // one always spends it, whichever units the team drives in.
+    const TEST_TRACK_GAS_REFERENCE_SPEED = 288
+    const TEST_TRACK_GAS_PER_1000_UNITS = 7
     const TEST_TRACK_OFFROAD_GAS_DRAIN = 1.2
     const TEST_TRACK_GAS_BAR_WIDTH = 20
     const TEST_TRACK_GAS_BAR_HEIGHT = 4
@@ -255,6 +282,32 @@ namespace drivenByStemSupport {
         }
     }
 
+    // Each role lens reads the same bench result and notices something different,
+    // in the voice of the mentor who holds that role. Every reading fits on the
+    // report's first page (at most 11 of 12 lines) at any realistic speed.
+    function benchLensReading(lapsPerTank: number): string {
+        const lens = drivenByStem.roleLens()
+        const speed = Math.max(1, garagePreviewBaseSpeed)
+        let reading: string
+        if (lens == "strategist") {
+            reading = benchPits == 0
+                ? "No pit stops: all " + BENCH_RACE_LAPS + " laps on one tank."
+                : countOf(benchPits, "pit stop") + " cost " + (benchPits * BENCH_PIT_SECONDS) + " s. Fewer stops can beat faster laps."
+        } else if (lens == "software engineer") {
+            reading = "Speed " + Math.round(speed) + " ran with cost " + garagePreviewDrain + ". Is that what your rule says?"
+        } else if (lens == "data analyst") {
+            reading = "Tank lasts " + countOf(lapsPerTank, "lap") + ", so " + BENCH_RACE_LAPS + " laps needs " + countOf(benchPits, "refill") + "."
+        } else {
+            const saving = roundToTenth(benchLapSeconds - BENCH_LAP_DISTANCE / (speed + 10))
+            reading = "10 more speed would save " + saving + " s a lap. Worth the energy?"
+        }
+        return lens.charAt(0).toUpperCase() + lens.substr(1) + ":\n" + reading
+    }
+
+    function countOf(n: number, word: string): string {
+        return n + " " + word + (n == 1 ? "" : "s")
+    }
+
     function finishBenchRun(completed: boolean): void {
         benchFinished = true
         const raceSeconds = Math.round(benchRaceSeconds)
@@ -268,6 +321,7 @@ namespace drivenByStemSupport {
                 + "\nPit stops: " + benchPits
                 + "\nRace time: " + raceSeconds + " s"
                 + "\nLower race time wins."
+                + "\n" + benchLensReading(lapsPerTank)
             : "Bench test"
                 + "\nEnergy per lap: " + roundToTenth(benchEnergyPerLap)
                 + "\nTank: " + benchTank
@@ -283,7 +337,16 @@ namespace drivenByStemSupport {
     }
 
     class TestTrackObstacleData {
-        constructor(public laneOffset: number, public worldZ: number, public variant: number) { }
+        // Cones come from this file and are drawn from hand-made images. Anything
+        // a student puts on the track keeps its own art, scaled to its distance.
+        scaledSize: number
+        scaledImage: Image
+        hitApplied: boolean
+        constructor(public laneOffset: number, public worldZ: number, public variant: number, public sourceImage: Image) {
+            this.scaledSize = 0
+            this.scaledImage = null
+            this.hitApplied = false
+        }
     }
 
     class TestTrackState {
@@ -314,6 +377,14 @@ namespace drivenByStemSupport {
         raceStarted: boolean
         active: boolean
         obstacles: Sprite[]
+        // A race session shares the road, the physics and the art with the test
+        // track. What it drops is the timed course: no finish line, no gas, no
+        // starter lights, and the traffic comes from the student's own code.
+        sessionMode: boolean
+        stageKey: string
+        speedFloor: number
+        announcement: string
+        announcementMilliseconds: number
 
         constructor(car: Sprite, maxDriveSpeed: number, gasBar: StatusBarSprite, gasMax: number, gasDrainBase: number, displayUnit: string) {
             this.car = car
@@ -343,18 +414,11 @@ namespace drivenByStemSupport {
             this.raceStarted = false
             this.active = true
             this.obstacles = []
-        }
-    }
-
-    /**
-     * Tear down the garage test bed and the test track so a race session can take
-     * over the screen. Safe to call when neither is running.
-     */
-    export function leaveTestTrack(): void {
-        resetTrack()
-        const playerCar = sprites.allOfKind(SpriteKind.Player)[0]
-        if (playerCar) {
-            playerCar.setFlag(SpriteFlag.Invisible, false)
+            this.sessionMode = false
+            this.stageKey = ""
+            this.speedFloor = 0
+            this.announcement = ""
+            this.announcementMilliseconds = 0
         }
     }
 
@@ -364,18 +428,13 @@ namespace drivenByStemSupport {
         resetTrack()
 
         const playerCar = ensurePlayerCar()
-        const maxDriveSpeed = clampToRange(drivenByStem.savedDriveSpeed() * 3, TEST_TRACK_MIN_SPEED_CAP, TEST_TRACK_MAX_SPEED)
-        const gasMax = clampToRange(drivenByStem.savedEfficiency() * TEST_TRACK_GAS_MULTIPLIER, TEST_TRACK_MIN_GAS, TEST_TRACK_MAX_GAS)
-        const gasDrainBase = TEST_TRACK_BASE_GAS_DRAIN * Math.max(1, drivenByStem.savedEfficiencyCost())
-        const gasBar = createGasBar(gasMax)
         const displayUnit = drivenByStem.speedDisplayUnit()
+        const maxDriveSpeed = worldSpeedFromSetting(drivenByStem.savedDriveSpeed(), displayUnit)
+        const gasMax = clampToRange(drivenByStem.savedEfficiency() * TEST_TRACK_GAS_MULTIPLIER, TEST_TRACK_MIN_GAS, TEST_TRACK_MAX_GAS)
+        const gasDrainBase = Math.max(1, drivenByStem.savedEfficiencyCost())
+        const gasBar = createGasBar(gasMax)
 
-        vehicleTrackOriginalImage = playerCar.image.clone()
-        playerCar.setImage(rotateImageHalfTurn(vehicleTrackOriginalImage))
-        controller.moveSprite(playerCar, 0, 0)
-        playerCar.setFlag(SpriteFlag.StayInScreen, true)
-        playerCar.setPosition(TEST_TRACK_CAR_SCREEN_X, TEST_TRACK_CAR_SCREEN_Y)
-
+        prepareCarForTrack(playerCar)
         scene.setBackgroundImage(image.create(TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_CANVAS_HEIGHT))
         drivenByStem.startStage(drivenByStem.RaceStage.GarageShakedown)
         info.stopCountdown()
@@ -383,8 +442,120 @@ namespace drivenByStemSupport {
         info.showScore(false)
 
         activeTrack = new TestTrackState(playerCar, maxDriveSpeed, gasBar, gasMax, gasDrainBase, displayUnit)
+        activeTrack.stageKey = drivenByStem.currentStageName()
         hideCarUntilStage()
         trackStarted = true
+    }
+
+    /**
+     * Put a race session on the same moving track the shakedown uses. The stage,
+     * the score, the hearts and the clock belong to the session; this owns the
+     * road, the car and anything the student puts on the track.
+     */
+    export function startTrackSession(): void {
+        ensureTrackTables()
+        ensureHooksInstalled()
+        resetTrack()
+
+        const playerCar = ensurePlayerCar()
+        const displayUnit = drivenByStem.speedDisplayUnit()
+        const maxDriveSpeed = worldSpeedFromSetting(drivenByStem.savedDriveSpeed(), displayUnit)
+
+        prepareCarForTrack(playerCar)
+        playerCar.setFlag(SpriteFlag.Invisible, false)
+        scene.setBackgroundImage(image.create(TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_CANVAS_HEIGHT))
+
+        activeTrack = new TestTrackState(playerCar, maxDriveSpeed, null, 0, 1, displayUnit)
+        activeTrack.stageKey = drivenByStem.currentStageName()
+        activeTrack.sessionMode = true
+        activeTrack.speedFloor = maxDriveSpeed * TEST_TRACK_SESSION_FLOOR_SHARE
+        activeTrack.speed = maxDriveSpeed * TEST_TRACK_SESSION_START_SHARE
+        activeTrack.raceStarted = true
+        trackStarted = true
+    }
+
+    /**
+     * Stop a race session's road. Called when the session ends, before the
+     * student's own session-end code runs, so the last frame holds still.
+     */
+    export function endTrackSession(): void {
+        if (!trackStarted || !activeTrack.sessionMode) {
+            return
+        }
+
+        activeTrack.active = false
+        trackStarted = false
+        clearObstacles()
+        restoreVehicleTrackCarImage()
+    }
+
+    /**
+     * Put a sprite the student created on the road ahead of the car. Returns
+     * false when no track is running, so the caller can clear it away.
+     */
+    export function placeOnTrack(sprite: Sprite): boolean {
+        if (!sprite || !trackIsActive()) {
+            return false
+        }
+
+        sprite.setFlag(SpriteFlag.StayInScreen, false)
+        sprite.setVelocity(0, 0)
+        sprite.data = new TestTrackObstacleData(
+            randint(0 - TEST_TRACK_SESSION_SPRITE_SPREAD, TEST_TRACK_SESSION_SPRITE_SPREAD),
+            activeTrack.distanceOffset + worldZByDepth[TEST_TRACK_END_POS - 1],
+            0,
+            sprite.image.clone())
+        activeTrack.obstacles.push(sprite)
+        // Put it at the horizon straight away, so it never shows for a frame at
+        // the middle of the screen where sprites are born.
+        positionObstacle(sprite, sprite.data as TestTrackObstacleData, TEST_TRACK_END_POS - 1)
+        return true
+    }
+
+    /**
+     * Show a short banner across the road, for news that arrives mid-race.
+     * False when no track is running, so the caller can fall back to a dialog.
+     */
+    export function announceOnTrack(message: string): boolean {
+        if (!trackIsActive()) {
+            return false
+        }
+
+        activeTrack.announcement = message
+        activeTrack.announcementMilliseconds = TEST_TRACK_ANNOUNCEMENT_MILLISECONDS
+        return true
+    }
+
+    /**
+     * Set the live speed limit on a running track from a dashboard-unit number,
+     * so a grip rule can slow the car in the rain. False when no track is up.
+     */
+    export function setTrackSpeedLimit(setting: number): boolean {
+        if (!trackIsActive()) {
+            return false
+        }
+
+        activeTrack.maxDriveSpeed = worldSpeedFromSetting(setting, activeTrack.displayUnit)
+        activeTrack.speedFloor = activeTrack.sessionMode
+            ? activeTrack.maxDriveSpeed * TEST_TRACK_SESSION_FLOOR_SHARE
+            : 0
+        return true
+    }
+
+    function prepareCarForTrack(playerCar: Sprite): void {
+        vehicleTrackOriginalImage = playerCar.image.clone()
+        playerCar.setImage(rotateImageHalfTurn(vehicleTrackOriginalImage))
+        controller.moveSprite(playerCar, 0, 0)
+        playerCar.setFlag(SpriteFlag.StayInScreen, true)
+        playerCar.setPosition(TEST_TRACK_CAR_SCREEN_X, TEST_TRACK_CAR_SCREEN_Y)
+    }
+
+    // driveSpeed is read in the team's dashboard units and held in world units
+    // per second, so the dashboard reads back exactly what the student set.
+    function worldSpeedFromSetting(setting: number, unit: string): number {
+        const capped = clampToRange(setting, 0, unit == "mph" ? TEST_TRACK_MAX_SETTING_MPH : TEST_TRACK_MAX_SETTING_KMH)
+        const kilometersPerHour = unit == "mph" ? capped / TEST_TRACK_MPH_FACTOR : capped
+        return kilometersPerHour * TEST_TRACK_WORLD_PER_KMH
     }
 
     function ensureTrackTables(): void {
@@ -480,7 +651,7 @@ namespace drivenByStemSupport {
             removeObstacle(otherSprite)
             otherSprite.destroy(effects.disintegrate, 200)
             activeTrack.collisionCount += 1
-            activeTrack.speed = clampToRange(activeTrack.speed - TEST_TRACK_COLLISION_SPEED_LOSS, 0, TEST_TRACK_MAX_SPEED)
+            applyCollisionSpeedLoss()
             scene.cameraShake()
         })
 
@@ -505,8 +676,26 @@ namespace drivenByStemSupport {
         })
     }
 
+    // Hitting something a student put on the road costs the car speed, once per
+    // sprite. Their own overlap block still counts the hit and clears the sprite;
+    // this is the part the track owns, and it can't be raced by their code.
+    function chargeForSessionHit(obstacle: Sprite, data: TestTrackObstacleData): void {
+        if (data.hitApplied || obstacle.kind() != SpriteKind.Enemy || !activeTrack.car.overlapsWith(obstacle)) {
+            return
+        }
+
+        data.hitApplied = true
+        applyCollisionSpeedLoss()
+        scene.cameraShake()
+    }
+
+    function applyCollisionSpeedLoss(): void {
+        const loss = Math.max(TEST_TRACK_COLLISION_MIN_LOSS, activeTrack.maxDriveSpeed * TEST_TRACK_COLLISION_LOSS_SHARE)
+        activeTrack.speed = clampToRange(activeTrack.speed - loss, 0, activeTrack.maxDriveSpeed)
+    }
+
     function trackIsActive(): boolean {
-        return trackStarted && activeTrack.active && drivenByStem.stageIs(drivenByStem.RaceStage.GarageShakedown)
+        return trackStarted && activeTrack.active && drivenByStem.currentStageName() == activeTrack.stageKey
     }
 
     function drawTrackFrame(): void {
@@ -518,34 +707,48 @@ namespace drivenByStemSupport {
             return
         }
 
-        updateStarterSequence(deltaTime)
+        const session = activeTrack.sessionMode
+        const wet = drivenByStem.weatherIs(drivenByStem.WeatherMode.Rain)
+        const skyColor = wet ? TEST_TRACK_WET_SKY_COLOR : TEST_TRACK_SKY_COLOR
+        const vergeColor = wet ? TEST_TRACK_WET_VERGE_COLOR : TEST_TRACK_VERGE_COLOR
+        const roadColor = wet ? TEST_TRACK_WET_ROAD_COLOR : TEST_TRACK_ROAD_COLOR
+
+        if (!session) {
+            updateStarterSequence(deltaTime)
+        }
+
         const launched = trackHasLaunched()
         const steeringDelta = launched ? controller.dx(30000) : 0
         const accelerating = launched && controller.up.isPressed() && !controller.down.isPressed()
         const braking = launched && controller.down.isPressed() && !controller.up.isPressed()
 
-        if (!launched && !launchInputPressed()) {
-            activeTrack.falseStartLocked = false
-        }
+        if (!session) {
+            if (!launched && !launchInputPressed()) {
+                activeTrack.falseStartLocked = false
+            }
 
-        if (activeTrack.stagedAtLine && !launched && launchInputPressed() && !activeTrack.falseStartLocked) {
-            triggerFalseStart()
-            return
+            if (activeTrack.stagedAtLine && !launched && launchInputPressed() && !activeTrack.falseStartLocked) {
+                triggerFalseStart()
+                return
+            }
         }
 
         if (launched) {
-            captureReactionIfNeeded(steeringDelta, accelerating, braking)
+            if (!session) {
+                captureReactionIfNeeded(steeringDelta, accelerating, braking)
+            }
+
             activeTrack.elapsedMilliseconds += deltaTime * 1000
             activeTrack.carWorldX += 0 - steeringDelta
             activeTrack.distanceOffset += deltaTime * activeTrack.speed
 
-            if (activeTrack.distanceOffset >= activeTrack.nextObstacleDistance && activeTrack.obstacles.length < TEST_TRACK_MAX_OBSTACLES) {
+            if (!session && activeTrack.distanceOffset >= activeTrack.nextObstacleDistance && activeTrack.obstacles.length < TEST_TRACK_MAX_OBSTACLES) {
                 spawnObstacle()
             }
         }
 
-        canvas.fillRect(0, 0, TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_CANVAS_HEIGHT, 9)
-        canvas.fillRect(0, TEST_TRACK_CAR_SCREEN_Y - TEST_TRACK_HORIZON - 2, TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_HORIZON + 20, 6)
+        canvas.fillRect(0, 0, TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_CANVAS_HEIGHT, skyColor)
+        canvas.fillRect(0, TEST_TRACK_CAR_SCREEN_Y - TEST_TRACK_HORIZON - 2, TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_HORIZON + 20, vergeColor)
 
         let roadX = activeTrack.carWorldX | 0
         const segmentPosition = activeTrack.segmentPos | 0
@@ -573,6 +776,9 @@ namespace drivenByStemSupport {
                     activeTrack.obstacles.splice(obstacleIndex, 1)
                 } else {
                     positionObstacle(obstacle, data, i)
+                    if (session) {
+                        chargeForSessionHit(obstacle, data)
+                    }
                     obstacleIndex++
                 }
             }
@@ -584,8 +790,8 @@ namespace drivenByStemSupport {
             const roadLeft = ((160 - roadWidth) >> 1) + (roadOffsetByDepth[i] >> 8)
             const sideWidth = 10 * scaleByDepth[i] >> 8
 
-            canvas.fillRect(0, y, 160, 1, 6)
-            canvas.fillRect(roadLeft, y, roadWidth, 1, 11)
+            canvas.fillRect(0, y, 160, 1, vergeColor)
+            canvas.fillRect(roadLeft, y, roadWidth, 1, roadColor)
 
             if (sideWidth > 0) {
                 const sideColor = (worldZByDepth[i] + activeTrack.distanceOffset) & 32 ? TEST_TRACK_CURB_LIGHT_COLOR : TEST_TRACK_CURB_DARK_COLOR
@@ -605,29 +811,47 @@ namespace drivenByStemSupport {
         }
 
         if (launched) {
-            updateGas(deltaTime, offRoad)
             activeTrack.topSpeed = Math.max(activeTrack.topSpeed, activeTrack.speed)
 
-            if (activeTrack.gasRemaining <= 0) {
-                finishTestTrack(false)
-                return
+            if (!session) {
+                updateGas(deltaTime, offRoad)
+
+                if (activeTrack.gasRemaining <= 0) {
+                    finishTestTrack(false)
+                    return
+                }
             }
         }
 
-        drawHudStrip(canvas)
-        drawFuelHudLabel(canvas)
-        canvas.printCenter(formatElapsedTime(launched ? activeTrack.elapsedMilliseconds : 0), TEST_TRACK_HUD_TEXT_Y, 1, image.font8)
-        drawRightAlignedHudText(canvas, formatSpeed(activeTrack.speed, activeTrack.displayUnit), TEST_TRACK_HUD_TEXT_Y)
-        drawStarterOverlay(canvas)
-
-        if (launched && activeTrack.distanceOffset >= TEST_TRACK_COURSE_DISTANCE) {
-            finishTestTrack(true)
-            return
+        if (wet) {
+            drawRain(canvas)
         }
 
-        if (launched && activeTrack.elapsedMilliseconds >= TEST_TRACK_RUN_DURATION_MILLISECONDS) {
-            finishTestTrack(false)
-            return
+        if (activeTrack.announcementMilliseconds > 0) {
+            activeTrack.announcementMilliseconds -= deltaTime * 1000
+            drawAnnouncement(canvas)
+        }
+
+        if (session) {
+            // The session's own dashboard owns the top strip: hearts, clock and
+            // score. The speed readout tucks into the bottom corner.
+            drawSessionSpeed(canvas)
+        } else {
+            drawHudStrip(canvas)
+            drawFuelHudLabel(canvas)
+            canvas.printCenter(formatElapsedTime(launched ? activeTrack.elapsedMilliseconds : 0), TEST_TRACK_HUD_TEXT_Y, 1, image.font8)
+            drawRightAlignedHudText(canvas, formatSpeed(activeTrack.speed, activeTrack.displayUnit), TEST_TRACK_HUD_TEXT_Y)
+            drawStarterOverlay(canvas)
+
+            if (launched && activeTrack.distanceOffset >= TEST_TRACK_COURSE_DISTANCE) {
+                finishTestTrack(true)
+                return
+            }
+
+            if (launched && activeTrack.elapsedMilliseconds >= TEST_TRACK_RUN_DURATION_MILLISECONDS) {
+                finishTestTrack(false)
+                return
+            }
         }
 
         if (launched) {
@@ -818,6 +1042,28 @@ namespace drivenByStemSupport {
         restartStarterSequence()
     }
 
+    function drawRain(canvas: Image): void {
+        for (let i = 0; i < TEST_TRACK_RAIN_STREAKS; i++) {
+            canvas.fillRect(randint(0, TEST_TRACK_CANVAS_WIDTH - 1), randint(TEST_TRACK_SKYLINE_BASE_Y, TEST_TRACK_CANVAS_HEIGHT - 1), 1, TEST_TRACK_RAIN_STREAK_HEIGHT, 1)
+        }
+    }
+
+    function drawAnnouncement(canvas: Image): void {
+        const text = activeTrack.announcement
+        const width = text.length * image.font8.charWidth + 8
+        const left = (TEST_TRACK_CANVAS_WIDTH - width) >> 1
+        canvas.fillRect(left, TEST_TRACK_ANNOUNCEMENT_Y, width, 12, 15)
+        canvas.drawRect(left, TEST_TRACK_ANNOUNCEMENT_Y, width, 12, 5)
+        canvas.print(text, left + 4, TEST_TRACK_ANNOUNCEMENT_Y + 2, 5, image.font8)
+    }
+
+    function drawSessionSpeed(canvas: Image): void {
+        const text = formatSpeed(activeTrack.speed, activeTrack.displayUnit)
+        const width = text.length * image.font8.charWidth + 4
+        canvas.fillRect(0, TEST_TRACK_CANVAS_HEIGHT - 10, width, 10, 15)
+        canvas.print(text, 2, TEST_TRACK_CANVAS_HEIGHT - 9, 1, image.font8)
+    }
+
     function drawHudStrip(canvas: Image): void {
         canvas.fillRect(0, 0, TEST_TRACK_CANVAS_WIDTH, TEST_TRACK_HUD_STRIP_HEIGHT, 12)
         canvas.fillRect(0, TEST_TRACK_HUD_STRIP_HEIGHT - 1, TEST_TRACK_CANVAS_WIDTH, 1, 15)
@@ -876,7 +1122,7 @@ namespace drivenByStemSupport {
 
     function spawnObstacle(): void {
         const obstacle = sprites.create(smallConeImage, SpriteKind.TestTrackObstacle)
-        obstacle.data = new TestTrackObstacleData(randint(-30, 30), worldZByDepth[TEST_TRACK_END_POS - 1] + activeTrack.distanceOffset, randint(0, 2))
+        obstacle.data = new TestTrackObstacleData(randint(-30, 30), worldZByDepth[TEST_TRACK_END_POS - 1] + activeTrack.distanceOffset, randint(0, 2), null)
         activeTrack.obstacles.push(obstacle)
         activeTrack.nextObstacleDistance = activeTrack.distanceOffset + randint(300, 420)
     }
@@ -885,7 +1131,30 @@ namespace drivenByStemSupport {
         const size = Math.max(1, scaleByDepth[index] * 20 >> 8)
         obstacle.y = 120 - index
         obstacle.x = (roadOffsetByDepth[index] >> 8) + 80 + (scaleByDepth[index] * data.laneOffset >> 8)
-        obstacle.setImage(pickObstacleImage(size, data.variant, index))
+        obstacle.setImage(data.sourceImage ? sizedSpriteImage(data, size) : pickObstacleImage(size, data.variant, index))
+    }
+
+    // A student's own art, redrawn at the size its distance calls for. The last
+    // size is kept so this only redraws when the sprite actually grows.
+    function sizedSpriteImage(data: TestTrackObstacleData, size: number): Image {
+        const target = clampToRange(size, 2, data.sourceImage.width)
+        if (data.scaledImage && data.scaledSize == target) {
+            return data.scaledImage
+        }
+
+        const source = data.sourceImage
+        const height = Math.max(1, integerDivide(target * source.height, source.width))
+        const scaled = image.create(target, height)
+        for (let y = 0; y < height; y++) {
+            const sourceY = integerDivide(y * source.height, height)
+            for (let x = 0; x < target; x++) {
+                scaled.setPixel(x, y, source.getPixel(integerDivide(x * source.width, target), sourceY))
+            }
+        }
+
+        data.scaledSize = target
+        data.scaledImage = scaled
+        return scaled
     }
 
     function createGasBar(gasMax: number): StatusBarSprite {
@@ -960,7 +1229,9 @@ namespace drivenByStemSupport {
 
         const summary = buildEfficiencyReport(completedCourse)
         clearObstacles()
-        activeTrack.gasBar.destroy()
+        if (activeTrack.gasBar) {
+            activeTrack.gasBar.destroy()
+        }
         activeTrack.active = false
         trackStarted = false
 
@@ -982,9 +1253,18 @@ namespace drivenByStemSupport {
             + "\n- Time: " + elapsedSeconds + " s"
             + "\n- Reaction: " + reactionSummary(activeTrack.reactionTimeMilliseconds)
             + "\n- Top speed: " + formatSpeed(activeTrack.topSpeed, activeTrack.displayUnit)
+            // Top speed should read back as the number the student set, so the
+            // limit sits right under it and says where it came from.
+            + speedLimitLine()
             + "\n- Avg speed: " + formatSpeed(averageSpeed, activeTrack.displayUnit)
             + "\n- Gas burned: " + drivenByStem.formatFuelAmount(gasBurned)
             + "\n- Crashes: " + activeTrack.collisionCount
+    }
+
+    function speedLimitLine(): string {
+        const cap = activeTrack.displayUnit == "mph" ? TEST_TRACK_MAX_SETTING_MPH : TEST_TRACK_MAX_SETTING_KMH
+        const source = drivenByStem.savedDriveSpeed() > cap ? "track max" : "driveSpeed"
+        return "\n- Limit: " + formatSpeed(activeTrack.maxDriveSpeed, activeTrack.displayUnit) + " (" + source + ")"
     }
 
     function showFinishBanner(summary: string): void {
@@ -1004,12 +1284,13 @@ namespace drivenByStemSupport {
         return roundToTenth(convertSpeedValue(baseSpeed, unit)) + " " + unit
     }
 
-    function convertSpeedValue(baseSpeed: number, unit: string): number {
+    function convertSpeedValue(worldSpeed: number, unit: string): number {
+        const kilometersPerHour = worldSpeed / TEST_TRACK_WORLD_PER_KMH
         if (unit == "mph") {
-            return baseSpeed * TEST_TRACK_MPH_FACTOR
+            return kilometersPerHour * TEST_TRACK_MPH_FACTOR
         }
 
-        return baseSpeed
+        return kilometersPerHour
     }
 
     function roundToTenth(value: number): number {
@@ -1101,13 +1382,19 @@ namespace drivenByStemSupport {
             speedChange -= TEST_TRACK_OFFROAD_DRAG * game.eventContext().deltaTime
         }
 
-        const maximumTrackSpeed = activeTrack.gasRemaining > 0 ? activeTrack.maxDriveSpeed : 0
-        activeTrack.speed = clampToRange(activeTrack.speed + speedChange, 0, maximumTrackSpeed)
+        const outOfGas = !activeTrack.sessionMode && activeTrack.gasRemaining <= 0
+        const maximumTrackSpeed = outOfGas ? 0 : activeTrack.maxDriveSpeed
+        const minimumTrackSpeed = outOfGas || offRoad ? 0 : Math.min(activeTrack.speedFloor, maximumTrackSpeed)
+        activeTrack.speed = clampToRange(activeTrack.speed + speedChange, minimumTrackSpeed, maximumTrackSpeed)
         return offRoad
     }
 
+    // Gas goes by the road covered, not the clock: a stretch of track costs
+    // cost x (speed / reference)^2, the same shape as the bench in Design.
     function updateGas(deltaTime: number, offRoad: boolean): void {
-        const gasDrain = activeTrack.gasDrainBase + activeTrack.speed / TEST_TRACK_SPEED_GAS_DIVISOR + (offRoad ? TEST_TRACK_OFFROAD_GAS_DRAIN : 0)
+        const speedRatio = activeTrack.speed / TEST_TRACK_GAS_REFERENCE_SPEED
+        const perThousandUnits = activeTrack.gasDrainBase * TEST_TRACK_GAS_PER_1000_UNITS * speedRatio * speedRatio
+        const gasDrain = perThousandUnits * activeTrack.speed / 1000 + (offRoad ? TEST_TRACK_OFFROAD_GAS_DRAIN : 0)
         activeTrack.gasRemaining = Math.max(0, activeTrack.gasRemaining - gasDrain * deltaTime)
         activeTrack.gasBar.value = activeTrack.gasRemaining | 0
 
@@ -1150,7 +1437,9 @@ namespace drivenByStemSupport {
             activeTrack.active = false
             activeTrack.car.setFlag(SpriteFlag.Invisible, false)
             clearObstacles()
-            activeTrack.gasBar.destroy()
+            if (activeTrack.gasBar) {
+                activeTrack.gasBar.destroy()
+            }
         }
         trackStarted = false
         info.stopCountdown()
