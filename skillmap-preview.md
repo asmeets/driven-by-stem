@@ -19,12 +19,12 @@
 * name: Join the Team
 * type: tutorial
 * allowcodecarryover: false
-* description: Take delivery of the car, name your team, and decide how your dashboard reads. Then check the car against what you specified.
+* description: A season starts long before the lights go out. First, get the team and the car ready. Name your team, wire up the controls, and choose how your dashboard reads. Everything you set here carries into every stage that follows.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-mission-briefing.png
 * position: 0 6
 * tags: stage-1, ready, operations, ux, controls
 * next: design
-* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v6
 
 ### design
 * name: Design
@@ -35,51 +35,51 @@
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v6
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v7
 
 ### test
 * name: Test
 * type: tutorial
 * allowcodecarryover: true
-* description: One track, run twice, one variable changed. Then read the two results side by side.
+* description: Your setup looks good on the bench. Now find out what it does on track. Run a baseline, change one thing, and run it again. One run is a story. Two runs are evidence.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-garage-shakedown.png
 * position: 4 6
 * tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v6
 
 ### analyze
 * name: Analyze
 * type: tutorial
 * allowcodecarryover: true
-* description: Drive a full session, then read collision count against score and efficiency.
+* description: A race throws more at the car than a test ever will. Now you'll record what happens. Count collisions, reward clean driving, and read the session's own numbers. The data doesn't care what you remember.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-hit-the-track.png
 * position: 6 5
 * tags: stage-4, ready, telemetry, data
 * next: decide
-* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v6
 
 ### decide
 * name: Decide
 * type: tutorial
 * allowcodecarryover: true
-* description: The weather turns, grip drops, and the pit lane opens. Make the call before you know how it ends.
+* description: The track is dry until it isn't. Now you'll race in conditions that change. Open the pit lane, adjust for grip, and decide what a stop is worth. A strategist makes the call before anyone knows how it ends.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-changing-conditions.png
 * position: 8 6
 * tags: stage-5, ready, strategy, conditionals
 * next: race-and-reflect
-* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v6
 
 ### race-and-reflect
 * name: Race and Reflect
 * type: tutorial
 * allowcodecarryover: true
-* description: Everything runs at once, then you find your own decisions inside the result.
+* description: Every system you've built runs at once. Now it's time to race them together. Add risk, add recovery, and score a race you have to manage. Then look back and find your own decisions inside the result.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-final-challenge.png
 * position: 10 5
 * tags: stage-6, ready, systems, careers, reflection
 * next: preview-finish
-* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v5
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v6
 
 ### preview-finish
 * name: Stand on the Podium!

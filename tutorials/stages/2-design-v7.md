@@ -3,6 +3,10 @@
 ### @diffs true
 ### @explicitHints true
 
+```package
+driven-by-stem=github:asmeets/driven-by-stem#v9.0.3
+```
+
 ```validation.global
 # BlocksExistValidator
 * markers: validate-exists

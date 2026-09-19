@@ -1,5 +1,5 @@
 {
-    "name": "Driven by STEM - Copy",
+    "name": "Driven by STEM",
     "version": "9.0.2",
     "description": "Driven by STEM, enabled by Microsoft, is a game design project where you build and remix your own F1-inspired racing experience in MakeCode Arcade. As you play and change the game, you’ll explore real engineering tradeoffs like speed versus control, power versus efficiency, and risk versus consistency. The goal is not just to make the fastest car, but to make smart design choices and see how small code changes affect the whole race.\n\nThis project is meant to help you think like a game designer, software developer, and race engineer. You can test ideas, spot problems, improve your design, and learn how coding connects to real careers in technology, engineering, data, strategy, and accessibility.",
     "dependencies": {
@@ -32,12 +32,12 @@
         "tutorials/the-finish-line/activity1-v5.md",
         "tutorials/the-finish-line/activity2-v5.md",
         "tutorials/the-finish-line/activity3-v5.md",
-        "tutorials/stages/1-join-the-team-v5.md",
-        "tutorials/stages/2-design-v6.md",
-        "tutorials/stages/3-test-v5.md",
-        "tutorials/stages/4-analyze-v5.md",
-        "tutorials/stages/5-decide-v5.md",
-        "tutorials/stages/6-race-and-reflect-v5.md"
+        "tutorials/stages/1-join-the-team-v6.md",
+        "tutorials/stages/2-design-v7.md",
+        "tutorials/stages/3-test-v6.md",
+        "tutorials/stages/4-analyze-v6.md",
+        "tutorials/stages/5-decide-v6.md",
+        "tutorials/stages/6-race-and-reflect-v6.md"
     ],
     "testDependencies": {},
     "targetVersions": {

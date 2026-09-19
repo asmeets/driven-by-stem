@@ -3,6 +3,10 @@
 ### @diffs true
 ### @explicitHints true
 
+```package
+driven-by-stem=github:asmeets/driven-by-stem#v9.0.3
+```
+
 ```validation.global
 # BlocksExistValidator
 * markers: validate-exists
@@ -72,11 +76,13 @@ drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
 })
 ```
 
-## Decide @showdialog
+## Make the Call @showdialog
 
 ![Morgan - Strategist](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/morgan.png)
 
-**I'm Morgan, Strategist.** I decide when to pit and how to respond when the weather turns, usually before anyone knows how the race will end. Avery, our Sustainability Lead, makes sure every one of those calls uses the car's energy wisely.
+**I'm Morgan, Strategist.**
+
+I decide when to pit and how to respond when the weather turns, usually before anyone knows how the race will end. Avery, our Sustainability Lead, makes sure every one of those calls uses the car's energy wisely.
 
 Now you'll race in changing conditions and write the rules that make the calls.
 
@@ -92,7 +98,7 @@ Strategy starts with knowing what could change before it does.
 
 * :mouse pointer: Find `||drivenByStem:start race session [track]||` at the end of `||loops(noclick):on start||`.
 * :mouse pointer: Use its dropdown to change **track** to **weather**.
-* :game pad: Run the simulator and stage the car with **A**, the same as on the test track. The session starts dry. A few seconds in, the sky goes gray, the road darkens, and rain streaks the screen.
+* :game pad: Run the simulator. The car stages itself and the session starts dry. A few seconds in, the sky goes gray, the road darkens, and rain streaks the screen.
 
 ~hint Where did the obstacles go? 🌧️
 
@@ -515,7 +521,9 @@ hint~
 
 ![Avery - Sustainability Lead](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/avery.png)
 
-**Avery here, Sustainability Lead.** You made decisions before you knew how they'd turn out, and you adjusted when the rain arrived. Every pit stop and every slowdown was a choice about how to spend the car's energy.
+**Avery here, Sustainability Lead.**
+
+You made decisions before you knew how they'd turn out, and you adjusted when the rain arrived. Every pit stop and every slowdown was a choice about how to spend the car's energy.
 
 That's strategy. The right call depends on the conditions, and the conditions keep moving.
 

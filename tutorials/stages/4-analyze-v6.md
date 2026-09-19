@@ -1,7 +1,11 @@
-# Test
+# Analyze
 
 ### @diffs true
 ### @explicitHints true
+
+```package
+driven-by-stem=github:asmeets/driven-by-stem#v9.0.3
+```
 
 ```validation.global
 # BlocksExistValidator
@@ -15,7 +19,7 @@ drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
 controller.moveSprite(raceCar, 80, 80)
 raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = 110
+let driveSpeed = 90
 drivenByStem.setBaseCarSpeed(driveSpeed)
 drivenByStem.setTeamName("Apex Lab")
 drivenByStem.setCarName("Velocity")
@@ -36,362 +40,375 @@ if (driveSpeed > 100) {
 }
 drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
 drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
 controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+    drivenByStem.showSavedTestComparison()
     drivenByStem.showSavedDriverProfile()
     game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 })
 ```
 
-## Test @showdialog
+## Measure the Race @showdialog
 
-![Jordan - Test Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/jordan.png)
+![Casey - Telemetry Analyst](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/casey.png)
 
-**I'm Jordan, Test Engineer.** I take the setup our engineers designed and find out what it really does on track. One run on its own tells you almost nothing. The answer is in the comparison.
+**I'm Casey, Telemetry Analyst.**
 
-Now you'll take your car to the test track, run it, change one thing, and run it again.
+During a race, the car sends the team thousands of numbers. My job is to turn that data into something the team can act on.
 
-## {1. Take It to the Track}
+Now you'll drive a full race session, build the systems that record what happens, and read what the data says.
 
-**Your first job as a Test Engineer is to get the car on track.**
+## {1. Start the Session}
 
----
-
-Use code to launch the test track with the setup your team saved in Design.
-
-A setup only matters once it has been tested where the car actually runs.
-
-* :racing car: Open `||drivenByStem:Driven by STEM||` and drag `||drivenByStem:start vehicle test track||` to the very end of `||loops(noclick):on start||`, below `||drivenByStem:preview garage test bed||`.
-* :game pad: Run the simulator. When the car appears, press **A** to roll it up to the start line.
-* :game pad: Wait for the lights to go out, then hold the up arrow to accelerate. The down arrow brakes, and left and right steer.
-
-~hint Does my driveSpeed matter here? 🏎️
+**Your first job as a Telemetry Analyst is to get a full session running.**
 
 ---
 
-Yes. `driveSpeed` is the car's **top speed** on the track, read in the units your team picked in Join the Team. Set `90` and the car tops out at 90 mph, or 90 km/h, depending on your dashboard.
+Use code to leave the test track and start a timed race session.
 
-Your efficiency sets the size of the gas tank, and your cost sets how fast it burns. Speed spends gas as well: the faster you go, the more every stretch of road costs you, exactly as Riley's bench said it would.
+Testing happens in controlled conditions. Racing doesn't. The session is where you find out what holds up.
 
-The report at the end of each run shows your limit right under the top speed you actually reached.
+* :racing car: Open `||drivenByStem:Driven by STEM||` and drag `||drivenByStem:start race session [track]||` to the very end of `||loops(noclick):on start||`, below `||drivenByStem:set next test focus||`.
+* :game pad: Run the simulator. You're on the same moving track you drove in Test. The car rolls up to the line by itself, five lights count down, and the race starts when they go out.
+* :game pad: The 30-second countdown starts with the lights, so the staging costs you nothing. Hold up to speed up, press down to slow, and steer with left and right.
+* :binoculars: Drive until the countdown runs out and read the session report. The road is empty for now. You'll fill it in over the next steps.
+
+~hint Still on the test track? 🏁
+
+---
+
+`start race session` has to be the last block in `on start`, below `start vehicle test track`. It takes over from the test track, the same way the test track took over from the garage bench.
 
 hint~
 
-~hint Track not starting? 🏁
+~hint Did the race start without me? 🚦
 
 ---
 
-Check that `start vehicle test track` is the last block in `on start`, and that it isn't inside the `if` block or a button event.
+There's nothing to press here. A session stages itself: the car rolls to the line, the lights run, and the race starts when they go out. Pressing **A** to stage belongs to Jordan's test track, where the standing start is the thing being measured.
 
-You don't need to remove `preview garage test bed`. The test track takes over from the garage bench on its own.
+Once you have the car rolling it won't come to a full stop again, so the road keeps moving even when you let go of the controls.
 
 ```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = 110
-drivenByStem.setBaseCarSpeed(driveSpeed)
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-    game.splash("Pace setup", "Raw pace. Watch energy.")
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "Energy saved for later.")
-}
 drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
 drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
 //@highlight
 //@validate-exists
-drivenByStem.startVehicleTestTrack()
-controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    drivenByStem.showSavedDriverProfile()
-    game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
-})
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
 ```
 
 hint~
 
 ```blockconfig.local
-drivenByStem.startVehicleTestTrack()
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
 ```
 
 ```ghost
-drivenByStem.startVehicleTestTrack()
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
 ```
 
-## {2. Run the Baseline}
+## {2. Count the Collisions}
 
-**Your next job is to set the baseline.**
+**Your next job is to build a counter.**
 
 ---
 
-Drive one full run and record what the dashboard reports.
+Use code to make the two counters this session keeps.
 
-Every comparison needs a starting point. The baseline is the run everything else gets measured against.
+If you don't count something, you can't improve it.
 
-```validation.local
-# BlocksExistValidator
-* Enabled: false
-```
+* :paper plane: Open `||variables:Variables||` and select **Make a Variable**. Name it `collisions`, then make a second one named `lastCollisionCount`.
+* :paper plane: Drag `||variables:set [collisions] to [0]||` into `||loops(noclick):on start||`, directly **above** `||drivenByStem:start race session||`.
+* :paper plane: Drag a second `||variables:set [collisions] to [0]||` under it, then use its dropdown to switch that one to `lastCollisionCount`.
 
-* :game pad: Drive until the report appears. The run ends on its own when you cross the finish line, run out of gas, or run out of time.
-* :binoculars: Write down three numbers from the report: **Time**, **Top speed**, and **Gas burned**.
-* :id card: That's your baseline. Don't change any code until you've written it down, because editing code restarts the run.
-
-~hint Report never appeared? ⏱️
+~hint Why two counters? 🔢
 
 ---
 
-If you edit your code while the car is driving, the simulator restarts and that run isn't saved. Let the run end on its own, then read the report.
+`collisions` counts every hit in the session. `lastCollisionCount` remembers what the count was a few seconds ago, so your code can tell whether you've been driving clean since then. You'll use it in Step 5.
+
+Both start at `0` so every session begins with a clean count.
 
 hint~
 
-## {3. Change One Variable}
-
-**Your next job is to change exactly one thing.**
+~hint Both blocks say the same name? 🔁
 
 ---
 
-Use code to change the car's speed setting and nothing else.
-
-If you change two things at once, you won't know which one made the difference. Test engineers change one variable at a time.
-
-* :mouse pointer: Find `||variables:set driveSpeed to 110||` in `||loops(noclick):on start||`.
-* :keyboard: Change `110` to `90`. Leave every other block exactly as it is.
-* :binoculars: Your tradeoff rule from Design adjusts efficiency and cost on its own when the speed changes. That's expected. One change to a real car ripples through the whole system.
-
-~hint Why 90? 🎯
-
----
-
-`90` drops under the `100` mark in your own tradeoff rule, so the car switches to the cheaper setup. That makes one change show up in two places: your pace and your gas.
-
-You can pick any number you like, as long as it's different from your baseline. The track itself tops out at 150 mph, or 240 km/h, so anything above that drives the same.
+The `set` block carries a dropdown of every variable you have made. Click the dropdown on the second block and choose `lastCollisionCount`. Step 5 compares the two by name, so one of each is what it needs.
 
 ```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
+drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
+drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
+drivenByStem.startVehicleTestTrack()
+drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
 //@highlight
-let driveSpeed = 90
-drivenByStem.setBaseCarSpeed(driveSpeed)
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-    game.splash("Pace setup", "Raw pace. Watch energy.")
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "Energy saved for later.")
-}
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
-drivenByStem.startVehicleTestTrack()
-controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    drivenByStem.showSavedDriverProfile()
-    game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
-})
+//@validate-exists
+let collisions = 0
+//@highlight
+//@validate-exists
+let lastCollisionCount = 0
+drivenByStem.startRaceSession(drivenByStem.RaceStage.Track)
 ```
 
 hint~
 
-## {4. Run It Again}
-
-**Your next job is to run the same test again.**
-
----
-
-Drive the same track the same way, so the only difference is the change you made.
-
-Same track, same driver, one change. That's what makes a test fair.
-
-```validation.local
-# BlocksExistValidator
-* Enabled: false
+```ghost
+let collisions = 0
+let lastCollisionCount = 0
 ```
 
-* :game pad: The simulator restarted with your new speed. Press **A**, wait for the lights, and drive the way you did for your baseline.
-* :binoculars: Let the run end on its own. When it does, the **Test comparison** opens by itself, right after the report. It runs to more than one page, so press **A** to turn each page and up to go back.
-* :id card: Check it against the numbers you wrote down. Which run was faster? Which one burned less gas?
+## {3. Add Traffic}
 
-~hint No comparison appeared? 🔍
+**Your next job is to put obstacles on the track.**
 
 ---
 
-The comparison needs two runs that ended on their own. If your baseline run was interrupted by a code change, set `driveSpeed` back to `110` and let a full run finish. Then change it to `90` and let one more run finish.
+Use code to put obstacles on the road at a steady rate during the session.
 
-hint~
+A clean track can't test a setup. Real conditions can.
 
-## {5. Compare the Results}
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [2000] ms||` block into an empty area of the workspace. The obstacle and the block that puts it on the road are already inside.
+* :binoculars: Read the `if` at the top: obstacles only appear while the stage is **track**. That keeps this spawner out of the stages that come after this one.
+* :binoculars: Read the second block. `||drivenByStem:put obstacle on the track ahead||` drops it at the far end of the road, so it arrives at your speed instead of landing on top of you.
+* :game pad: Run the simulator and drive. Obstacles now come up the road toward your car.
 
-**Your next job is to read the two runs side by side.**
-
----
-
-Use code to add the test comparison to your system check button.
-
-One run tells you what happened. Two runs tell you why.
-
-* :game pad: Find the `||controller:on [menu] button pressed||` block you built in Join the Team.
-* :racing car: Drag `||drivenByStem:show saved test comparison||` inside it, at the very top, above `||drivenByStem:show saved driver profile||`.
-* :game pad: Run the simulator and press **menu**. The comparison opens first, so you can read it again without driving another run.
-* :mouse pointer: Keep pressing **A** to move through each screen: the comparison, which runs to more than one page, then your team profile, then your units. Press up to go back a page.
-
-~hint Can't find your menu block? 🔎
+~hint Too many obstacles? 🎛️
 
 ---
 
-It's a separate block in the workspace, not inside `on start`. If your workspace is crowded, right-click an empty area and choose **Clean up Blocks** to line everything up.
+A bigger number in `every 2000 ms` spawns them less often. How fast they arrive is up to you: the quicker you drive, the less time you have to steer around each one.
 
 ```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = 90
-drivenByStem.setBaseCarSpeed(driveSpeed)
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-    game.splash("Pace setup", "Raw pace. Watch energy.")
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "Energy saved for later.")
-}
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
-drivenByStem.startVehicleTestTrack()
-controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
+//@highlight
+//@validate-exists
+game.onUpdateInterval(2000, function () {
     //@highlight
     //@validate-exists
-    drivenByStem.showSavedTestComparison()
-    drivenByStem.showSavedDriverProfile()
-    game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+        //@highlight
+        //@validate-exists
+        let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+        //@highlight
+        //@validate-exists
+        drivenByStem.placeOnTrack(obstacle)
+    }
 })
 ```
 
 hint~
 
 ```blockconfig.local
-drivenByStem.showSavedTestComparison()
+game.onUpdateInterval(2000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+drivenByStem.placeOnTrack(obstacle)
+}
+})
 ```
 
 ```ghost
-drivenByStem.showSavedTestComparison()
+game.onUpdateInterval(2000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+let obstacle = sprites.create(assets.image`trackObstacle`, SpriteKind.Enemy)
+drivenByStem.placeOnTrack(obstacle)
+}
+})
 ```
 
-## {6. Record What You Found}
+## {4. Record Every Hit}
 
-**Your next job is to write down what the test showed.**
-
----
-
-Use code to save one sentence about what your change did.
-
-A result nobody writes down is a test you'll have to run again.
-
-* :racing car: Drag `||drivenByStem:set next test focus||` to the very end of `||loops(noclick):on start||`.
-* :keyboard: Replace its text with one sentence about what your change did, like *"Slower speed saved gas but cost time."*
-* :binoculars: Write what the comparison showed, not what you expected. If the result surprised you, say that.
-
-~hint What makes a good finding? ✍️
+**Your next job is to turn each collision into data.**
 
 ---
 
-A good finding names the change and the result together, like *"Dropping to 90 saved gas and cost a second."* Someone who wasn't there should be able to read it and know what to test next.
+Use code to count every collision and apply its cost to the car's energy.
+
+Every hit has a cost. Telemetry makes the cost visible.
+
+* :paper plane: Open `||sprites:Sprites||` and drag the pre-filled `||sprites:on sprite of kind Player overlaps otherSprite of kind Enemy||` block into an empty area of the workspace.
+* :binoculars: Read what it does: add one to `collisions`, take energy away based on your setup's `efficiencyDrain`, and clear the obstacle off the road.
+* :game pad: Run the simulator and hit an obstacle on purpose. Watch a heart disappear, and watch the speed readout drop. A hit costs you time as well as energy.
+
+~hint Why doesn't this one check the stage? 🔁
+
+---
+
+Hits cost energy in every race, not just this one. You're building this system once, and it keeps working in every stage after this.
+
+hint~
+
+~hint What if I run out of hearts? ❤️
+
+---
+
+The session ends early with an **Out of energy** message. Your results are still saved and shown, so you can see exactly what happened.
 
 ```blocks
-scene.setBackgroundImage(assets.image`garageBg`)
-drivenByStem.loadRaceProfile(80, 5)
-drivenByStem.startStage(drivenByStem.RaceStage.Garage)
-let raceCar = sprites.create(assets.image`playerCar`, SpriteKind.Player)
-controller.moveSprite(raceCar, 80, 80)
-raceCar.setFlag(SpriteFlag.StayInScreen, true)
-let driveSpeed = 90
-drivenByStem.setBaseCarSpeed(driveSpeed)
-drivenByStem.setTeamName("Apex Lab")
-drivenByStem.setCarName("Velocity")
-drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
-drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
-let efficiencyRating = drivenByStem.savedEfficiency()
-let efficiencyDrain = 1
-if (driveSpeed > 100) {
-    efficiencyRating = drivenByStem.savedEfficiency() - 1
-    efficiencyDrain = 2
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Pace)
-    game.splash("Pace setup", "Raw pace. Watch energy.")
-} else {
-    efficiencyRating = drivenByStem.savedEfficiency()
-    efficiencyDrain = 1
-    drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
-    game.splash("Balance setup", "Energy saved for later.")
-}
-drivenByStem.setRoleLens(drivenByStem.RoleLens.PerformanceEngineer)
-drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
-drivenByStem.startVehicleTestTrack()
 //@highlight
 //@validate-exists
-drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
-controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
-    drivenByStem.showSavedTestComparison()
-    drivenByStem.showSavedDriverProfile()
-    game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+    //@highlight
+    //@validate-exists
+    collisions += 1
+    //@highlight
+    //@validate-exists
+    drivenByStem.recordCollision(0, efficiencyDrain)
+    //@highlight
+    //@validate-exists
+    otherSprite.destroy()
 })
 ```
 
 hint~
 
 ```blockconfig.local
-drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+collisions += 1
+drivenByStem.recordCollision(0, efficiencyDrain)
+otherSprite.destroy()
+})
 ```
 
 ```ghost
-drivenByStem.setNextTestFocus("Slower speed saved gas but cost time.")
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
+collisions += 1
+drivenByStem.recordCollision(0, efficiencyDrain)
+otherSprite.destroy()
+})
 ```
 
-## You Ran a Controlled Test
+## {5. Reward Clean Driving}
 
-![Jordan - Test Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/jordan.png)
+**Your next job is to reward consistency.**
 
-You set a baseline, changed one variable, and compared the results.
+---
 
-That's how test engineers turn a hunch into evidence. They don't trust a single run. They trust the comparison.
+Use code to add points whenever the car goes a stretch without a collision.
 
-Next, Casey will take your car into a full race session.<br><br>➡️ Select **Done** to continue to Analyze.
+Fast laps matter, but clean laps win races.
+
+* :game pad: Open `||game:Game||` and drag the pre-filled `||game:on game update every [4000] ms||` block into an empty area of the workspace.
+* :binoculars: Read the rule: every 4 seconds, if `collisions` hasn't changed since the last check, your team earns 2 points and 1 strategy point. Then it saves the current count to compare against next time.
+* :game pad: Run the simulator and drive cleanly. Watch your score climb.
+
+~hint Rewarding at the wrong times? 🔀
+
+---
+
+If it rewards you right after a hit, check that `lastCollisionCount` is set at the end of the block. If it never rewards you, check that the comparison uses `=`.
+
+```blocks
+//@highlight
+//@validate-exists
+game.onUpdateInterval(4000, function () {
+    //@highlight
+    //@validate-exists
+    if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+        //@highlight
+        //@validate-exists
+        if (collisions == lastCollisionCount) {
+            //@highlight
+            //@validate-exists
+            info.changeScoreBy(2)
+            //@highlight
+            //@validate-exists
+            drivenByStem.awardStrategyPoints(1)
+        }
+        //@highlight
+        //@validate-exists
+        lastCollisionCount = collisions
+    }
+})
+```
+
+hint~
+
+```blockconfig.local
+game.onUpdateInterval(4000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+if (collisions == lastCollisionCount) {
+info.changeScoreBy(2)
+drivenByStem.awardStrategyPoints(1)
+}
+lastCollisionCount = collisions
+}
+})
+```
+
+```ghost
+game.onUpdateInterval(4000, function () {
+if (drivenByStem.stageIs(drivenByStem.RaceStage.Track)) {
+if (collisions == lastCollisionCount) {
+info.changeScoreBy(2)
+drivenByStem.awardStrategyPoints(1)
+}
+lastCollisionCount = collisions
+}
+})
+```
+
+## {6. Read the Data}
+
+**Your next job is to read what the session left behind.**
+
+---
+
+Use code to save the results and show collisions, score, and energy when the countdown ends.
+
+What you remember about a run and what the numbers say are often different. The numbers are what the team acts on.
+
+* :racing car: Open `||drivenByStem:Driven by STEM||` and drag the pre-filled `||drivenByStem:on [track] session ends||` block into an empty area of the workspace.
+* :id card: Before you run it, say out loud how many collisions you think you'll have.
+* :game pad: Run the simulator and drive the full session. When the countdown ends the session report appears first; press **A** and your own summary follows. Compare it to your guess.
+
+~hint Nothing happens at the end? ⏰
+
+---
+
+Check that the dropdown in `on [track] session ends` says **track**, the same stage your `start race session` block uses.
+
+```blocks
+//@highlight
+//@validate-exists
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+    //@highlight
+    //@validate-exists
+    drivenByStem.saveCurrentRunResults()
+    //@highlight
+    //@validate-exists
+    game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
+```
+
+hint~
+
+```blockconfig.local
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+drivenByStem.saveCurrentRunResults()
+game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
+```
+
+```ghost
+drivenByStem.onRaceSessionEnd(drivenByStem.RaceStage.Track, function () {
+drivenByStem.saveCurrentRunResults()
+game.splash("Collisions: " + collisions, "Score " + info.score() + "  Energy " + info.life())
+})
+```
+
+## You Turned a Race Into Data
+
+![Casey - Telemetry Analyst](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/casey.png)
+
+You counted every collision, rewarded clean driving, and read the results against your score and energy.
+
+That's telemetry work. The data doesn't care what you remember. It shows what actually happened.
+
+Next, Morgan and Avery will change the conditions and ask you to make the call.<br><br>➡️ Select **Done** to continue to Decide.
 
 ```assetjson
 {
