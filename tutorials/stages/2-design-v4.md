@@ -298,15 +298,16 @@ This is why Performance Engineers make predictions. The test bench doesn't tell 
 
 * :mouse pointer: Drag the mission `||game:splash||` block out of `||loops(noclick):on start||` and drop it in an empty part of the workspace. It has done its job, and test runs are faster without a banner in front of them. It stays in the workspace if you want it back.
 * :racing car: Drag `||drivenByStem:preview garage test bed||` to the **end** of `||loops(noclick):on start||`. The three variables are already wired in, so it reads your final values.
-* :game pad: Run the simulator and read the speed, energy, and cost numbers.
+* :game pad: Run the simulator and watch the bench run a 20-lap test. Energy drains every lap, and when the tank runs low the car pits. At the end you get a **Bench test** report with your **race time**. Lower is faster.
 * :id card: Say your Step 1 prediction out loud again, then compare. **Did more speed cost what you said it would?**
-* :binoculars: Now go back to Step 1, set `driveSpeed` to `90`, and run it again. Watch which numbers move and which do not.
+* :binoculars: Now go back to Step 1, set `driveSpeed` to `90`, and run it again. Which race time is lower? Write both down.
+* :lightbulb: Try `100`, then `101`. Use your tradeoff rule to work out why one extra point of speed changes the race so much.
 
 ~hint Preview looks wrong? 🧪
 
 ---
 
-Check three things. First, the preview block has to come *after* the `if driveSpeed > 100` rule, so it reads the final values rather than the starting ones. Second, make sure the mission splash is disconnected so it is not interrupting each run. Third, the arrows only move the gauge here. The real driving test is Jordan's, in the next stage.
+Check three things. First, the preview block has to come *after* the `if driveSpeed > 100` rule, so it reads the final values rather than the starting ones. Second, make sure the mission splash is disconnected so it is not interrupting each run. Third, the arrows don't change anything here. The bench runs the test on its own. The real driving test is Jordan's, in the next stage.
 
 ```blocks
 let driveSpeed = 110
@@ -324,6 +325,16 @@ if (driveSpeed > 100) {
 //@validate-exists
 drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
 ```
+
+hint~
+
+~hint Why did the slower car win? 🏁
+
+---
+
+A faster car finishes each lap sooner, but it burns more energy per lap, so it runs out sooner and has to pit more often. Every pit stop costs 20 seconds. Add up the laps and the pit stops, and a slower setup can finish the race first.
+
+That's the tradeoff your rule describes. The bench just made it visible.
 
 hint~
 
