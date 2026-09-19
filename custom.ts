@@ -303,7 +303,7 @@ namespace drivenByStem {
     //% block="load race profile with drive speed $defaultSpeed and efficiency $defaultEfficiency"
     //% blockId=raceday_load_profile
     //% defaultSpeed.defl=80 defaultEfficiency.defl=5
-    //% group="Session" weight=100
+    //% group="Session" weight=40
     export function loadRaceProfile(defaultSpeed: number, defaultEfficiency: number): void {
         ensureNumberSetting(DRIVE_SPEED_KEY, defaultSpeed)
         ensureNumberSetting(EFFICIENCY_KEY, defaultEfficiency)
@@ -343,9 +343,88 @@ namespace drivenByStem {
      */
     //% block="start stage $stage"
     //% blockId=raceday_start_stage
-    //% group="Session" weight=99
+    //% group="Session" weight=35
     export function startStage(stage: RaceStage): void {
         settings.writeString(STAGE_KEY, stageName(stage))
+    }
+
+    let sessionEndStages: string[] = []
+    let sessionEndHandlers: (() => void)[] = []
+    let sessionEndHookInstalled = false
+
+    function installSessionEndHook(): void {
+        if (sessionEndHookInstalled) {
+            return
+        }
+        sessionEndHookInstalled = true
+        info.onCountdownEnd(function () {
+            const current = settings.readString(STAGE_KEY)
+            for (let i = 0; i < sessionEndStages.length; i++) {
+                if (sessionEndStages[i] == current) {
+                    sessionEndHandlers[i]()
+                }
+            }
+            // The session is over: switch to review so every stage-checked spawner
+            // stops, and clear what is left on track.
+            startStage(RaceStage.Review)
+            for (let hazard of sprites.allOfKind(SpriteKind.Enemy)) {
+                hazard.destroy()
+            }
+            for (let marker of sprites.allOfKind(SpriteKind.Food)) {
+                marker.destroy()
+            }
+        })
+    }
+
+    /**
+     * Leave the garage and the test track and start a timed race session. Sets the
+     * stage, the track, dry weather, the dashboard and the countdown, and hands the
+     * car back to the driver at the saved speed.
+     */
+    //% block="start race session $stage"
+    //% blockId=raceday_start_race_session
+    //% stage.defl=RaceStage.Track
+    //% group="Session" weight=91
+    export function startRaceSession(stage: RaceStage): void {
+        drivenByStemSupport.leaveTestTrack()
+        setWeather(WeatherMode.Dry)
+        startStage(stage)
+        scene.setBackgroundImage(stage == RaceStage.FinalChallenge ? assets.image`finishBg` : assets.image`trackBg`)
+
+        const car = sprites.allOfKind(SpriteKind.Player)[0]
+        if (car) {
+            car.setFlag(SpriteFlag.Invisible, false)
+            car.setFlag(SpriteFlag.StayInScreen, true)
+            controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
+        }
+
+        installSessionEndHook()
+        info.setScore(0)
+        info.setLife(Math.max(1, savedEfficiency()))
+        info.showScore(true)
+        info.showLife(true)
+        info.startCountdown(stage == RaceStage.Weather ? 25 : 30)
+        info.showCountdown(true)
+    }
+
+    /**
+     * Run code when a race session's countdown reaches zero. Each stage can have
+     * its own handler, so adding one never means editing another stage's code.
+     */
+    //% block="on $stage session ends"
+    //% blockId=raceday_on_session_end
+    //% stage.defl=RaceStage.Track
+    //% group="Session" weight=90
+    export function onRaceSessionEnd(stage: RaceStage, handler: () => void): void {
+        const name = stageName(stage)
+        for (let i = 0; i < sessionEndStages.length; i++) {
+            if (sessionEndStages[i] == name) {
+                sessionEndHandlers[i] = handler
+                return
+            }
+        }
+        sessionEndStages.push(name)
+        sessionEndHandlers.push(handler)
     }
 
     /**
