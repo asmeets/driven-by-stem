@@ -31,19 +31,20 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 
 ![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
 
-**I'm Riley, performance engineer.** My whole job is one question: why did that change make it better, or worse?
+**I'm Riley, Performance Engineer.** I help the team understand how changes to the car affect speed, handling, and performance. Every improvement has benefits, but it can also create new challenges.
 
-Today you'll say what you think more speed will cost, then tune it and let the bench tell you whether you were right.
+Now you'll step into that role. Make predictions, test ideas, and discover how engineers evaluate tradeoffs before race day.
 
-## {1. Predict, Then Tune}
 
-**Making a Claim You Can Check**
+## {1. Make a Prediction}
+
+**Your first job as a Performance Engineer is to make a prediction.**
 
 ---
 
-Your code will create one variable that controls how fast the car goes, and you are going to raise it. Before you do, say out loud what you think that will cost.
+Use code to increase the car's speed, and predict what might happen before you test it.
 
-I make the prediction first, out loud, every time. If you tune first and explain afterwards, you will explain whatever you happen to see. That is not evidence, it's a story.
+If you explain the results after you've already seen them, you're telling a story. If you predict the results beforehand, you're testing an idea.
 
 * :id card: With your team, finish this sentence out loud before you touch anything: *"If we raise the speed, then ______ will get better and ______ will get worse."*
 * :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `driveSpeed`.
@@ -97,15 +98,15 @@ let driveSpeed = 110
 let driveSpeed = 110
 ```
 
-## {2. Make Movement Use driveSpeed}
+## {2. Tune Your Car}
 
-**Connecting a Variable to a Behavior**
+**Your next job is to connect your setup changes to the car.**
 
 ---
 
-Your code will connect `driveSpeed` to the car's movement, so tuning the variable actually changes the car.
+Use code to make sure changing the speed setting affects how the car performs on the track.
 
-A number that nothing reads is just a number. When I tune a setup, the first thing I check is that the value is wired to the behaviour it is supposed to control.
+A change only matters if it affects something you can measure. Before I test a setup, I make sure the change is connected to the result I'm trying to improve.
 
 * :racing car: Find the `||drivenByStem:set base car speed to||` block in `||loops(noclick):on start||`. It still reads `||drivenByStem:saved drive speed||`.
 * :mouse pointer: Drag that bubble out and drop `||variables:driveSpeed||` in its place.
@@ -146,15 +147,15 @@ drivenByStem.setBaseCarSpeed(driveSpeed)
 drivenByStem.setBaseCarSpeed(driveSpeed)
 ```
 
-## {3. Create the Efficiency Variables}
+## {3. Measure the Change}
 
-**Modeling What Performance Costs**
+**Your next job is to set up what you'll measure.**
 
 ---
 
-Your code will create two variables: how efficient the setup is, and how much each mistake costs.
+Use code to create variables for the car's efficiency and the cost of a mistake.
 
-Speed is never free. On a real car it costs fuel, tyre life, brake temperature, and reliability. Here we track two of those costs so the tradeoff is something you can actually see.
+Speed is never free. In Formula 1 it costs fuel, tyre life, and brake temperature. Track those costs and the tradeoff becomes something you can see instead of something you argue about.
 
 * :paper plane: Open `||variables:Variables||`, select **Make a Variable**, and name it `efficiencyRating`. The `set` block only appears in the toolbox once the variable exists.
 * :paper plane: Drag `||variables:set efficiencyRating to [0]||` into `||loops(noclick):on start||`, below your `||variables:set driveSpeed to||` block.
@@ -203,15 +204,15 @@ drivenByStem.savedEfficiency()
 let efficiencyDrain = 1
 ```
 
-## {4. Add the Tradeoff Rule}
+## {4. Define the Tradeoff}
 
-**Writing the Cost Into the Code**
+**Your next job is to define what performance will cost.**
 
 ---
 
-Your code will make the speed you chose change the efficiency you start with and the price you pay for a mistake.
+Use code to create a rule that connects speed to efficiency and the cost of mistakes.
 
-This is the step where your prediction becomes a rule the car has to obey. Above 100, you get pace and you pay for it. At or below, you keep the stronger baseline.
+In Formula 1, every gain comes with a tradeoff. The goal isn't to eliminate costs, it's to understand them.
 
 * :paper plane: Open `||logic:Logic||` and drag the pre-filled `||logic:if else||` block into `||loops(noclick):on start||`, directly below `||variables:set efficiencyDrain to 1||`.
 * :binoculars: Read it back in plain language before you run it: *if drive speed is above 100, start with one less efficiency and make every mistake cost double; otherwise keep the baseline.*
@@ -285,15 +286,15 @@ efficiencyDrain = 1
 }
 ```
 
-## {5. Put Your Prediction on the Bench}
+## {5. Test the Results}
 
-**Testing the Claim You Made in Step 1**
+**Your next job is to see what the data says.**
 
 ---
 
-Your code will open the garage test bed, which reads your final speed, efficiency, and cost values and shows them back as numbers.
+Use code to open the garage test bench and review your final speed, efficiency, and cost values.
 
-This is the moment Step 1 was for. You said what more speed would cost. Now the bench says what it actually cost.
+This is why Performance Engineers make predictions. The test bench doesn't tell you what you hoped would happen. It shows you what actually happened.
 
 * :mouse pointer: Drag the mission `||game:splash||` block out of `||loops(noclick):on start||` and drop it in an empty part of the workspace. It has done its job, and test runs are faster without a banner in front of them. It stays in the workspace if you want it back.
 * :racing car: Drag `||drivenByStem:preview garage test bed||` to the **end** of `||loops(noclick):on start||`. The three variables are already wired in, so it reads your final values.
@@ -337,15 +338,15 @@ drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
 drivenByStem.previewGarageTestBed(driveSpeed, efficiencyRating, efficiencyDrain)
 ```
 
-## {6. Choose a Role Lens}
+## {6. See Through a Different Lens}
 
-**Deciding Which Question You're Asking**
+**Your next job is to view the results from a different perspective.**
 
 ---
 
-Your code will record which engineering role your team is reading the data through.
+Use code to choose an engineering role and see how they interpret the same data.
 
-Four people can look at the same run and disagree about whether it went well, because they are each asking a different question. That is not a problem to fix. It is how a team covers everything.
+Performance Engineers, Strategists, Software Engineers, and Data Analysts can look at the same results and notice different things. That's how teams make better decisions together.
 
 ```validation.local
 # BlocksExistValidator
@@ -404,15 +405,15 @@ drivenByStem.setRoleLens(drivenByStem.RoleLens.Strategist)
 drivenByStem.setRoleLens(drivenByStem.RoleLens.DataAnalyst)
 ```
 
-## {7. Save the Setup Focus}
+## {7. Document the Decision}
 
-**Writing Down What You Decided, and Why**
+**Your next job is to record the setup you chose.**
 
 ---
 
-Your code will save whether this setup is a **Pace** setup or a **Balance** setup, inside the branch that produced it.
+Use code to save whether your team selected a Pace setup or a Balanced setup.
 
-This is the block Jordan's test track actually reads. If you skip it, the next stage tests a setup you did not choose. I write down the configuration every single time, because six runs later nobody remembers what was on the car.
+Good decisions are documented. When teams know what was tested and why it was chosen, they can build on that work instead of starting over.
 
 * :racing car: Drag `||drivenByStem:save team setup [Pace]||` into the **`if`** branch of your `||logic:if||` block, below `||variables:set efficiencyDrain to 2||`.
 * :mouse pointer: Right-click it, choose **Duplicate**, drag the copy into the **`else`** branch, and switch its dropdown to **Balance**.
@@ -464,13 +465,15 @@ drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, driven
 drivenByStem.saveTeamSetup(driveSpeed, efficiencyRating, efficiencyDrain, drivenByStem.SetupFocus.Balance)
 ```
 
-## That's the engineering loop.
+## You've Completed the Engineering Loop
 
 ![Riley - Performance Engineer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/riley.png)
 
-**You made a claim before you tested it, then let the bench settle it.** That order, predict and then measure, is the whole job.
+You made a prediction, tested your idea, and used data to make a decision.
 
-Jordan takes it to the track next.<br><br>Select **Done** to head into Test.
+That's how engineers solve problems. They ask questions, test ideas, and learn from the results.
+
+Next, Jordan will take your setup to the track.<br><br>➡️ Select **Done** to continue to Test.
 
 ```assetjson
 {

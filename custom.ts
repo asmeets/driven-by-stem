@@ -343,7 +343,7 @@ namespace drivenByStem {
      */
     //% block="start stage $stage"
     //% blockId=raceday_start_stage
-    //% group="Session" weight=90
+    //% group="Session" weight=99
     export function startStage(stage: RaceStage): void {
         settings.writeString(STAGE_KEY, stageName(stage))
     }
@@ -353,7 +353,7 @@ namespace drivenByStem {
      */
     //% block="current stage is $stage"
     //% blockId=raceday_stage_is
-    //% group="Session" weight=80
+    //% group="Session" weight=30
     export function stageIs(stage: RaceStage): boolean {
         return settings.readString(STAGE_KEY) == stageName(stage)
     }
@@ -363,7 +363,7 @@ namespace drivenByStem {
      */
     //% block="reset saved session"
     //% blockId=raceday_reset_session
-    //% group="Session" weight=70
+    //% group="Session" weight=25
     export function resetSavedSession(): void {
         settings.clear()
     }
@@ -374,7 +374,7 @@ namespace drivenByStem {
     //% block="build base car with image $carImage"
     //% blockId=raceday_build_base_car
     //% carImage.shadow=screen_image_picker
-    //% group="Session" weight=65
+    //% group="Session" weight=20
     export function buildBaseCar(carImage: Image): void {
         const car = ensureBaseCar(carImage)
         controller.moveSprite(car, savedDriveSpeed(), savedDriveSpeed())
@@ -385,7 +385,7 @@ namespace drivenByStem {
      */
     //% block="start garage test bed"
     //% blockId=raceday_start_garage_test_bed
-    //% group="Session" weight=61
+    //% group="Session" weight=15
     export function startGarageTestBed(): void {
         loadRaceProfile(80, 5)
         drivenByStemSupport.startGarageTestBed()
@@ -397,7 +397,7 @@ namespace drivenByStem {
     //% block="preview garage test bed speed $speed efficiency $efficiency drain $drain"
     //% blockId=raceday_preview_garage_test_bed
     //% speed.defl=80 efficiency.defl=5 drain.defl=1
-    //% group="Session" weight=60
+    //% group="Session" weight=93
     export function previewGarageTestBed(speed: number, efficiency: number, drain: number): void {
         loadRaceProfile(80, 5)
         drivenByStemSupport.previewGarageTestBed(speed, efficiency, drain)
@@ -408,7 +408,7 @@ namespace drivenByStem {
      */
     //% block="start vehicle test track"
     //% blockId=raceday_start_vehicle_test_track
-    //% group="Session" weight=59
+    //% group="Session" weight=92
     export function startVehicleTestTrack(): void {
         loadRaceProfile(80, 5)
         drivenByStemSupport.startVehicleTestTrack()
@@ -420,7 +420,7 @@ namespace drivenByStem {
     //% block="set base car speed to $speed"
     //% blockId=raceday_set_base_car_speed
     //% speed.defl=80 speed.min=0 speed.max=200
-    //% group="Session" weight=59
+    //% group="Session" weight=98
     export function setBaseCarSpeed(speed: number): void {
         const car = sprites.allOfKind(SpriteKind.Player)[0]
         if (!(car)) {
@@ -437,7 +437,7 @@ namespace drivenByStem {
     //% block="set speed display unit to $unit"
     //% blockId=raceday_set_speed_display_unit
     //% unit.defl=SpeedUnit.MilesPerHour
-    //% group="Session" weight=55
+    //% group="Session" weight=97
     export function setSpeedDisplayUnit(unit: SpeedUnit): void {
         settings.writeString(SPEED_UNIT_KEY, speedUnitName(unit))
     }
@@ -447,7 +447,7 @@ namespace drivenByStem {
      */
     //% block="speed display unit"
     //% blockId=raceday_speed_display_unit
-    //% group="Session" weight=50
+    //% group="Session" weight=95
     export function speedDisplayUnit(): string {
         return readStringSetting(SPEED_UNIT_KEY, "mph")
     }
@@ -458,7 +458,7 @@ namespace drivenByStem {
     //% block="set fuel display unit to $unit"
     //% blockId=raceday_set_fuel_display_unit
     //% unit.defl=FuelUnit.Gallons
-    //% group="Session" weight=54
+    //% group="Session" weight=96
     export function setFuelDisplayUnit(unit: FuelUnit): void {
         settings.writeString(FUEL_UNIT_KEY, fuelUnitName(unit))
     }
@@ -468,7 +468,7 @@ namespace drivenByStem {
      */
     //% block="fuel display unit"
     //% blockId=raceday_fuel_display_unit
-    //% group="Session" weight=53
+    //% group="Session" weight=94
     export function fuelDisplayUnit(): string {
         return readStringSetting(FUEL_UNIT_KEY, "gal")
     }
@@ -580,7 +580,7 @@ namespace drivenByStem {
      */
     //% block="saved drive speed"
     //% blockId=raceday_saved_drive_speed
-    //% group="Setup" weight=90
+    //% group="Setup" weight=99
     export function savedDriveSpeed(): number {
         return readNumberSetting(DRIVE_SPEED_KEY, 80)
     }
@@ -590,7 +590,7 @@ namespace drivenByStem {
      */
     //% block="saved efficiency"
     //% blockId=raceday_saved_efficiency
-    //% group="Setup" weight=80
+    //% group="Setup" weight=98
     export function savedEfficiency(): number {
         return sanitizeEfficiencyValue(readNumberSetting(EFFICIENCY_KEY, 5), 5)
     }
@@ -600,7 +600,7 @@ namespace drivenByStem {
      */
     //% block="saved efficiency cost"
     //% blockId=raceday_saved_efficiency_cost
-    //% group="Setup" weight=75
+    //% group="Setup" weight=60
     export function savedEfficiencyCost(): number {
         return readNumberSetting(DRAIN_KEY, 1)
     }
@@ -610,7 +610,7 @@ namespace drivenByStem {
      */
     //% block="saved strategy points"
     //% blockId=raceday_saved_strategy
-    //% group="Setup" weight=70
+    //% group="Setup" weight=50
     export function savedStrategyPoints(): number {
         return readNumberSetting(STRATEGY_KEY, 0)
     }
@@ -620,7 +620,7 @@ namespace drivenByStem {
      */
     //% block="saved setup focus is $focus"
     //% blockId=raceday_setup_focus_is
-    //% group="Setup" weight=60
+    //% group="Setup" weight=40
     export function setupFocusIs(focus: SetupFocus): boolean {
         return settings.readString(SETUP_FOCUS_KEY) == setupFocusName(focus)
     }

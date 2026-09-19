@@ -24,18 +24,18 @@
 * position: 0 6
 * tags: stage-1, ready, operations, ux, controls
 * next: design
-* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v2
 
 ### design
 * name: Design
 * type: tutorial
 * allowcodecarryover: true
-* description: Predict what more speed will cost, tune it, write the tradeoff rule, and put your prediction on the test bench.
+* description: Your team is ready. Now it's time to improve the car. Test ideas, make predictions, and discover how engineers use data to improve performance. Every change comes with a tradeoff. Your job is to find the right balance.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-setup-tradeoffs.png
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v1
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v2
 
 ### test
 * name: Test

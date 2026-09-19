@@ -18,19 +18,20 @@ drivenByStem.startStage(drivenByStem.RaceStage.Garage)
 
 ![Kai - Operations Lead](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/kai.png)
 
-**I'm Kai, operations lead.** I make sure the car, the crew, and the data are ready before anyone turns a wheel.
+**I'm Kai, Operations Lead.** Every race starts long before the lights go out. I work with engineers, mechanics, and analysts to make sure the team has what it needs to perform at its best.
 
-Today you take delivery of your car and set up your team, starting with how your dashboard reads.
+Today, you'll join the team, get your car race-ready, and build your dashboard to help make smart decisions throughout the season.
 
-## {1. Add a Mission Message}
 
-**Telling the Team What This Session Is For**
+## {1. Share the Mission}
+
+**Your first job is to create a message for the team.**
 
 ---
 
-Your code will show a short mission message when the game starts.
+Use code to display a short mission statement that appears when the game starts and lets everyone know what they're working toward.
 
-As operations lead, I open every session with the goal stated out loud, so nobody is guessing what we are testing.
+Great teams do their best work when everyone knows the goal.
 
 * :game pad: Open `||game:Game||` and drag `||game:splash||` into `||loops(noclick):on start||`, under the blocks that are already there.
 * :keyboard: Type a short, one-sentence mission line like "Race weekend."
@@ -75,15 +76,15 @@ game.splash("Your text here")
 game.splash("Your text here")
 ```
 
-## {2. Create the Player Car}
+## {2. Build the Car}
 
-**Building the Interactive Game Object**
+**Every race team starts with a car.**
 
 ---
 
-Your code will add the race car as a sprite the player can control.
+Your code will add the race car that you'll use throughout the season.
 
-On my crew, the car is the thing everything else attaches to. Build it first and the rest has somewhere to go.
+The car is at the center of everything we do. Let's get it ready for the track.
 
 * :paper plane: Open `||sprites:Sprites||` and drag `||sprites:set mySprite to sprite of kind Player||` into `||loops(noclick):on start||`.
 * :mouse pointer: Select the `mySprite` drop-down and choose `||variables(sprites):Rename variable...||`
@@ -141,15 +142,15 @@ let mySprite = sprites.create(img`.`, SpriteKind.Player)
 let mySprite = sprites.create(img`.`, SpriteKind.Player)
 ```
 
-## {3. Turn On Movement}
+## {3. Test the Controls}
 
-**Connecting Input to Action**
+**Your next job is to connect the driver to the car.**
 
 ---
 
-Your code will make the race car move when the player presses the arrow buttons, using the speed already saved to your team's profile.
+Your code will make the car move when the driver uses the controls.
 
-I check controls before anything else. Every system downstream assumes the car answers the driver.
+Before every race, teams test the controls to make sure everything works as expected.
 
 * :game pad: Drag `||controller:move [raceCar] with buttons vx [80] vy [80]||` into `||loops(noclick):on start||`.
 * :paper plane: Drag `||sprites:set [raceCar] stay in screen [On]||` under it so the car cannot drive off the edge.
@@ -195,15 +196,15 @@ raceCar.setFlag(SpriteFlag.StayInScreen, true)
 drivenByStem.setBaseCarSpeed(drivenByStem.savedDriveSpeed())
 ```
 
-## {4. Name Your Team and Your Car}
+## {4. Make It Yours}
 
-**Making the Project Yours**
+**Now it's time to give your team and car their own identity.**
 
 ---
 
-Your code will save your team name and car name, and your car will carry your own design.
+Your code will save your team name, car name, and custom design.
 
-**Drew here, UX designer.** People take care of things they recognize as theirs. That is not decoration. It changes how carefully someone drives.
+Teams take pride in what they create. When something feels like yours, you care about it more.
 
 * :id card: Drag `||drivenByStem:set team name to||` into `||loops(noclick):on start||` and type your team's name.
 * :id card: Drag `||drivenByStem:set car name to||` in below and name your car.
@@ -244,15 +245,15 @@ drivenByStem.setTeamName("Apex Lab")
 drivenByStem.setCarName("Velocity")
 ```
 
-## {5. Choose How Your Dashboard Reads}
+## {5. Set Up the Dashboard}
 
-**Specifying the Interface**
+**Your team needs information it can understand at a glance.**
 
 ---
 
-Your code will decide whether your dashboard reports speed in km/h or mph, and fuel in gallons or liters.
+Your code will choose how the dashboard displays speed and fuel, using the units your team prefers.
 
-This is the first decision you make that something later has to obey. Every readout your team sees from here on uses what you pick right now, so pick what your team reads fastest.
+Good decisions start with clear information.
 
 * :racing car: Drag `||drivenByStem:set speed display unit to [mph]||` and `||drivenByStem:set fuel display unit to [gallons]||` into `||loops(noclick):on start||`.
 * :mouse pointer: Use the dropdowns to switch to `km/h` or `liters` if that is what your team prefers.
@@ -296,17 +297,17 @@ drivenByStem.setSpeedDisplayUnit(drivenByStem.SpeedUnit.MilesPerHour)
 drivenByStem.setFuelDisplayUnit(drivenByStem.FuelUnit.Gallons)
 ```
 
-## {6. Check the Car Against What You Specified}
+## {6. Run a System Check}
 
-**Testing That the System Did What You Asked**
+**Before the season starts, make sure everything is working the way you planned.**
 
 ---
 
-Your code will read your setup back to you so you can check it against what you chose.
+Your code will display your dashboard settings so you can confirm they were saved correctly.
 
-Saying what a system should do and confirming it actually does it are two different jobs. The second one is the one that catches problems.
+Great teams don't just build things. They test them, too.
 
-You will build this as a **button** rather than putting it in `on start`. A check you can run whenever you want is more useful than one that fires once and then gets in the way of every test afterwards.
+You'll build this as a button, so you can run the check whenever you want instead of once at startup.
 
 * :game pad: Open `||controller:Controller||` and drag `||controller:on [menu] button pressed||` into an empty area of the workspace, **not** inside `on start`. It already contains `||drivenByStem:show saved driver profile||` and a `||game:splash||` wired to your two unit blocks, so this is one drag.
 * :binoculars: Read what is inside it before you run anything. `||drivenByStem:speed display unit||` and `||drivenByStem:fuel display unit||` are *blocks*, not typed words. That is what makes the readout follow your choice instead of repeating it back.
@@ -352,13 +353,15 @@ game.splash(drivenByStem.speedDisplayUnit(), drivenByStem.fuelDisplayUnit())
 })
 ```
 
-## You're on the team.
+## You're Part of the Team
 
 ![Drew - UX/Game Designer](https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/guides/drew.png)
 
-**Drew here.** You just made a choice nobody notices when it's right and everybody notices when it's wrong. That's UX.
+**Drew here.** Everything you've built so far, from your team name to your dashboard settings, carries forward into the season.
 
-Your units carry forward. Riley reads them next.<br><br>Select **Done** to head into Design.
+Every member of the team builds on the work of others. The choices you made will help shape what comes next.
+
+Next, Riley will show you how teams use information to make decisions.<br><br>➡️ Select **Done** to continue.
 
 ```assetjson
 {
