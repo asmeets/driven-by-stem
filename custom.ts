@@ -306,11 +306,11 @@ namespace drivenByStem {
     //% defaultSpeed.defl=80 defaultEfficiency.defl=5
     //% group="Session" weight=40
     export function loadRaceProfile(defaultSpeed: number, defaultEfficiency: number): void {
-        // Every run starts from the profile's stated values. The tutorial code
-        // re-derives the team's setup from them each run through save team setup,
-        // so nothing a previous run wrote (a pace penalty, collision losses) can
-        // leak forward. Before this, the pace rule "saved efficiency - 1" lowered
-        // the baseline on every re-run, cycling 5, 4, 3, 2, 1 with no code change.
+        // This block sits at the top of every student's on start, so it is the one
+        // place that resets the run's baseline. The tutorial code then re-derives
+        // the team's setup from it through save team setup. Before the reset, the
+        // pace rule "saved efficiency - 1" lowered the baseline on every re-run,
+        // cycling 5, 4, 3, 2, 1 with no code change.
         settings.writeNumber(DRIVE_SPEED_KEY, defaultSpeed)
         settings.writeNumber(EFFICIENCY_KEY, sanitizeEfficiencyValue(defaultEfficiency, 5))
         // Run-level tallies. Left alone they grew across every run forever, so
@@ -319,6 +319,17 @@ namespace drivenByStem {
         settings.writeNumber(COLLISION_KEY, 0)
         settings.writeNumber(PIT_STOPS_KEY, 0)
         settings.writeString(WEATHER_KEY, "dry")
+        ensureRaceProfile()
+    }
+
+    // Make sure every profile value exists, without changing any value the run
+    // has already set. The library's own blocks call this, never loadRaceProfile:
+    // they run after the student's save team setup, and resetting there wiped the
+    // team's speed and efficiency back to 80 and 5 an instant before the test
+    // track and race session read them.
+    function ensureRaceProfile(): void {
+        ensureNumberSetting(DRIVE_SPEED_KEY, 80)
+        ensureNumberSetting(EFFICIENCY_KEY, 5)
         ensureNumberSetting(STRATEGY_KEY, 0)
         ensureNumberSetting(DRAIN_KEY, 1)
         ensureStringSetting(WEATHER_KEY, "dry")
@@ -328,8 +339,8 @@ namespace drivenByStem {
         ensureNumberSetting(PIT_STOPS_KEY, 0)
         ensureNumberSetting(LAST_SCORE_KEY, 0)
         ensureNumberSetting(PREVIOUS_SCORE_KEY, 0)
-        ensureNumberSetting(LAST_EFFICIENCY_KEY, defaultEfficiency)
-        ensureNumberSetting(PREVIOUS_EFFICIENCY_KEY, defaultEfficiency)
+        ensureNumberSetting(LAST_EFFICIENCY_KEY, 5)
+        ensureNumberSetting(PREVIOUS_EFFICIENCY_KEY, 5)
         ensureNumberSetting(LAST_TIME_KEY, 0)
         ensureNumberSetting(PREVIOUS_TIME_KEY, 0)
         ensureNumberSetting(LAST_TOP_SPEED_KEY, 0)
@@ -517,7 +528,7 @@ namespace drivenByStem {
     //% blockId=raceday_start_garage_test_bed
     //% group="Session" weight=15
     export function startGarageTestBed(): void {
-        loadRaceProfile(80, 5)
+        ensureRaceProfile()
         drivenByStemSupport.startGarageTestBed()
     }
 
@@ -529,7 +540,7 @@ namespace drivenByStem {
     //% speed.defl=80 efficiency.defl=5 drain.defl=1
     //% group="Session" weight=93
     export function previewGarageTestBed(speed: number, efficiency: number, drain: number): void {
-        loadRaceProfile(80, 5)
+        ensureRaceProfile()
         drivenByStemSupport.previewGarageTestBed(speed, efficiency, drain)
     }
 
@@ -540,7 +551,7 @@ namespace drivenByStem {
     //% blockId=raceday_start_vehicle_test_track
     //% group="Session" weight=92
     export function startVehicleTestTrack(): void {
-        loadRaceProfile(80, 5)
+        ensureRaceProfile()
         drivenByStemSupport.startVehicleTestTrack()
     }
 

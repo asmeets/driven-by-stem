@@ -111,6 +111,16 @@ controller.menu.onEvent(ControllerButtonEvent.Pressed, function () {
 
 hint~
 
+~hint Does my driveSpeed matter here? 🏎️
+
+---
+
+Yes. Your `driveSpeed` from Design sets the car's **speed limit** on the track: three times `driveSpeed`, so `90` gives a limit of 270 km/h, about 168 mph. Your efficiency sets the size of the gas tank, and your cost sets how fast it burns.
+
+The report at the end of each run shows your speed limit right under the top speed you actually reached.
+
+hint~
+
 ```blockconfig.local
 drivenByStem.startVehicleTestTrack()
 ```

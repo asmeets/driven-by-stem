@@ -46,7 +46,7 @@
 * position: 4 6
 * tags: stage-3, ready, test-engineering, comparison
 * next: analyze
-* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v3
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v4
 
 ### analyze
 * name: Analyze
@@ -57,7 +57,7 @@
 * position: 6 5
 * tags: stage-4, ready, telemetry, data
 * next: decide
-* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v3
 
 ### decide
 * name: Decide
@@ -68,7 +68,7 @@
 * position: 8 6
 * tags: stage-5, ready, strategy, conditionals
 * next: race-and-reflect
-* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v3
 
 ### race-and-reflect
 * name: Race and Reflect
@@ -79,7 +79,7 @@
 * position: 10 5
 * tags: stage-6, ready, systems, careers, reflection
 * next: preview-finish
-* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v2
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v3
 
 ### preview-finish
 * name: Stand on the Podium!

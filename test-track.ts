@@ -1009,6 +1009,10 @@ namespace drivenByStemSupport {
             + "\n- Time: " + elapsedSeconds + " s"
             + "\n- Reaction: " + reactionSummary(activeTrack.reactionTimeMilliseconds)
             + "\n- Top speed: " + formatSpeed(activeTrack.topSpeed, activeTrack.displayUnit)
+            // The limit is driveSpeed x 3 in km/h, then converted for display, so
+            // without this line a student who set 90 sees "168 mph" and can't
+            // tell their setting was used at all.
+            + "\n- Speed limit: " + formatSpeed(activeTrack.maxDriveSpeed, activeTrack.displayUnit) + ", set by driveSpeed " + Math.round(drivenByStem.savedDriveSpeed())
             + "\n- Avg speed: " + formatSpeed(averageSpeed, activeTrack.displayUnit)
             + "\n- Gas burned: " + drivenByStem.formatFuelAmount(gasBurned)
             + "\n- Crashes: " + activeTrack.collisionCount
