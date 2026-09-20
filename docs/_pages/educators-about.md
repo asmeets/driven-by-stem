@@ -48,11 +48,11 @@ The experience is designed primarily for middle school learners, especially stud
 
 Educators can use it in several formats:
 
-- a 45-60 minute classroom session
+- a 60-minute classroom session, with 30, 45, and 90-minute variants
 - a shorter museum or event-floor demo
 - a longer facilitated activation with more time for remixing and discussion
 
-The [Agenda]({{ site.baseurl }}/educators/agenda/) page includes a full 90-minute version plus shorter-format guidance for 60-minute classroom delivery and 30-minute event-floor use.
+The [Agenda]({{ site.baseurl }}/educators/agenda/) page leads with the 60-minute classroom session and includes 90, 45, and 30-minute variants. Shorter formats stop at a stage boundary rather than skipping a middle stage, because each stage builds on the code carried forward from the one before it.
 
 ## What Makes the Project Classroom-Ready
 

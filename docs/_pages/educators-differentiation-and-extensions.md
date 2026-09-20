@@ -31,6 +31,19 @@ MakeCode Arcade already gives educators several built-in supports that make adap
 
 These supports do not remove the need for facilitation, but they do give you a strong starting point for accessibility and differentiation.
 
+## Replace My Code
+
+Each stage after the first opens with a **Replace my code** option in its first step. It resets the workspace to that stage's starting code, which is the finished code from the stage before it.
+
+This is the single most useful recovery move in the experience, because every stage builds on the one before it. A student whose blocks were deleted, dragged apart, or never carried over can be back at a correct starting point in seconds rather than rebuilding by hand or starting the whole session over.
+
+- it is in the **first step of a stage**, not in every step, so point students back to step one to find it
+- it **deletes what is currently in the workspace**. It is a fresh start for that stage, not an undo
+- the team name, car name, and dashboard units a student chose are part of that replaced code, so they will return to the defaults and can be set again
+- use it when the workspace is the problem, not when the student is simply unsure what to do next; a hint is the better tool for that
+
+Knowing where this button is before the session starts is worth more than any other single piece of technical prep.
+
 ## Adaptations for Pacing and Cognitive Load
 
 These moves work well when students need a slower on-ramp, more repetition, or less information at once.
@@ -40,6 +53,7 @@ These moves work well when students need a slower on-ramp, more repetition, or l
 - treat the built-in tutorial hints as part of normal problem solving, not as a sign that a learner is behind
 - replace long verbal explanations with short prompts such as "Change one value," "Test it," or "What changed?"
 - use the end of each race session, where the game reports the result either way, as a structured chance to stop, read, and try again
+- use **Replace my code** when a workspace is too tangled to rescue, which is described below
 
 ## Adaptations for Shared Devices and Participation
 

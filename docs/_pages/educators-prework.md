@@ -46,7 +46,7 @@ For live events, put the short link on the projector, any printed materials, and
 - [ ] Review [Definitions]({{ site.baseurl }}/educators/definitions/) and choose which terms to teach directly and which to introduce only when they appear naturally.
 - [ ] Read [Accessibility]({{ site.baseurl }}/educators/accessibility/) if you will be working with shared devices, projector-heavy facilitation, or a mixed-experience group.
 - [ ] Decide which of the six stages you will protect if time runs short. Test is the usual answer, because the comparison of two runs is the clearest evidence a student produces.
-- [ ] Decide how you will clear devices between groups, and read [Resetting Between Groups]({{ site.baseurl }}/educators/run-of-show/#resetting-between-groups) before the session.
+- [ ] Decide how you will clear devices between groups, and read [Resetting Between Groups]({{ site.baseurl }}/educators/in-the-classroom/#resetting-between-groups) before the session.
 
 ## Recommended Dry Run
 
@@ -55,6 +55,7 @@ One short pass through the skillmap before the session is usually enough. The go
 During the dry run, check these items:
 
 - [ ] Identify where learners will need the clearest instructions.
+- [ ] Find the **Replace my code** option in the first step of any stage after Join the Team, so you can point to it without hunting during the session.
 - [ ] Confirm the first visible success is a car that moves in Join the Team, and note how long it took you to get there.
 - [ ] Choose the best pause for a prediction or comparison.
 - [ ] Pick which mentor route from [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) you will read aloud, and when.

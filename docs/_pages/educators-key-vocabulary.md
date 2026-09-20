@@ -25,13 +25,13 @@ These terms help learners talk more clearly about what they are seeing, building
 # C
 
 - **Collision**: What happens when one sprite touches another sprite, wall, or obstacle and triggers a result in the game. In this project, a collision can become a useful conversation about risk, control, and performance penalties. (Analyze)
-- **Condition**: A true-or-false check that helps the game decide what should happen next. For example, the code might ask whether the weather is rainy before changing how the car handles. (Design)
+- **Condition**: A true-or-false check that helps the game decide what should happen next. For example, the code might ask whether driveSpeed is above 100 before lowering efficiency and raising the cost of a mistake. (Design)
 - **Controller**: The input system that lets a player move a sprite or press buttons to trigger actions. It is one of the most visible ways students learn that input causes immediate changes in a program. (Join the Team)
 - **Custom Block**: A project-specific block that was created to make a game feature easier to reuse or teach. These blocks help students work with meaningful game systems without getting lost in repeated setup code. (Join the Team)
 
 # D
 
-- **Data**: Information collected during gameplay or testing that helps students explain what happened. Examples include score, collisions, speed, and efficiency changes across a run. (Decide)
+- **Data**: Information collected during gameplay or testing that helps students explain what happened. Examples include score, collisions, speed, and efficiency changes across a run. (Analyze)
 - **Debugging**: The process of finding, testing, and fixing problems in code. Good debugging is not guessing randomly; it means observing carefully, changing one thing, and checking the result. (Test)
 - **Drag and Drop**: The action of moving blocks from a toolbox into the workspace to build a program. This physical action supports beginners because the structure of the code is visible as they assemble it. (Join the Team)
 - **driveSpeed**: The setting that holds the car's top speed, read in the units the team chose for its dashboard. A driveSpeed of 90 means a top speed of 90 mph for a team driving in miles per hour and 90 km/h for a team driving in kilometers per hour. (Design)
@@ -74,7 +74,7 @@ These terms help learners talk more clearly about what they are seeing, building
 
 # M
 
-- **Metric**: A measured value, such as score, speed, or collisions, that helps teams evaluate performance. Metrics give students evidence they can use in discussion instead of relying on opinions alone. (Decide)
+- **Metric**: A measured value, such as score, speed, or collisions, that helps teams evaluate performance. Metrics give students evidence they can use in discussion instead of relying on opinions alone. (Analyze)
 
 # N
 
@@ -98,14 +98,15 @@ These terms help learners talk more clearly about what they are seeing, building
 # Q
 
 - **Qualitative Data**: Descriptive observations about what happened, such as "the car felt harder to control in the rain" or "the pit stop made the round feel safer." This kind of evidence complements scores and other numbers when students reflect on performance. (Race and Reflect)
-- **Quantitative Data**: Measured information that can be counted or compared, such as score, speed, collisions, or efficiency changes. Quantitative data helps students justify a claim with numbers instead of opinion alone. (Decide)
+- **Quantitative Data**: Measured information that can be counted or compared, such as score, speed, collisions, or efficiency changes. Quantitative data helps students justify a claim with numbers instead of opinion alone. (Analyze)
 
 # R
 
 - **Race Profile**: Saved setup information for a team or car that can be reused across activities. This helps students see that choices made in one stage can carry forward into later decisions. (Join the Team)
+- **Replace My Code**: A MakeCode option in the first step of each stage after the first that resets the workspace to that stage's starting code. It is the fastest way to recover a workspace that has been broken or emptied, and because it deletes whatever is currently there, it is a fresh start rather than an undo. (Design)
 - **Resource**: Something limited that a team needs to manage carefully, such as time, efficiency, or track position. Resource management is a strong bridge between gameplay decisions and real engineering tradeoffs. (Design)
 - **Review**: A chance to look back at results, discuss what worked, and decide what to improve next. Review moments help students turn gameplay into evidence-based reflection. (Race and Reflect)
-- **Role Lens**: A point of view based on a team member's job, such as strategist or software engineer, used to frame decisions. Role lenses help learners understand that the same situation can look different depending on a person's responsibility. (Join the Team)
+- **Role Lens**: A point of view based on a team member's job, such as strategist or software engineer, used to frame decisions. Role lenses help learners understand that the same situation can look different depending on a person's responsibility. (Design)
 
 # S
 
@@ -121,7 +122,7 @@ These terms help learners talk more clearly about what they are seeing, building
 
 # T
 
-- **Telemetry**: Data collected from a car or system, such as speed, collisions, or performance trends, that helps teams make decisions. Telemetry turns player experience into information the team can read, discuss, and act on. (Decide)
+- **Telemetry**: Data collected from a car or system, such as speed, collisions, or performance trends, that helps teams make decisions. Telemetry turns player experience into information the team can read, discuss, and act on. (Analyze)
 - **Tilemap**: A grid-based game world built from small tiles, used in many MakeCode Arcade projects to lay out rooms, mazes, and top-down maps. This project builds its road a different way, so tilemaps are worth knowing for the games students play or make on their own. (Join the Team)
 - **Timer**: A tool that helps the game wait, count down, or trigger something after a delay. Timers are useful when the challenge depends on pacing, changing conditions, or time-based events. (Decide)
 - **Track**: The road that runs under the car and scrolls toward it while the driver steers left and right. Obstacles, pit markers, and puddles are placed ahead on the road and arrive as the car drives, so the track is what turns a run into a series of quick decisions. (Analyze)
@@ -137,7 +138,7 @@ These terms help learners talk more clearly about what they are seeing, building
 # V
 
 - **Variable**: A named container that stores information a program can use and change. For example, a variable might store speed, score, weather, or a team's chosen setup. (Join the Team)
-- **Velocity**: The speed and direction an object is moving. This term is especially useful when students need to distinguish between how fast something moves and where it is moving. (Analyze)
+- **Velocity**: The speed and direction an object is moving. This term is especially useful when students need to distinguish between how fast something moves and where it is moving. (Join the Team)
 
 # W
 

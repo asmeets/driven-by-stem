@@ -57,6 +57,8 @@ One of the strongest features of the experience is that it connects gameplay to 
 - operations and systems roles
 - sustainability-focused decision-making
 
+Nine named roles appear across the six stages, each attached to a decision the student makes rather than to a slide about jobs. Their routes into the work, which cover self-taught, two-year, and four-year pathways, are on the [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) page and are useful evidence in a grant or program report.
+
 ## Practical Fit for Planning
 
 This experience works best when standards are used to frame:

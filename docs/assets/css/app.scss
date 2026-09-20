@@ -3,83 +3,275 @@
 
 @import "main";
 
+// Driven by STEM, enabled by Microsoft.
+// Colours are taken from the skillmap itself so the guide and the game read as
+// one thing: black chrome, the racing yellow as the accent, and a blue that
+// holds its contrast against white for body links.
+$dbs-black: #0d0d0d;
+$dbs-yellow: #ffd84d;
+$dbs-ink: #1c1c1c;
+$dbs-muted: #5d5d5d;
+$dbs-rule: #e2e2e2;
+$dbs-link: #1157a6;
+$dbs-wash: #f6f7f9;
+
+// ---------------------------------------------------------------- chrome ---
+
 .navbar-start {
   display: none !important;
 }
 
-.hero.is-primary {
-  background-color: #000 !important;
-  background-image: unset !important;
-  color: #fff !important;
-}
-
-.hero.is-primary.is-bold {
-  background-color: #000 !important;
-  background-image: unset !important;
-  color: #fff !important;
-}
-
 .navbar.is-primary {
-  background-color: #888;
-  color: #000;
+  background-color: $dbs-black;
+  color: #fff;
+
+  .navbar-item,
+  .navbar-brand .navbar-item {
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+}
+
+.hero.is-primary,
+.hero.is-primary.is-bold {
+  background-color: $dbs-black !important;
+  background-image: unset !important;
+  color: #fff !important;
+  border-bottom: 5px solid $dbs-yellow;
 }
 
 .hero.is-medium .hero-body {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
+  padding-top: 2.75rem;
+  padding-bottom: 2.75rem;
 }
 
 .hero .title.is-2 {
   margin-bottom: 0;
+  font-weight: 700;
+  letter-spacing: -0.015em;
 }
+
+// ------------------------------------------------------------- typography ---
+
+.educator-page-main {
+  color: $dbs-ink;
+  line-height: 1.65;
+
+  h2 {
+    margin-top: 2.5rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid $dbs-yellow;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  h3 {
+    margin-top: 2rem;
+    font-weight: 700;
+  }
+
+  h4,
+  h5 {
+    margin-top: 1.5rem;
+    color: $dbs-muted;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.82rem;
+  }
+
+  p,
+  li {
+    font-size: 1.02rem;
+  }
+
+  ul,
+  ol {
+    margin-left: 1.4em;
+  }
+
+  li + li {
+    margin-top: 0.35rem;
+  }
+
+  a {
+    color: $dbs-link;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+
+    &:hover {
+      color: $dbs-black;
+      background: $dbs-yellow;
+      text-decoration: none;
+    }
+  }
+
+  strong {
+    color: $dbs-black;
+  }
+
+  code {
+    background: $dbs-wash;
+    border: 1px solid $dbs-rule;
+    border-radius: 4px;
+    padding: 0.08em 0.35em;
+    color: #9a2c2c;
+    font-size: 0.92em;
+  }
+
+  blockquote {
+    border-left: 4px solid $dbs-yellow;
+    background: $dbs-wash;
+    padding: 0.9rem 1.1rem;
+    margin: 1.4rem 0;
+  }
+}
+
+// ----------------------------------------------------------------- tables ---
+// Lesson plans and pacing live in tables, so they carry most of the weight.
+
+.educator-page-main table {
+  width: 100%;
+  margin: 1.4rem 0;
+  border-collapse: collapse;
+  font-size: 0.97rem;
+
+  thead th {
+    background: $dbs-black;
+    color: #fff;
+    text-align: left;
+    font-weight: 600;
+    padding: 0.6rem 0.75rem;
+    border: none;
+  }
+
+  tbody td {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid $dbs-rule;
+    vertical-align: top;
+  }
+
+  tbody tr:nth-child(even) {
+    background: $dbs-wash;
+  }
+}
+
+// ------------------------------------------------------------- checklists ---
+// Materials & Setup and the dry run are checkbox lists; keep them scannable.
+
+.educator-page-main li input[type="checkbox"] {
+  margin-right: 0.5rem;
+  transform: scale(1.15);
+  accent-color: $dbs-black;
+}
+
+.educator-page-main ul:has(input[type="checkbox"]) {
+  list-style: none;
+  margin-left: 0;
+
+  li {
+    padding: 0.2rem 0;
+  }
+}
+
+// ---------------------------------------------------------------- sidebar ---
 
 .educator-page-shell {
   display: flex;
-  gap: 2rem;
+  gap: 2.5rem;
   align-items: flex-start;
 }
 
 .educator-page-main {
   flex: 1 1 34rem;
   min-width: 0;
+  max-width: 48rem;
 }
 
 .educator-page-nav {
-  flex: 0 0 15rem;
+  flex: 0 0 16rem;
   width: 100%;
-  max-width: 15rem;
-  padding: 1rem 1.1rem;
-  border: 1px solid #c8c8c8;
-  border-radius: 0.75rem;
-  background: #f7f7f7;
+  max-width: 16rem;
+  padding: 1.25rem 1.25rem 1rem;
+  border: 1px solid $dbs-rule;
+  border-top: 4px solid $dbs-yellow;
+  border-radius: 0.5rem;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
   position: sticky;
   top: 1rem;
+  font-size: 0.95rem;
 }
 
 .educator-page-nav-label {
-  margin: 0 0 0.35rem 0;
-  font-size: 0.85rem;
-  letter-spacing: 0.04em;
+  margin: 1.25rem 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
   text-transform: uppercase;
+  color: $dbs-muted;
+
+  &:first-child {
+    margin-top: 0;
+  }
 }
 
 .educator-page-nav-list {
-  margin-left: 1em !important;
-  padding-left: 0;
+  margin: 0 !important;
+  padding: 0;
   list-style: none !important;
+
+  li {
+    margin: 0;
+    line-height: 1.35;
+  }
+
+  a,
+  .is-current {
+    display: block;
+    padding: 0.32rem 0.55rem;
+    border-left: 3px solid transparent;
+    border-radius: 0 3px 3px 0;
+    text-decoration: none;
+  }
+
+  a {
+    color: $dbs-link;
+
+    &:hover {
+      background: $dbs-wash;
+      border-left-color: $dbs-rule;
+      color: $dbs-black;
+    }
+  }
+
+  .is-current {
+    border-left-color: $dbs-yellow;
+    background: $dbs-wash;
+    color: $dbs-black;
+    font-weight: 700;
+  }
 }
 
-.educator-page-nav-list li {
-  margin: 0.35rem 0;
+.educator-page-nav-links a {
+  color: $dbs-ink;
+  font-weight: 600;
 }
 
 @media (max-width: 960px) {
   .educator-page-shell {
     flex-direction: column;
+    gap: 1.5rem;
   }
 
   .educator-page-nav {
     position: static;
-    width: 100%;
+    max-width: 100%;
+  }
+
+  .educator-page-main {
+    max-width: 100%;
   }
 }

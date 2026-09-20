@@ -14,6 +14,6 @@ For readers who are new to the project, the [Quick Start](#quick-start) section 
 1. Read the [About Driven by STEM]({{ site.baseurl }}/educators/about/) page for the short version of what the project is and why it works.
 2. Review [Materials & Setup]({{ site.baseurl }}/educators/requirements/) so the room, devices, and links are ready before learners arrive.
 3. Open [Goals]({{ site.baseurl }}/educators/goals/) and [Foundations]({{ site.baseurl }}/educators/foundations/) to frame the learning and the tradeoff model.
-4. Use [Agenda]({{ site.baseurl }}/educators/agenda/) and [Run of Show]({{ site.baseurl }}/educators/run-of-show/) when you are preparing to deliver the session live.
+4. Use [Agenda]({{ site.baseurl }}/educators/agenda/) and [In the Classroom]({{ site.baseurl }}/educators/in-the-classroom/) when you are preparing to deliver the session live.
 5. Skim [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) for the nine roles students meet and the question to ask as each stage ends.
 6. Use [Definitions]({{ site.baseurl }}/educators/definitions/) during prep or follow-up, and keep [Accessibility]({{ site.baseurl }}/educators/accessibility/) and [Assessment & Reflection]({{ site.baseurl }}/educators/feedback/) nearby during facilitation.

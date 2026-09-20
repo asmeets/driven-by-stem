@@ -1,11 +1,11 @@
 ## Quick Links
 
-- 🎮 **Play the Game:** https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap
-- 📖 **Project Documentation:** https://asmeets.github.io/driven-by-stem/
+- 🎮 **Play the Game:** https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap-preview
+- 📖 **Teacher's Guide:** https://asmeets.github.io/driven-by-stem/
 
 ---
 
-For complete project overview, learning goals, facilitator notes, and contribution guidelines, visit the [project website](https://asmeets.github.io/driven-by-stem/).
+The teacher's guide holds the lesson plans, the six-stage pacing, the nine career lenses, and the classroom supports. Contributor notes, including how tutorials are versioned and how a release is cut, are in this README.
 
 ## Editing a tutorial
 

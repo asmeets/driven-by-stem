@@ -17,7 +17,7 @@ The core experience is designed to be delivered as a single, guided skillmap ses
 
 This format works for most classrooms, workshops, and activations. Learners follow the MakeCode Arcade pathway in order and build one concept at a time. This path gives the clearest student on-ramp and keeps the experience cumulative across stages.
 
-Facilitation supports are built into the skillmap, and the [Run of Show]({{ site.baseurl }}/educators/run-of-show/) notes provide specific pause points, discussion prompts, and remix moments.
+Facilitation supports are built into the skillmap, and the [In the Classroom]({{ site.baseurl }}/educators/in-the-classroom/) notes provide specific pause points, discussion prompts, and remix moments.
 
 ## Stage-Based Remix Ideas
 
@@ -71,7 +71,7 @@ Test asks students to launch the test track, run a baseline, change exactly one 
 
 - change a single variable other than `driveSpeed`, such as an efficiency value, and predict the comparison before running
 - run a third test, then decide which two runs the comparison should hold
-- record the **Session over** report after each run and check it against what the comparison screen says
+- record the run report after each run and check it against what the comparison screen says
 - add a line to the menu button readout so the baseline can be reread without driving again
 
 **Facilitator prompts**
@@ -159,7 +159,7 @@ The session can end at the skillmap, but it does not have to. When more time is 
 ### Extend the Career Conversation
 
 - ask learners which team role they want to learn more about and what part of the game made them choose it
-- invite students to connect one stage of the experience to one real job, such as software engineer, strategist, telemetry analyst, designer, or sustainability lead
+- invite students to connect one stage of the experience to one real job, using the nine on the [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) page rather than a general list
 - use the reflection screens from Race and Reflect as a starting point for a short career discussion rather than a separate presentation
 
 ### Use the Session as a Launch Point for Further Learning
@@ -178,7 +178,7 @@ The session can end at the skillmap, but it does not have to. When more time is 
 ### Share the Project Beyond the Session
 
 - share the repository link with educators who want to inspect the project structure more deeply
-- use the project wiki for contributor-facing workflow notes, planning context, and implementation details
+- use the repository's README for contributor-facing workflow notes, including how tutorials are versioned and how a release is cut
 - point interested learners or collaborators toward the full repository if they want to explore how the tutorials connect to the underlying project systems
 
 ### Simple Closing Moves if Time Is Short
