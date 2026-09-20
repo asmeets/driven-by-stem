@@ -24,9 +24,12 @@ That means the most useful facilitation moves are usually short:
 
 Learners move through a guided skillmap rather than opening a blank coding workspace.
 
-- In **The Garage**, they enter the mission, make setup choices, and run a first shakedown.
-- In **On the Road**, they feel those choices in motion, encounter pit stop briefings, and adapt to changing conditions.
-- In **The Finish Line**, they apply what they have learned, review the results, and connect the experience back to careers and next steps.
+- In **Join the Team**, they build the car, name the team, and decide how the dashboard reads.
+- In **Design**, they predict what more speed will cost, write that tradeoff as a rule, and test it on the garage bench.
+- In **Test**, they run a baseline, change exactly one variable, and compare the two runs.
+- In **Analyze**, they drive a full race session and build the systems that record what happened.
+- In **Decide**, the weather turns and they make pit and grip calls before knowing how the race ends.
+- In **Race and Reflect**, every system runs at once, and the result is read back as decisions, roles, and careers.
 
 This structure matters because it keeps the session coherent. Students are not collecting disconnected activities. They are moving through one arc that starts with curiosity, becomes active decision-making, and ends with reflection.
 
@@ -36,8 +39,8 @@ Racing gives educators a concrete way to talk about engineering without making t
 
 - **Tradeoffs are visible:** students can feel the difference between raw speed, clean control, and long-run efficiency.
 - **Feedback is immediate:** a setup change shows up quickly in movement, score, collisions, timing, or player confidence.
-- **Roles make sense:** software engineers, strategists, telemetry analysts, designers, and sustainability leads all have a believable place in the conversation.
-- **Iteration feels natural:** test runs, shakedowns, pit stops, and changing conditions all support a build-test-improve rhythm.
+- **Roles make sense:** operations leads, designers, software engineers, performance and test engineers, telemetry analysts, strategists, sustainability leads, and systems engineers all have a believable place in the conversation.
+- **Iteration feels natural:** baselines, controlled comparisons, pit calls, and changing conditions all support a build-test-improve rhythm.
 
 ## Who It Is For
 

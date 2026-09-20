@@ -21,14 +21,14 @@ show_sidebar: false
       <li>{% if page.educator_nav == "definitions" %}<span aria-current="page"><strong>Definitions</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/definitions/">Definitions</a>{% endif %}</li>
       <li>{% if page.educator_nav == "agenda" %}<span aria-current="page"><strong>Agenda</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/agenda/">Agenda</a>{% endif %}</li>
       <li>{% if page.educator_nav == "run-of-show" %}<span aria-current="page"><strong>Run of Show</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/run-of-show/">Run of Show</a>{% endif %}</li>
+      <li>{% if page.educator_nav == "career-lenses" %}<span aria-current="page"><strong>Career Lenses</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/career-lenses/">Career Lenses</a>{% endif %}</li>
       <li>{% if page.educator_nav == "supplementals" %}<span aria-current="page"><strong>Remix & Extensions</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/supplementals/">Remix & Extensions</a>{% endif %}</li>
       <li>{% if page.educator_nav == "feedback" %}<span aria-current="page"><strong>Assessment & Reflection</strong></span>{% else %}<a href="{{ site.baseurl }}/educators/feedback/">Assessment & Reflection</a>{% endif %}</li>
     </ul>
 
     <p class="educator-page-nav-label">Links</p>
     <ul class="educator-page-nav-list">
-      <li><a href="https://tinyurl.com/miami-stem">Launch Short Link</a></li>
-      <li><a href="https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap">Full Skillmap Link</a></li>
+      <li><a href="{{ site.skillmap_url }}">Launch the Skillmap</a></li>
       <li><a href="https://github.com/asmeets/driven-by-stem">GitHub Repository</a></li>
     </ul>
   </aside>

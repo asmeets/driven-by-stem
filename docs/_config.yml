@@ -4,6 +4,10 @@ description: "A classroom-ready MakeCode Arcade racing game about engineering tr
 url: "https://asmeets.github.io"
 baseurl: "/driven-by-stem"
 
+# Where the live experience lives. Every page links through this, so moving the
+# skillmap is one edit here rather than a hunt through the guide.
+skillmap_url: "https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap-preview"
+
 # Theme Settings
 remote_theme: chrisrhymes/bulma-clean-theme@v0.14.0
 

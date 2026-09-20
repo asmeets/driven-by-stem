@@ -36,10 +36,18 @@ Reflection works best when it is distributed across the experience instead of sa
 
 Short spoken pauses work best when students have just made a visible change.
 
-- after the first Garage setup choice, ask what students predict the choice will help or hurt
-- after the Garage Shakedown, ask what result matched the prediction and what did not
-- during On the Road, pause at one pit stop, collision, or weather shift and ask what changed in the decision-making
-- after the Final Challenge, ask which score lens mattered most and why
+- after the first setup choice in Design, ask what students predict the choice will help or hurt
+- after the comparison in Test, ask what result matched the prediction and what did not
+- during Analyze or Decide, pause at one pit stop, collision, or weather shift and ask what changed in the decision-making
+- after the final race in Race and Reflect, ask which score lens mattered most and why
+
+### Reading the Session Report
+
+Every race session ends with a **Session over** report showing time, score, energy, and top speed, whether or not the team has built their own summary yet. It is the most consistent piece of evidence in the session.
+
+- ask a team to read one number aloud and say what decision produced it
+- compare two teams' reports from the same stage and ask what differed in their setups
+- have students record the same three numbers each time, so the third session can be compared to the first
 
 ### During Replay or Remix
 
@@ -76,7 +84,7 @@ Student work in this experience can be assessed through observation, short expla
 
 ### What Counts as Student Work Here
 
-- a setup choice made in the Garage
+- a setup choice made in Design
 - a gameplay decision explained during a run
 - a replay comparison between two versions
 - a short spoken explanation of a tradeoff

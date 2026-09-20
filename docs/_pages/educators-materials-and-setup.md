@@ -11,7 +11,7 @@ The aim is to extend the experience in ways that stay concrete, teachable, and c
 
 ## Recommended Path
 
-The core experience is designed to be delivered as a single, guided skillmap session. This path gives the clearest student on-ramp and keeps the experience cumulative across stages. Students move through the Garage, On the Road, and Finish Line stages in order, making choices, testing them, and reflecting on what changed at each step. They can choose to login with a Google, Microsoft, or Clever account to save their progress and remix the project after the session, but **no login is required to experience the core learning**.
+The core experience is designed to be delivered as a single, guided skillmap session. This path gives the clearest student on-ramp and keeps the experience cumulative across stages. Students move through Join the Team, Design, Test, Analyze, Decide, and Race and Reflect in order, making choices, testing them, and reflecting on what changed at each step. They can choose to login with a Google, Microsoft, or Clever account to save their progress and remix the project after the session, but **no login is required to experience the core learning**.
 
 ### Guided Skillmap Session
 
@@ -23,77 +23,125 @@ Facilitation supports are built into the skillmap, and the [Run of Show]({{ site
 
 The strongest remix moments in this project come directly from the tutorials learners have already completed. Each one points to a small, visible mechanic students can change without losing the full thread of the experience.
 
-### The Garage
+Two things are worth knowing before choosing a remix. All six stages drive the same pseudo-3D moving road, and anything that belongs on that road is placed with the `put [sprite] on the track ahead` block, so obstacles, pit markers, and puddles are all remixed the same way. Every race session also ends with a **Session over** report showing time, score, energy, and top speed, which makes it the one readout a team can compare across every stage without building anything first.
 
-The Garage tutorials ask students to set the mission, build the car, tune `driveSpeed`, create efficiency variables, add a tradeoff rule, choose a role lens, and launch the Garage Shakedown test track.
+Race sessions stage themselves. The car rolls to the line, five lights count down, and a thirty-second countdown starts when they go out, twenty-five seconds in Decide. There is no retry or reset button in student code to remix, and clearing a device between groups is a facilitator action.
 
-**Specific examples from the tutorials**
+### Join the Team
 
-- change the `driveSpeed` value from Setup and Tradeoffs and compare how the car feels during Garage Shakedown
-- adjust the tradeoff rule that links speed to efficiency cost
-- improve the mission message or first feedback moment in Mission Briefing so new players understand the challenge faster
-- add or revise the retry button in Garage Shakedown so teams can rerun tests more easily
-
-**Facilitator prompts**
-
-- What do you predict will happen if we make the car faster before the shakedown?
-- What improved after your change, and what became harder?
-- Does this remix make the game clearer, faster, fairer, or more strategic?
-- Which role would care most about this decision: performance engineer, strategist, or software engineer?
-
-**Three remix levels**
-
-- **Level 1: Quick Tune**: Change one visible number such as `driveSpeed` or an efficiency value, then rerun the shakedown.
-- **Level 2: Tradeoff Builder**: Adjust the rule that increases efficiency cost when speed goes up, then explain whether the balance feels more fair or more risky.
-- **Level 3: Test Engineer Challenge**: Change the setup values and also improve the shakedown feedback, such as retry flow, unit display, or a clearer readout, so another team can compare results more easily.
-
-### On the Road
-
-The On the Road tutorials ask students to load saved setup values, spawn obstacles, handle collisions, reward clean driving, create pit stop choices, switch to rain after a timer, reduce grip in wet conditions, add puddle hazards, and reward adaptation.
+Join the Team asks students to show the mission, build the car, drive it with the arrows, name the team and the car, choose the dashboard units, and prove those units are wired with a system check on the menu button.
 
 **Specific examples from the tutorials**
 
-- change the clean-driving reward logic in Hit the Track so careful driving matters more or less
-- adjust how often obstacles appear or how punishing collisions feel
-- revise the pit stop prompt text or pit reward so the choice feels more strategic
-- change the rain timer, puddle challenge, or adaptation reward in Changing Conditions
+- rewrite the mission splash so a new player understands the challenge before the car moves
+- change the team name and car name so the profile screen reads as that team's rather than the default
+- switch the dashboard units between mph and km/h, then run the system check again and watch the readout follow
+- add a screen to the menu button so the check reports one more setting the team cares about
 
 **Facilitator prompts**
 
-- Is this remix rewarding speed, control, or strategy the most right now?
-- What should a telemetry analyst measure after this change?
-- If the rain starts earlier or later, how does that change what counts as a smart choice?
-- Did your remix make the game easier to understand or just harder to survive?
+- Which units does your driver actually think in?
+- What does a new player need on screen before the car moves?
+- How would you prove a setting is wired rather than typed?
+- Which role would care most about how this dashboard reads?
 
-**Three remix levels**
+### Design
 
-- **Level 1: Driver Challenge**: Change one reward or penalty, such as clean-driving points or collision cost, and test one run.
-- **Level 2: Strategy Challenge**: Adjust a pit stop or weather mechanic, then explain how the best decision changes for the player.
-- **Level 3: Systems Challenge**: Combine two connected changes, such as obstacle frequency plus collision penalty or rain timing plus grip reduction, then compare whether the track still feels fair and readable.
-
-### The Finish Line
-
-The Finish Line tutorials ask students to run a combined final challenge, track collisions and pit stops, save run data, show a one-screen review, choose a next-test focus, connect results to a role, and build a Winners Circle screen with a career lens and CS takeaway.
+Design asks students to create `driveSpeed`, connect it to the car, add efficiency and cost variables, write the tradeoff rule that fires above 100, run the garage bench, and choose a role lens.
 
 **Specific examples from the tutorials**
 
-- change the final challenge balance between obstacle risk and pit stop recovery
-- revise the one-screen summary in Reflect and Review so results are easier to read
-- improve the next-test focus or role-connection text so it sounds more specific and helpful
-- update the Winners Circle message, celebration scene, or CS takeaway so the ending feels more personal and motivating
+- move the threshold in the tradeoff rule off 100 and find the new speed where the race time turns
+- change what the rule costs, such as a larger efficiency drop or a different multiplier on mistakes
+- run the bench at 90 and again at 110, write both race times down, then argue for a third value
+- switch the role lens and read the same bench report through a different job
 
 **Facilitator prompts**
 
-- Does this remix help players understand their result more clearly?
-- What evidence from the run should show up in the summary?
-- If you changed the closing message, who is it helping most: a confident player, a frustrated player, or a first-time coder?
-- What should the player test next after reading this screen?
+- Your `driveSpeed` is a top speed in your own units. What does 90 mean on your dashboard?
+- Why would the slower car finish twenty laps first?
+- Where should the threshold sit if the goal were the fewest pit stops rather than the lowest race time?
+- Which of the four lenses would sign off on your setup, and which one would argue?
 
-**Three remix levels**
+### Test
 
-- **Level 1: Reflection Refresh**: Change one summary label, prompt, or closing sentence so the result is easier to interpret.
-- **Level 2: Evidence Upgrade**: Add or revise one tracked result, such as collisions or pit stops, and make sure it appears in the review.
-- **Level 3: Experience Designer Challenge**: Improve both the review screen and the Winners Circle message so the ending explains the result, names a career connection, and gives a useful next-test idea.
+Test asks students to launch the test track, run a baseline, change exactly one variable, run again, and read the two runs side by side.
+
+**Specific examples from the tutorials**
+
+- change a single variable other than `driveSpeed`, such as an efficiency value, and predict the comparison before running
+- run a third test, then decide which two runs the comparison should hold
+- record the **Session over** report after each run and check it against what the comparison screen says
+- add a line to the menu button readout so the baseline can be reread without driving again
+
+**Facilitator prompts**
+
+- What is your baseline, and where is it written down?
+- What did you change, and what did it cost?
+- Which number moved the most, and is that the one you expected?
+- What would changing a second variable have done to your ability to explain the result?
+
+### Analyze
+
+Analyze asks students to start a timed session, add two collision counters, spawn traffic on a `game.onUpdateInterval`, charge every collision to the car's energy, reward clean driving, and handle the end of the session.
+
+**Specific examples from the tutorials**
+
+- change the spawn interval on the traffic block so the road is busier or emptier
+- change what a collision costs in energy, then drive the same session and read the count against the damage
+- change the clean-driving window or what a clean stretch earns, so patience is worth more or less
+- extend the end-of-session report so it shows something the built-in **Session over** report does not
+
+**Facilitator prompts**
+
+- How many hits do you think you will take, and does your remix change that answer?
+- Is this remix rewarding speed, control, or patience the most?
+- Which number would you show a teammate to prove the session went well?
+- What did the built-in report already tell you, and what did you have to build yourself?
+
+### Decide
+
+Decide asks students to switch to the weather session, count pit stops, put pit markers on the road, decide what a stop is worth to each setup, write the grip rule, and add puddles that follow the rain.
+
+**Specific examples from the tutorials**
+
+- change how often pit markers arrive so the pit window is easier or harder to catch
+- change what a stop is worth to each setup so Pace and Balance trade places
+- change the grip penalty so rain costs the car more or less of its top speed
+- change how often puddles appear, remembering that they follow the rain into the final race as well
+
+**Facilitator prompts**
+
+- Did you pit? What made you decide, and how early did you decide it?
+- Your car is slower in the rain. Is that the game punishing you, or your own rule working?
+- If the rain arrived later, which call would change?
+- This session runs twenty-five seconds instead of thirty. What does the shorter clock do to the decision?
+
+### Race and Reflect
+
+Race and Reflect asks students to run the final race with faster obstacles and pit markers still on the road, score it, save the run, show a summary, choose a next-test focus, and connect their own decisions to a role and a career.
+
+**Specific examples from the tutorials**
+
+- change the final race's balance between obstacle risk and pit stop recovery
+- change the scoring rules so a clean race or a well-used pit lane is worth more
+- rewrite the summary so the result reads as one sentence rather than three numbers
+- revise the next-test focus branches, or the role and career text, so the closing sounds like it is about the student
+
+**Facilitator prompts**
+
+- Which of your systems broke first under pressure?
+- What evidence from the run should appear in the summary?
+- Does this remix help a player understand the result, or only change the score?
+- Which role did your decisions match, and is that the one you expected?
+
+### Three Remix Levels
+
+These levels work at any of the six stages. Choose the stage the team is most curious about, then choose a level.
+
+- **Level 1: Quick Tune**: Change one visible number, such as `driveSpeed`, a spawn interval, or a reward value, then run the stage once and name what moved.
+- **Level 2: Rule Builder**: Change a rule rather than a number, such as the tradeoff threshold, the grip penalty, or what a pit stop is worth to each setup, then explain who the new rule favors.
+- **Level 3: Systems Challenge**: Change two connected things, such as obstacle frequency plus collision cost or rain timing plus grip, then decide whether the race is still fair and readable and make the end-of-session report say so.
 
 The best remix prompts are the ones that can be explained in a few sentences, pointed to in one small part of the project, and tested quickly in the simulator.
 
@@ -112,7 +160,7 @@ The session can end at the skillmap, but it does not have to. When more time is 
 
 - ask learners which team role they want to learn more about and what part of the game made them choose it
 - invite students to connect one stage of the experience to one real job, such as software engineer, strategist, telemetry analyst, designer, or sustainability lead
-- use the reflection screens from the Finish Line as a starting point for a short career discussion rather than a separate presentation
+- use the reflection screens from Race and Reflect as a starting point for a short career discussion rather than a separate presentation
 
 ### Use the Session as a Launch Point for Further Learning
 

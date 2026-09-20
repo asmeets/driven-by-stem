@@ -37,7 +37,7 @@ In practice, that means the first goal is a visible success. A moving car, a cha
 
 ### Career Connection Through Real Roles
 
-Roles such as software engineer, strategist, telemetry analyst, designer, and sustainability lead become easier to understand when learners use that kind of thinking in the game. Career connections land best when they are tied to a specific decision students just made.
+Nine roles appear across the six stages: operations lead, UX designer, software engineer, performance engineer, test engineer, telemetry analyst, strategist, sustainability lead, and systems engineer. Each one is attached to a decision the student just made rather than to a slide about jobs. Their routes into the work, and a question to ask as each stage ends, are on the [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) page.
 
 The strongest moment is usually not "Here is a career fact." It is "You just made the kind of decision this role has to make." That keeps the career connection grounded in action rather than turning it into a separate lecture.
 
@@ -55,15 +55,18 @@ That is why the project prioritizes:
 
 If a learner can re-enter the task after a mistake, explain what changed, and try again, the experience is doing important accessibility work even before a formal accommodation is needed.
 
-## Why the Experience Is Structured in Three Stages
+## Why the Experience Is Structured in Six Stages
 
-The Garage, On the Road, and the Finish Line are not just themed sections. They create a learning arc.
+The six stages are not themed sections. They are one engineering loop, run once, at a scale a student can hold.
 
-- **The Garage** gives learners a quick on-ramp, an early success, and a first setup decision.
-- **On the Road** lets those early decisions play out under pressure through motion, collisions, pit choices, and changing conditions.
-- **The Finish Line** turns the final run into evidence, reflection, and next-step thinking.
+- **Join the Team** gives learners a quick on-ramp, an early success, and a first design decision.
+- **Design** turns a hunch into a prediction and a tradeoff into a rule.
+- **Test** puts that rule under a controlled comparison: one baseline, one change, one honest result.
+- **Analyze** lets the decisions play out under pressure and turns the race into data.
+- **Decide** adds conditions that change, so a call has to be made before the outcome is known.
+- **Race and Reflect** runs every system at once, then reads the result back as decisions, roles, and careers.
 
-This progression matters because it helps students move from curiosity, to action, to interpretation. The skillmap should feel cumulative. Choices made earlier should still matter later.
+This progression matters because it helps students move from curiosity, to action, to interpretation. The skillmap is cumulative by design. The car a student sets up in the first stage is the car they race in the last, and code carries forward with them.
 
 ## The Three Score Lenses
 

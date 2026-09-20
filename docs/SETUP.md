@@ -70,7 +70,7 @@ The built site will be in `docs/_site/`
 - **_pages/educators-*.md** - Individual educator lesson plan sections
 - **_pages/about.md** - About the project
 
-Current educator section names are Summary, Goals, Materials & Setup, Standards, Foundations, Accessibility, Definitions, Agenda, Run of Show, Remix & Extensions, and Assessment & Reflection.
+Current educator section names are About, Goals, Materials & Setup, Standards, Foundations, Accessibility, Definitions, Agenda, Run of Show, Career Lenses, Remix & Extensions, and Assessment & Reflection. The home page is titled Welcome and appears in the nav as Home.
 
 Student-facing guidance is intentionally kept in the MakeCode Arcade skillmap flow rather than in this docs site.
 
@@ -96,7 +96,7 @@ Check the Actions tab in your GitHub repository to see build logs.
 
 ### Missing Images
 
-Images are optional. See `assets/images/README.md` for guidance on adding visual assets.
+Images are optional. Page assets live in `assets/`, which currently holds only `css/app.scss`.
 
 ### Theme Not Loading
 

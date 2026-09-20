@@ -9,7 +9,7 @@ This page serves as the pacing guide for the 90-minute format. It helps with pla
 
 ## 90-Minute Activation
 
-This format is a good fit for a live activation where you want enough time for learners to build across all three stages, talk about tradeoffs, and still leave room for one guided remix or replay moment. The schedule below is detailed enough for planning, but still flexible enough to adjust for crowd energy, device sharing, or short resets between groups.
+This format is a good fit for a live activation where you want enough time for learners to build across all six stages, talk about tradeoffs, and still leave room for one guided remix or replay moment. The schedule below is detailed enough for planning, but still flexible enough to adjust for crowd energy, device sharing, or short resets between groups.
 
 ### 1. Welcome, Device Check, and Team Framing (10 minutes)
 
@@ -23,68 +23,114 @@ The first few minutes set the tone before learners touch the tutorials.
 
 By the end of this segment, learners should know what they are building, how they will work together, and what to do first.
 
-### 2. Stage 1, The Garage (20 minutes)
+### 2. Join the Team (10 minutes)
 
-This segment should move quickly toward a first visible success. Learners are building confidence, making an initial setup choice, and seeing that their decisions will carry forward.
+This segment should move quickly toward a first visible success. Learners meet the team, build the car, and make one design decision that returns later.
 
 - guide students through the opening build steps without letting the room stall on perfect understanding
-- pause briefly for prediction once setup values and tradeoff ideas appear
-- make sure learners reach the Garage Shakedown so they can test the effect of an early choice
-- use the first test result as a compare-and-explain moment, not just a completion checkpoint
+- make sure every team reaches a car that answers the arrows before anything is explained in depth
+- pause on the dashboard units, which are a real choice and not decoration
+- finish on the system check, where students prove the setting is wired rather than typed
 
 What this block is for:
 
 - getting everyone to a playable state
-- helping students connect one code choice to one gameplay outcome
-- setting up the idea that speed, efficiency, and strategy interact rather than stand alone
+- establishing that a choice made here is read back by the game in a later stage
 
 If students need more challenge in this stage:
 
-- ask them to change both speed and efficiency, then explain which tradeoff became more obvious in the shakedown
-- invite them to revise the tradeoff rule so the car feels more balanced or more extreme, then test again
-- have them improve the Garage feedback, such as the mission message, readout, or retry flow, so another player could understand the result faster
+- ask them to change a unit dropdown and predict what the check will report before running it
+- have them write a mission message another team could act on rather than a slogan
 
-### 3. Stage 2, On the Road (25 minutes)
+### 3. Design (12 minutes)
 
-This is the longest work block because it is where students see their earlier decisions in motion and begin making more dynamic judgments.
+This is where the tradeoff arrives. Students make a prediction, write a rule that connects speed to cost, and test it on the garage bench.
 
-- let the game do some of the teaching through movement, collisions, pit stops, and changing conditions
-- pause once students have a visible track moment to name what their earlier setup is helping or hurting
-- use pit stop briefings and weather changes to connect code decisions to real team roles without slowing the room down too much
-- keep learners moving so they experience both the base challenge and the adaptation layer
+- take predictions out loud before anyone runs the bench
+- make sure the tradeoff rule is in place, because every later stage reads the setup it saves
+- use the bench's race time as the first compare-and-explain moment
 
 What this block is for:
 
-- seeing tradeoffs play out under pressure
-- connecting student choices to roles like telemetry analyst, strategist, and sustainability lead
-- giving students enough time to notice that not every strong choice is simply the fastest one
+- separating a prediction from an explanation made after the fact
+- showing that a faster setup can lose a race once pit stops are counted
 
 If students need more challenge in this stage:
 
-- ask them to adjust one reward and one penalty at the same time, then decide whether the track still feels fair
-- invite them to change a pit stop or weather variable and predict how the smartest strategy will shift
-- have them compare two runs and explain whether their remix rewarded speed, control, or long-term consistency most strongly
+- have them try 90, then 100, then 101, and explain why one point of speed changes the race so much
+- invite them to move the rule's threshold and defend the new balance
 
-### 4. Stage 3, The Finish Line (15 minutes)
+### 4. Test (12 minutes)
 
-This section should feel like a culmination, not a rush to the end. Learners bring their prior choices into the final challenge, then use the reflection steps to make sense of the result.
+A controlled comparison: one baseline, one change, one honest result.
 
-- guide students into the final challenge and make sure they understand they are now combining systems they built earlier
-- leave enough room for the one-screen review and reflection steps to matter
-- emphasize evidence from the run, such as collisions, pit choices, or saved results, instead of vague reactions
-- connect the final reflection to next-test thinking and team roles
+- insist the baseline numbers get written down before any code changes
+- keep the change to exactly one variable
+- let the comparison screen do the teaching when the second run ends
 
 What this block is for:
 
-- helping students interpret results, not just finish the tutorial
-- reinforcing that testing and iteration are part of engineering
-- preparing the room for a short remix, replay, or share-out
+- the difference between one run and two
+- seeing that `driveSpeed` is the car's top speed in the team's own units
 
 If students need more challenge in this stage:
 
-- ask them to improve the review so it shows clearer evidence from the run, such as which result mattered most
-- invite them to revise the next-test recommendation so it gives more specific advice instead of a general reflection
-- have them change the Winners Circle or closing message so it connects both to a role and to one concrete code or gameplay decision
+- ask them to predict the new time before the second run, then check by how much they were off
+- have them explain which number they would trust if two runs disagreed
+
+### 5. Analyze (12 minutes)
+
+Students drive a full race session and build the systems that record what happened.
+
+- have every team say a collision guess out loud before the session starts
+- make sure the counters are in place before the traffic spawner, or there is nothing to count
+- read the **Session over** report against the guess
+
+What this block is for:
+
+- turning a race into numbers a team can act on
+- treating an early finish on empty energy as data rather than failure
+
+If students need more challenge in this stage:
+
+- have them change the spawn interval and explain the effect on both score and energy
+- ask them to add a second reward rule and justify its value
+
+### 6. Decide (12 minutes)
+
+Conditions change mid-session, and students write the rules that respond.
+
+- watch for the moment the rain arrives, and point at the speed readout falling
+- make sure the pit call is built before the pit markers matter
+- if time allows, run the session twice, once taking every stop and once skipping them all
+
+What this block is for:
+
+- making a call before anyone knows how it ends
+- seeing a rule the student wrote change how the car behaves
+
+If students need more challenge in this stage:
+
+- have them compare strategy points between the two runs and argue for one approach
+- ask whether a Pace setup would make the same call as a Balance setup
+
+### 7. Race and Reflect (17 minutes)
+
+Everything runs at once, and then the run gets read back as a set of decisions.
+
+- protect the last four steps; they are the payoff of the whole session
+- expect the final race to expose whichever system is weakest
+- close on the role and career connection while the race is still fresh
+
+What this block is for:
+
+- integration, where systems built separately have to work together
+- connecting the student's own decisions to real jobs
+
+If students need more challenge in this stage:
+
+- ask which system broke first and what they would test to fix it
+- have them write a next-test focus another team could actually run
 
 ### 5. Remix, Share, or Replay (15 minutes)
 
@@ -97,9 +143,9 @@ This time works best as one manageable extension rather than a full open-ended b
 
 Good remix choices for this block include:
 
-- adjusting speed or efficiency values from The Garage
-- changing collision, reward, or weather pressure from On the Road
-- improving summary language or next-test advice from The Finish Line
+- adjusting speed, efficiency, or the tradeoff threshold from Design
+- changing traffic rate, reward rules, or pit timing from Analyze and Decide
+- improving the summary language or next-test advice from Race and Reflect
 
 ### 6. Closing Reflection and Transition (5 minutes)
 
@@ -114,8 +160,8 @@ By the end of the session, learners should leave with a clear sense that coding 
 
 ## Planning Notes for the 90-Minute Format
 
-- build in a small time buffer inside the On the Road or Remix block in case device login, pairing, or navigation takes longer than expected
-- if the room is moving slowly, prioritize reaching one complete run through all three stages over squeezing in every discussion prompt
+- build in a small time buffer inside Analyze or the remix block in case device login, pairing, or navigation takes longer than expected
+- if the room is moving slowly, prioritize reaching Race and Reflect over squeezing in every discussion prompt, since that is where the session's own reflection lives
 - if the room is moving quickly, use the extra time for replay and compare rather than adding a brand-new task
 - if you are supporting a live activation with multiple adults, align ahead of time on who handles launch support, who circulates for debugging, and who leads the closing share-out
 
@@ -126,18 +172,20 @@ When the full 90-minute format is not available, the safest cut is to reduce ext
 ### 60-Minute Classroom Version
 
 - 8 minutes for welcome, device check, and team framing
-- 15 minutes for The Garage
-- 18 minutes for On the Road
-- 12 minutes for The Finish Line
-- 7 minutes for closing reflection
+- 8 minutes for Join the Team
+- 10 minutes for Design
+- 10 minutes for Test
+- 8 minutes for Analyze
+- 8 minutes for Decide
+- 8 minutes for Race and Reflect
 
-This version keeps all three stages. The first cut should be the dedicated remix block, followed by shorter whole-group pauses inside each stage.
+This version keeps all six stages. The first cut should be the dedicated remix block, followed by shorter whole-group pauses inside each stage.
 
 ### 30-Minute Event-Floor or Demo Version
 
 - 5 minutes for launch and role setup
-- 10 minutes for a guided path through The Garage into one visible shakedown result
-- 10 minutes for one On the Road moment with a single pit stop, obstacle, or weather comparison
-- 5 minutes for one brief reflection and career connection
+- 8 minutes for Join the Team, ending on a car that moves and a dashboard in their own units
+- 10 minutes for Design and the bench result
+- 7 minutes for Test, ending on the comparison of two runs
 
-This version should prioritize one visible setup choice, one test result, and one reflection question. The Finish Line can be omitted in this format if time is too tight, but the session should still end with a short compare-and-explain moment.
+This version should prioritize one visible setup choice, one test result, and one reflection question. Analyze, Decide and Race and Reflect are the cut in this format, but the session should still end with a short compare-and-explain moment and one career connection.

@@ -21,10 +21,12 @@ The most important pattern to protect across the session is simple: one clear ac
 | Time | Block | Main goal | Protect this moment | If time tight |
 | --- | --- | --- | --- | --- |
 | 10 min | Welcome and launch | get everyone into the skillmap quickly | clear partner roles and a short tradeoff explanation | shorten the opening talk before cutting the first build moment |
-| 20 min | The Garage | reach a first visible success | one prediction before the shakedown and one compare-and-explain pause after it | keep the first test even if other discussion shrinks |
-| 25 min | On the Road | connect setup choices to pressure, change, and roles | one pause during motion, pit strategy, or changing conditions | keep one evidence-based comparison instead of multiple whole-group stops |
-| 15 min | The Finish Line | turn the final run into evidence and reflection | one question about what mattered most and one next-test idea | cut longer reflection before cutting interpretation |
-| 15 min | Remix or replay | let learners act on what they learned | one small change plus one replay or explanation | keep it to one visible revision |
+| 10 min | Join the Team | a car that moves and a dashboard in their own units | the system check, where a setting is proved rather than assumed | leave the team and car names at their defaults |
+| 12 min | Design | a prediction said out loud before the bench runs | the prediction, taken before any result appears | cut the role lens discussion, not the tradeoff rule |
+| 12 min | Test | two runs that differ by exactly one thing | writing the baseline down before changing code | accept one comparison instead of several |
+| 12 min | Analyze | a race turned into numbers | the guess before the session, read against the count after it | keep the collision counter, cut the clean-driving reward |
+| 12 min | Decide | a call made before the outcome is known | the moment the rain arrives and the car slows | run the session once instead of twice |
+| 17 min | Race and Reflect | every system at once, then what it says about the student | the last four steps, where the result becomes a career connection | cut the remix block first, never the reflection |
 | 5 min | Closing | capture learning without losing energy | one choice, one effect, one next step | use a fast verbal share instead of a written close |
 
 ## Before Learners Begin
@@ -75,13 +77,17 @@ Short connections like these work well:
 - when students explain a result, name testing, iteration, and evidence-based decision-making
 - when students debate which choice is better, name tradeoffs and engineering priorities
 
-Useful career lenses to bring in during discussion:
+Nine people work on the team students join, and each one is attached to a decision the student makes rather than to a talk about jobs. One opens each stage and one closes it:
 
-- **Software Engineer**: controls, logic, reliability, and how the system responds to events
-- **Data/Telemetry Analyst**: reading results, noticing patterns, and deciding what to change next
-- **Strategist**: timing, risk, consistency, and decision-making under pressure
-- **UX/Game Designer**: clarity, difficulty balance, and how the player experiences the system
-- **Sustainability Lead**: efficiency, resource-aware choices, and long-term performance rather than short-term gain
+- **Kai, Operations Lead** and **Drew, UX Designer**: Join the Team, where the dashboard is set up and then proved
+- **Riley, Performance Engineer**: Design, where speed is traded against efficiency
+- **Jordan, Test Engineer**: Test, where one variable changes and two runs get compared
+- **Casey, Telemetry Analyst**: Analyze, where a race becomes numbers
+- **Morgan, Strategist** and **Avery, Sustainability Lead**: Decide, where the call is made before the outcome is known
+- **Taylor, Systems Engineer**: Race and Reflect, where everything runs at once
+- **Sam, Software Engineer** is the build lens. Sam voices the tutorial hints, and software engineer is one of four role lenses students choose in Design.
+
+Their routes into the work, and a question to ask the room as each stage ends, are on the [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) page. Read one aloud while the stage is still fresh rather than saving them all for the end.
 
 ## 90-Minute Run of Show
 
@@ -137,402 +143,294 @@ Get learners into the activity quickly, reduce uncertainty, and establish how th
 - for students with some coding experience, ask them to notice which variables or blocks seem most important before they start changing them
 - for students with stronger coding experience, tell them early that there will be chances to tune, compare, and justify more advanced changes once the core path is working
 
-### 2. Stage 1, The Garage
+### 2. Join the Team (10 minutes)
 
 #### Goal
 
-Get students to a first visible success, then help them understand that early setup choices will carry forward.
+Every learner reaches a car that answers the controls and a dashboard that reads in units they chose.
 
 #### Priorities
 
-- the project starts with a quick on-ramp
-- setup values matter because they create tradeoffs
-- the first shakedown is not a final judgment; it is a test
+- a first visible success comes before any explanation of how the code works
+- the units choice is a real decision, and both later stages read it back
+- Kai opens the stage; Drew closes it on the units decision
 
 #### Live moves
 
 ##### Opening build steps
 
-- keep students moving through the first steps so they reach a playable state quickly
-- do not over-explain every block while learners are still trying to orient themselves
-- point out the mission, car setup, and role lens as parts of one connected system
+- keep students moving until the car is on screen and moving, then stop and name that as progress
+- answer only the block a learner needs for their next move, not every block on screen
+- circulate first to anyone not yet at a visible build step
 
-**Move**
-
-- circulate first to students who are not yet at a visible build step rather than to students who are already experimenting
-- if learners ask what every block means, answer only the block they need for the next move
-- once several teams have the car and setup on screen, name that as a success out loud so the room feels progress
-
-**Ask or involve**
-
-- ask for a quick signal when teams reach the first visible build milestone
-- invite one team to show the room where they changed a setup value
-- ask the room what that choice might improve before the team runs the shakedown
-
-##### First setup decision
-
-- when students begin tuning values, pause briefly and ask for a prediction
-- keep the question short so it supports action rather than replacing it
+##### The units decision
 
 **Ask**
 
-- What do you think this setup will help with?
-- What might it cost you later?
-- If we raise this value, what do you expect to happen on the test run?
-
-**Move**
-
-- ask for predictions before students run the shakedown, not after
-- point to one variable at a time if students seem unsure what is actually changing
-- if the room is quiet, ask students to answer the prediction to a partner before taking a whole-group response
+- Which units does your driver actually think in?
+- What would go wrong if the dashboard and the driver disagreed?
 
 **Name**
 
-- variables as tuning choices
-- constraints because one improvement can create a cost
-- prediction as part of testing, not guessing blindly
+- the dashboard as a design decision, not decoration
+- that this choice returns in Design and again on the track
 
-##### Garage Shakedown
+##### System check
 
-- make sure learners reach the test track instead of staying stuck in setup forever
-- use the shakedown as the first compare-and-explain moment
-- ask for one thing the result confirmed and one thing it challenged
+- the check exists to prove the readout follows the setting rather than repeating typed words
+- have students change a dropdown and run it again, so they see the readout follow
 
-**Ask**
+**Watch for**
 
-- What happened that you expected?
-- What happened that you did not expect?
-- Which score lens seems easiest to improve right now?
-- Which one got harder?
-
-**Move**
-
-- stop the room only after enough teams have seen a real result to discuss
-- ask one team to name the choice they made before you ask what happened
-- capture one or two contrasting results publicly so students hear that different setups can produce different tradeoffs
-
-**Ask the room**
-
-- Which team saw the biggest change from its setup choice?
-- What tradeoff showed up most clearly in that test?
-- If you were a data analyst, what result would you want to record from that run?
-
-#### Stretch by experience level
-
-- for students who are new to coding, keep them on the main path and ask them to name one setup choice and one result
-- for students with some coding experience, ask them to compare two settings and explain which tradeoff became clearer
-- for students with stronger coding experience, invite them to adjust both speed and efficiency or revise the tradeoff rule, then defend why the new balance is better or more extreme
-
-#### Watch for
-
-- students treating the first result as success or failure instead of as feedback
-- learners increasing speed without noticing efficiency or control costs
-- groups needing a clearer explanation of what they are supposed to compare
+- learners typing "mph" as text instead of dragging the unit block, which is exactly the bug this step is built to catch
+- students pressing **A** once and assuming the splash is stuck; the second screen holds the units
 
 #### Adjust if needed
 
-- bring everyone back to one shared question: "What did you change, and what happened next?"
-- point to one visible variable or score lens, not the whole system at once
-- rotate Driver and Navigator roles before moving on if needed
+- if the room is behind, the team name and car name can be left at their defaults
+- do not cut the system check; it is the first time a student proves something rather than assumes it
 
-### 3. Stage 2, On the Road
+### 3. Design (12 minutes)
 
 #### Goal
 
-Help students feel their earlier decisions in motion and interpret new problems as engineering choices rather than random difficulty.
+A prediction said out loud before the bench runs, and a rule that makes the tradeoff real in code.
 
 #### Priorities
 
-- this is where prior setup decisions start showing consequences
-- movement, collisions, pit stops, and weather are all evidence
-- strategy is not separate from gameplay; it is part of how the gameplay is read
+- prediction first, result second
+- the tradeoff rule is the stage; everything else supports it
+- Riley opens and closes
 
 #### Live moves
 
-##### Hit the Track
-
-- let the motion do some of the teaching before you interrupt it with explanation
-- once learners have seen one clear obstacle or collision moment, pause briefly
+##### The prediction
 
 **Ask**
 
-- Which earlier choice is helping you now?
-- Which one is creating a new problem?
-- What is the game telling you about your setup?
+- What will more speed cost you?
+- Where will that cost show up: the clock, the energy, or the crashes?
 
 **Move**
 
-- wait until students have actually experienced movement, collisions, or rewards before asking for interpretation
-- point to one visible moment on the screen when asking a question so the room stays anchored in evidence
-- if learners are talking only about whether they won or lost, redirect to the earlier setup choice that influenced the run
+- take predictions before anyone runs the bench, not after
+- if the room is quiet, have students answer to a partner first
+
+##### The bench test
+
+The garage bench runs a twenty-lap race on its own. Energy drains each lap, the car pits when the tank runs low, and the report gives a race time. Lower wins.
+
+**Ask**
+
+- Try 90 and then 110. Which finished the race sooner?
+- Why would the slower car win?
 
 **Name**
 
-- inputs and outputs
-- event-driven behavior
-- feedback systems that tell the player what the system is doing
-
-##### Pit Stop Briefings
-
-- use pit stop moments to connect a visible gameplay choice to a real team role
-- keep the career connection tied to the decision students are making right then
-
-**Ask**
-
-- Who on a real team would care most about this moment?
-- Is this a performance decision, an efficiency decision, or a strategy decision?
-- When is the fastest choice not the smartest choice?
-
-**Move**
-
-- name the role after students describe the decision, not before
-- keep the connection to one sentence if the room is in motion
-- if students are engaged, ask two different teams to name two different roles that might care about the same moment
-
-**Ask the room**
-
-- Which role is most visible in this moment: strategist, software engineer, telemetry analyst, or designer?
-- What kind of information would that person care about?
-- What would they want the team to do next?
-
-##### Changing Conditions
-
-- when rain, grip shifts, or other condition changes appear, frame them as system changes the team must respond to
-- ask learners to explain how the track changed what counts as a good decision
-
-**Ask**
-
-- What changed once conditions changed?
-- Did the best earlier setup stay the best setup?
-- What would a telemetry or strategy team want to notice here?
-
-**Move**
-
-- pause at the first moment students clearly feel the changed condition rather than waiting until the end of the stage
-- ask learners to compare before-rain and after-rain decision-making
-- if the room has different results, use that variation as evidence that setup and strategy interact
-
-**Name**
-
-- systems responding to changing conditions
-- data-informed adaptation
-- optimization across more than one goal
-
-**Ask or involve**
-
-- ask students to vote quickly on whether the best decision changed once the weather changed
-- invite one team to explain why their earlier choice still helped or stopped helping
-- ask another team to disagree or add evidence
-
-#### Stretch by experience level
-
-- for students who are new to coding, ask them to name one earlier choice that helped or hurt once the track changed
-- for students with some coding experience, ask them to compare two runs and explain whether the better result came from speed, control, or strategy
-- for students with stronger coding experience, invite them to adjust one reward and one penalty, or modify a weather-related variable, then justify whether the system still feels fair and readable
+- that 90 beats 110 here because pit stops cost more than lap time saves
+- the role lens as four people reading the same result differently
 
 #### Watch for
 
-- learners describing events but not connecting them back to a prior choice
-- groups focusing only on surviving, without naming the tradeoff under the pressure
-- students missing the career connection because it was delivered too abstractly
-
-#### Adjust if needed
-
-- pause on one visible moment, not the whole stage
-- ask students to compare two runs or two teams instead of answering in the abstract
-- shorten talk and send them back to action quickly
-
-### 4. Stage 3, The Finish Line
-
-#### Goal
-
-Turn the last part of the session into evidence and interpretation, not just completion.
-
-#### Priorities
-
-- the final challenge is where multiple systems run together
-- students should watch performance, efficiency, and strategy together
-- the review matters because it turns gameplay into explanation
-
-#### Live moves
-
-##### Final Challenge
-
-- frame this as a chance to apply earlier learning, not prove worth
-- remind learners that the goal is not perfect performance; it is noticing what their design choices produced
-- during the run, keep your prompts minimal so students can stay in the action
-
-**Ask**
-
-- What are you watching most closely right now?
-- Which earlier choice is showing up most clearly in this run?
-
-**Move**
-
-- give students a few seconds to play before you ask them to interpret anything
-- if you pause the room, ask them to name one lens they are watching: performance, efficiency, or strategy
-- keep this segment active and avoid turning it into a running commentary from the front
-
-**Ask the room**
-
-- Which score lens are you watching most right now?
-- Which earlier choice seems to be helping the most?
-- Is the strongest run also the most balanced run?
-
-##### Reflect and Review
-
-- after the run, slow the room down just enough to interpret the results
-- push learners toward evidence instead of general reactions
-
-**Ask**
-
-- What choice had the biggest effect on your result?
-- Which score lens mattered most by the end?
-- What evidence from the run supports that?
-
-**Move**
-
-- ask for a specific choice before accepting a general opinion about the run
-- if students say something was better or worse, follow up with "What in the game tells you that?"
-- use one student example to model an evidence-based answer if the room is unsure how to respond
-
-**Name**
-
-- evidence and feedback
-- iteration based on results
-- tradeoff analysis rather than single-metric thinking
-
-**Ask or involve**
-
-- ask the room to identify which score lens mattered most in one example run
-- invite one team to make a claim and another to add supporting evidence or a different interpretation
-- ask what the team should test next and why
-
-##### Winners Circle and Closure Inside the Stage
-
-- use the closing screens to connect what happened to a role, a system, or a next-test idea
-- keep this concrete and brief rather than turning it into a speech
-
-**Ask**
-
-- What would you change if you ran it again?
-- Which role does your thinking match most closely?
-- What should the team test next?
-
-**Move**
-
-- ask students to complete one sentence stem before moving to the next activity
-- if time is short, collect one next-test idea from each pair instead of doing a longer whole-group reflection
-- keep the closing connection tied to a real gameplay or code decision, not a generic preference
-
-**Ask the room**
-
-- Which career connection felt most real in this stage?
-- What skill from today matters outside of racing games?
-- What did this run teach us about how engineers make decisions?
+- students raising speed without reading the energy cost
+- the bench being read as a score to beat instead of a test to learn from
 
 #### Stretch by experience level
 
-- for students who are new to coding, ask them to explain one choice and one result using simple evidence from the run
-- for students with some coding experience, ask them to explain which score lens mattered most and what they would adjust next
-- for students with stronger coding experience, invite them to improve the review, revise the next-test recommendation, or change the closing message so it better reflects the run and the relevant team role
+- new to coding: name one setup choice and one result
+- some experience: compare two settings and explain which tradeoff became clearer
+- stronger experience: change the rule's threshold and defend the new balance
 
-#### Watch for
-
-- students giving only emotional reactions instead of evidence-based explanations
-- groups skipping the review because they think the game is over once the run ends
-- learners talking only about score instead of the three-lens model
-
-#### Adjust if needed
-
-- protect one evidence-based reflection question
-- protect one next-step statement
-- skip longer written reflection before you skip interpretation altogether
-
-### 5. Remix, Share, or Replay
+### 4. Test (12 minutes)
 
 #### Goal
 
-Give learners one more chance to act on what they learned instead of ending with passive discussion alone.
+Two runs that differ by exactly one thing, and a student who can say what that one thing cost.
 
 #### Priorities
 
-- invite one small revision that creates a visible difference quickly
-- ask learners to predict before they replay or test again
-- if time is tight, let teams explain a remix verbally instead of fully building it
-- if the room is energized, use a short compare-two-versions share-out
+- the baseline gets written down before anything changes
+- the comparison is the lesson, not the lap time
+- Jordan opens and closes
 
 #### Live moves
 
-- narrow the remix to one variable, event, reward rule, or message if students are unsure where to start
-- ask students to state the change out loud before they build it
-- require a quick replay or explanation so the remix does not remain hypothetical
-- if experienced coders move faster, direct them to a slightly deeper but still testable change rather than letting them wander too far from the core system
+##### The standing start
 
-**Ask or involve**
+Students press **A** to roll the car to the line, then five lights count down and the run starts when they go out. Jumping the lights is a false start and restages the car.
 
-- have teams briefly present the change they made before showing the result
-- ask the audience to predict what will happen before the replay starts
-- after the replay, ask the audience whether the remix improved performance, efficiency, strategy, or clarity
-- invite one audience member to name the engineering tradeoff the remix created
+##### The baseline
+
+- have students write down Time, Top speed and Gas burned before touching any code
+- editing code while the car is driving restarts the run and loses that baseline
 
 **Ask**
 
-- Change one value. What do you think will change?
-- Which version feels more balanced?
-- What did this remix improve, and what did it make harder?
+- Your `driveSpeed` is 90. What did the dashboard say your top speed was?
+- If those numbers match, what does that tell you about the setting?
 
-**Ask the room**
+##### The comparison
 
-- Which team changed something different from you?
-- Which version seems more fair? Why?
-- Which remix rewarded speed, and which one rewarded control or strategy?
+The comparison opens by itself after the second run and runs to more than one page. Students press **A** to turn each page and up to go back.
 
-#### Stretch by experience level
+**Ask**
 
-- for students who are new to coding, keep the remix to one visible change with one quick test
-- for students with some coding experience, ask for a comparison between two versions and a defense of which is stronger
-- for students with stronger coding experience, invite a two-part change, such as speed plus efficiency, collision plus reward, or review message plus next-test prompt, and ask them to explain the tradeoff it created
+- What did you change, and what did it cost?
+- Which number moved the most?
 
 #### Watch for
 
-- remixes that are too large to test quickly
-- teams changing many things at once and losing the cause-and-effect thread
-- students needing a narrower prompt rather than more freedom
+- code edits mid-run, which quietly throws the run away
+- students changing two things and losing the ability to attribute the result
 
-### 6. Closing Reflection and Transition
+### 5. Analyze (12 minutes)
 
 #### Goal
 
-End with a short, confident reflection that captures learning without draining the room.
+A race turned into numbers the team can act on, built by the student rather than handed over.
 
 #### Priorities
 
-- ask each team to name one choice and one effect
-- invite one or two students to connect a game moment to a team role
-- ask what they would test next if they had another round
-- reset the room for the next group or transition cleanly to the next activity
+- the counters are the instrument; the session is just where readings come from
+- every session ends with a report whether or not the student built one
+- Casey opens and closes
 
 #### Live moves
 
-- decide before the close whether you want a verbal share-out, a quick exit response, or a one-sentence pair reflection
-- call on a small number of teams rather than asking for a long open discussion
-- end with next-step thinking so the session lands on iteration, not finality
-- if another group is coming in, start the transition while students are finishing their last sentence rather than after full silence
+##### The session rhythm
 
-**Ask the room**
+A race session stages itself. The car rolls to the line, five lights count down, and a thirty-second countdown starts when they go out. Nothing to press.
 
-- What is one engineering idea you heard today: tradeoff, testing, data, system response, or optimization?
-- What is one coding idea you used or noticed: event, variable, condition, or debugging?
-- What is one role from today that you want to learn more about?
-- What is one thing the next team should watch for when they start?
+##### Before the first full session
 
-**Close with**
+**Ask**
 
-- One choice we made was...
-- One thing that changed because of it was...
-- Next time we would test...
-- One role connected to our thinking today was...
+- How many hits do you think you will take? Say a number now.
+
+Then have them drive, and compare the guess to the count when the session ends. That gap is the whole stage.
+
+##### When a session ends early
+
+Running out of hearts ends the session with **Out of energy** and still saves the results. Name it as data, not failure.
+
+**Ask**
+
+- What did driving clean actually earn you?
+- Which number would you show a teammate to prove the session went well?
+
+#### Watch for
+
+- students reporting impressions rather than reading the count
+- a room that treats an early finish as losing
+
+### 6. Decide (12 minutes)
+
+#### Goal
+
+A call made before anyone knows how it turns out, then tested against the alternative.
+
+#### Priorities
+
+- strategy is a decision under uncertainty, not a correct answer
+- the rain changes the road, the grip and the hazards together
+- Morgan opens; Avery closes on how the energy was spent
+
+#### Live moves
+
+##### When the rain arrives
+
+Part way in, the sky turns gray, the road darkens, rain streaks the screen and a banner names it. The grip rule the student wrote then drops the car's top speed, which they can watch fall in the corner readout.
+
+**Ask**
+
+- What did the rain change that you could actually see?
+- Your car is slower now. Is that the game punishing you, or your own rule working?
+
+##### The pit call
+
+Pit markers come up the road and have to be steered onto. A Pace setup earns points from a stop; a Balance setup wins back energy.
+
+**Ask**
+
+- Did you pit? What made you decide?
+- Would a different setup have made the other call right?
+
+##### Both strategies
+
+Have teams run the session twice, taking every pit stop and then skipping them all, and compare strategy points.
+
+#### Watch for
+
+- pit stops treated as always good
+- students missing that puddles now appear in any race where it rains, including the final one
+
+### 7. Race and Reflect (17 minutes)
+
+#### Goal
+
+Every system running at once, then the student finding their own decisions inside the result.
+
+#### Priorities
+
+- this is integration: nothing new is introduced except pressure
+- the last four steps are the payoff of the whole session, not filler
+- Taylor opens; all nine roles close
+
+#### Live moves
+
+##### The final race
+
+Obstacles come faster, pit markers still appear, the rain still arrives, and every rule the student wrote runs at the same time.
+
+**Ask**
+
+- Which of your systems broke first under pressure?
+- Which one held up better than you expected?
+
+##### The review
+
+The stage ends by naming the next test to run, the role the student's decisions matched, and the career that role belongs to.
+
+**Ask**
+
+- Which role did your decisions match? Is that the one you expected?
+- What would you test first if we ran this again tomorrow?
+
+**Move**
+
+- read one mentor's route aloud from the [Career Lenses]({{ site.baseurl }}/educators/career-lenses/) page while the stage is still fresh
+- if a student says they are not a coder, Sam and Drew are the two routes to name first
+
+#### Watch for
+
+- rushing the reflection steps to finish the race
+- the career connection being treated as a quiz rather than a mirror
+
+### 8. Remix or Replay (optional, 10 minutes)
+
+Use this block when the room is ahead of the clock. When it is not, the reflection steps inside Race and Reflect are the close.
+
+#### Live moves
+
+- keep each remix to one visible change: the spawn interval, the tradeoff threshold, the reward values
+- have the team run it once and say what the change did before they change anything else
+- invite one team to show the room a change and explain the result
+
+#### Watch for
+
+- teams rewriting several rules at once and losing the ability to explain any of them
+
+### 9. Closing and Share (5 minutes)
+
+#### Goal
+
+Leave with one choice, one effect and one next step named out loud.
+
+#### Live moves
+
+- ask for one sentence per team: what they changed, and what it did
+- point at the roll call from Race and Reflect and name the nine roles as real jobs
+- close on the next-test focus each team wrote, which is the handoff a real team would leave
 
 ## Educator Moves That Help Throughout
 
@@ -548,12 +446,13 @@ End with a short, confident reflection that captures learning without draining t
 
 ## Best Places to Pause
 
-- after the first setup choice in The Garage
-- after the Garage Shakedown result screen
-- at the first pit stop or career briefing moment
-- when changing conditions force learners to adapt
-- right after the final challenge before students move into closure
-- during replay or remix if two teams reached clearly different outcomes
+- after the system check in Join the Team, where a setting is proved rather than assumed
+- after the prediction in Design, before anyone runs the bench
+- after the comparison in Test, where two runs sit side by side
+- at the first **Session over** report, which every session produces
+- the moment the rain arrives in Decide and the speed readout falls
+- after the role and career connection in Race and Reflect
+- during remix if two teams reached clearly different outcomes
 
 ## Recovery Moves for Live Events
 
@@ -565,7 +464,7 @@ End with a short, confident reflection that captures learning without draining t
 
 ### If the room is moving too slowly
 
-- prioritize one complete journey through all three stages
+- prioritize one complete journey through all six stages
 - reduce the number of pause points instead of rushing every prompt
 - protect the first test, one compare-and-explain moment, and the closing reflection
 

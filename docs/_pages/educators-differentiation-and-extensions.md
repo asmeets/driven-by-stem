@@ -12,7 +12,7 @@ This page focuses on how to adapt the experience without losing what makes it wo
 When changes are needed for access, pacing, or confidence, the learning conditions should change before the content does.
 
 - shorten the amount of new information students need to process at one time
-- keep the skillmap sequence intact so learners still move through Garage, On the Road, and Finish Line in order
+- keep the skillmap sequence intact so learners still move through Join the Team, Design, Test, Analyze, Decide, and Race and Reflect in order
 - reduce the number of decisions students make at once before reducing the challenge level itself
 - use one clear prediction, one visible test, and one short explanation as the core learning cycle
 
@@ -36,10 +36,10 @@ These supports do not remove the need for facilitation, but they do give you a s
 These moves work well when students need a slower on-ramp, more repetition, or less information at once.
 
 - keep directions to one action at a time and point to one block, value, or mechanic before moving on
-- pause after each first success, such as car movement, the first shakedown, or the first obstacle interaction
+- pause after each first success, such as car movement, the first bench result, or the first obstacle interaction
 - treat the built-in tutorial hints as part of normal problem solving, not as a sign that a learner is behind
 - replace long verbal explanations with short prompts such as "Change one value," "Test it," or "What changed?"
-- use the Garage Shakedown and later replay moments as structured chances to stop, reset, and try again
+- use the end of each race session, where the game reports the result either way, as a structured chance to stop, read, and try again
 
 ## Adaptations for Shared Devices and Participation
 
