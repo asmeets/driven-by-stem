@@ -1,0 +1,191 @@
+#!/usr/bin/env node
+// Content integrity checks for the Driven by STEM skillmap.
+// Node builtins only - no package.json, no dependencies.
+// Usage: node tools/check-content.mjs
+
+import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { join, relative } from 'node:path'
+
+const ROOT = new URL('..', import.meta.url).pathname.replace(/\/$/, '')
+const errors = []
+const warnings = []
+const fail = (f, m) => errors.push(`${f}: ${m}`)
+const warn = (f, m) => warnings.push(`${f}: ${m}`)
+
+const read = p => readFileSync(join(ROOT, p), 'utf8')
+
+// ---- collect tutorials -------------------------------------------------
+function walk(dir, out = []) {
+    for (const e of readdirSync(join(ROOT, dir))) {
+        const rel = `${dir}/${e}`
+        if (statSync(join(ROOT, rel)).isDirectory()) walk(rel, out)
+        else if (e.endsWith('.md')) out.push(rel)
+    }
+    return out
+}
+const tutorials = walk('tutorials').sort()
+const stageTutorials = tutorials.filter(t => t.startsWith('tutorials/stages/'))
+const stagePins = []
+const skillmaps = readdirSync(ROOT).filter(f => /^skillmap.*\.md$/.test(f))
+
+// ---- 1. skillmap node urls resolve ------------------------------------
+for (const sm of skillmaps) {
+    const src = read(sm)
+    const urls = [...src.matchAll(/^\* url:\s*github:([^\s]+)/gm)].map(m => m[1])
+    for (const u of urls) {
+        const parts = u.split('/')
+        const path = parts.slice(2).join('/') + '.md'
+        if (!existsSync(join(ROOT, path))) fail(sm, `node url does not resolve to a file: ${path}`)
+    }
+    // next: chain integrity
+    const ids = [...src.matchAll(/^### (.+)$/gm)].map(m => m[1].trim())
+    const nexts = [...src.matchAll(/^\* next:\s*(.+)$/gm)].map(m => m[1].trim())
+    for (const n of nexts) if (!ids.includes(n)) fail(sm, `next: "${n}" names no node in this map`)
+}
+
+// ---- 2. pxt.json files[] matches disk ---------------------------------
+const pxt = JSON.parse(read('pxt.json'))
+for (const f of pxt.files) if (!existsSync(join(ROOT, f))) fail('pxt.json', `files[] lists a missing file: ${f}`)
+for (const t of tutorials) if (!pxt.files.includes(t)) fail('pxt.json', `tutorial not listed in files[]: ${t}`)
+for (const sm of skillmaps) if (!pxt.files.includes(sm)) fail('pxt.json', `skillmap not listed in files[]: ${sm}`)
+
+// ---- per-tutorial checks ----------------------------------------------
+const assetHashes = new Map()
+const customTs = read('custom.ts')
+const exported = new Set([...customTs.matchAll(/export (?:function|enum) (\w+)/g)].map(m => m[1]))
+// Reporters return a value. Alone on a line inside blockconfig/ghost they decompile to
+// nothing, and MakeCode fails the whole fence ("Failed to resolve blockconfig").
+const reporters = new Set([...customTs.matchAll(/export function (\w+)\([^)]*\)\s*:\s*(?!void)(\w+)/g)].map(m => m[1]))
+const assetNames = new Set([...read('images.g.jres').matchAll(/"displayName":\s*"([^"]+)"/g)].map(m => m[1]))
+
+for (const t of tutorials) {
+    const src = read(t)
+    const isStub = src.includes('<!-- PREVIEW-STUB')
+    const isStage = stageTutorials.includes(t) && !isStub
+    const bytes = Buffer.byteLength(src)
+
+    // 3. size
+    if (bytes > 512000) fail(t, `${bytes} bytes exceeds the hard 512K ceiling`)
+    else if (bytes > 128000) warn(t, `${bytes} bytes is over MakeCode's documented 128K limit (known, accepted - embedded assetjson)`)
+
+    // 4. numbered steps contiguous, and within budget for revised stages
+    const steps = [...src.matchAll(/^## \{(\d+)\. /gm)].map(m => Number(m[1]))
+    steps.forEach((n, i) => { if (n !== i + 1) fail(t, `step numbering breaks at "${n}" (expected ${i + 1})`) })
+    if (isStub && /controller\.A\.onEvent/.test(src)) fail(t, 'binds controller.A, reserved by the library')
+    if (isStage) {
+        if (steps.length < 6 || steps.length > 10) fail(t, `${steps.length} numbered steps is outside the 6-10 budget`)
+        const dialogs = (src.match(/^## .*@showdialog/gm) || []).length
+        if (dialogs !== 1) fail(t, `expected exactly 1 @showdialog card, found ${dialogs}`)
+        for (const flag of ['### @diffs true', '### @explicitHints true', '```validation.global'])
+            if (!src.includes(flag)) fail(t, `missing required directive: ${flag}`)
+        // 5. never bind controller.A - the library owns it (test-track.ts ensureHooksInstalled)
+        if (/controller\.A\.onEvent/.test(src)) fail(t, `binds controller.A, which the library reserves for start-line staging`)
+    }
+
+    // 5b. cache-busting: MakeCode caches tutorial markdown by URL and a new
+    //     release tag does not clear it. Only a new filename does, so every
+    //     stage tutorial must carry a -v<N> suffix (see tools/bump-tutorial.mjs).
+    if (stageTutorials.includes(t) && !/-v\d+\.md$/.test(t))
+        fail(t, 'missing the -v<N> version suffix; MakeCode will serve a cached copy after edits (run tools/bump-tutorial.mjs)')
+
+    // 6. validate markers must sit inside a blocks fence
+    const fences = [...src.matchAll(/^```(\w[\w.]*)\n([\s\S]*?)^```$/gm)]
+    const inBlocks = fences.filter(f => f[1] === 'blocks').map(f => f[2]).join('\n')
+    const totalMarkers = (src.match(/^\/\/@(validate-exists|highlight)$/gm) || []).length
+    const blockMarkers = (inBlocks.match(/^\/\/@(validate-exists|highlight)$/gm) || []).length
+    if (totalMarkers !== blockMarkers) fail(t, `${totalMarkers - blockMarkers} @validate/@highlight marker(s) sit outside a \`\`\`blocks fence`)
+
+    // 6b. bare reporters in blockconfig / ghost
+    // Scoped to the six stages: the ten legacy v1 activities are frozen until cutover and
+    // carry the same defect (activity2-v5.md), so flagging them would only add noise.
+    if (stageTutorials.includes(t)) for (const f of fences.filter(f => f[1] === 'blockconfig.local' || f[1] === 'ghost'))
+        for (const m of f[2].matchAll(/^drivenByStem\.(\w+)\(\)\s*$/gm))
+            if (reporters.has(m[1])) fail(t, `\`\`\`${f[1]} has drivenByStem.${m[1]}() alone on a line; it is a reporter, so MakeCode cannot build a block from it and rejects the fence`)
+
+    // 6a2. the library version this stage compiles against
+    // MakeCode fetches a tutorial's markdown and resolves its extension through two
+    // different caches, so a project created right after a release can still be built
+    // against the previous one: new instructions, old behaviour, nothing on screen to
+    // say so. A ```package fence pins the pair together. Set it with
+    // `node tools/pin-version.mjs vX.Y.Z` and use the tag this commit ships in.
+    if (stageTutorials.includes(t)) {
+        const pins = fences.filter(f => f[1] === 'package').map(f => f[2].trim())
+        if (pins.length !== 1) fail(t, `expected exactly one \`\`\`package fence pinning the library version, found ${pins.length}`)
+        else if (!/^driven-by-stem=github:asmeets\/driven-by-stem#v\d+\.\d+\.\d+$/.test(pins[0]))
+            fail(t, `\`\`\`package says "${pins[0]}"; it has to pin a release tag, as in driven-by-stem=github:asmeets/driven-by-stem#v9.0.3`)
+        else stagePins.push([t, pins[0]])
+    }
+
+    // 6b2. `let x = <literal>` inside blockconfig
+    // pxt reads a variables_set config by looking for a <block> inside its <value>. A plain
+    // number or string decompiles to a <shadow>, so the entry throws and the console fills
+    // with "Cannot read properties of undefined (reading 'getAttribute')". The ghost fence,
+    // which is what puts the block in the toolbox, is the right home for these lines.
+    if (stageTutorials.includes(t)) for (const f of fences.filter(f => f[1].startsWith('blockconfig')))
+        for (const m of f[2].matchAll(/^\s*let (\w+) = (-?\d+(?:\.\d+)?|"[^"]*"|true|false)\s*$/gm))
+            fail(t, `\`\`\`${f[1]} has \`let ${m[1]} = ${m[2]}\`; pxt cannot configure a variable set to a literal, so it drops the entry and logs an error. Keep the line in the \`\`\`ghost fence only`)
+
+    // 6c. splash text is clipped at roughly 24 characters on the 160 px screen
+    if (stageTutorials.includes(t)) {
+        const body = src.slice(0, src.indexOf('```assetjson'))
+        for (const m of body.matchAll(/game\.splash\(("[^"]*")(?:\s*,\s*("[^"]*"))?\)/g))
+            for (const lit of [m[1], m[2]].filter(Boolean))
+                if (lit.length - 2 > 24) fail(t, `splash text ${lit} is ${lit.length - 2} characters; the simulator clips anything past about 24`)
+    }
+
+    // 7. hint balance
+    const openH = (src.match(/^~hint /gm) || []).length
+    const closeH = (src.match(/^hint~$/gm) || []).length
+    if (openH !== closeH) fail(t, `~hint/hint~ unbalanced (${openH} open, ${closeH} close)`)
+
+    // 8. library calls exist
+    for (const m of src.matchAll(/drivenByStem\.(\w+)\(/g))
+        if (!exported.has(m[1])) fail(t, `calls drivenByStem.${m[1]}(), which is not exported from custom.ts`)
+
+    // 9. asset names exist
+    for (const m of src.matchAll(/assets\.image`([^`]+)`/g))
+        if (!assetNames.has(m[1])) fail(t, `references asset \`${m[1]}\`, which is not in the asset set`)
+
+    // 10. assetjson payload identical across tutorials
+    const idx = src.indexOf('```assetjson')
+    if (idx === -1) {
+        if (!isStub) fail(t, 'missing the ```assetjson payload - sprites will not appear in My Assets')
+    } else assetHashes.set(t, createHash('md5').update(src.slice(idx)).digest('hex'))
+}
+
+// 11. one canonical asset payload
+const distinct = [...new Set(assetHashes.values())]
+if (distinct.length > 1) {
+    fail('assetjson', `payload diverges across tutorials (${distinct.length} distinct hashes)`)
+    for (const [t, h] of assetHashes) errors.push(`    ${h}  ${t}`)
+}
+
+// 12. every raw.githubusercontent URL resolves to a repo path
+for (const f of [...tutorials, ...skillmaps]) {
+    for (const m of read(f).matchAll(/raw\.githubusercontent\.com\/asmeets\/driven-by-stem\/main\/([^\s")']+)/g))
+        if (!existsSync(join(ROOT, m[1]))) fail(f, `asset URL does not resolve: ${m[1]}`)
+}
+
+// 13b. the on-screen build marker says the same thing the tutorials pin
+const libraryVersion = (customTs.match(/const LIBRARY_VERSION = "(v\d+\.\d+\.\d+)"/) || [])[1]
+if (!libraryVersion) fail('custom.ts', 'no LIBRARY_VERSION constant; the stage prompt has nothing to print')
+else if (stagePins.length && !stagePins.every(([, pin]) => pin.endsWith('#' + libraryVersion)))
+    fail('custom.ts', `LIBRARY_VERSION is ${libraryVersion} but the stages pin something else. Run node tools/pin-version.mjs ${libraryVersion}`)
+
+// 13. every stage names the same library version, or a student crossing from one
+// stage to the next changes libraries under their own carried-over code.
+const pinnedVersions = stagePins.map(([, pin]) => pin.split('#')[1]).filter((v, i, a) => a.indexOf(v) === i)
+if (pinnedVersions.length > 1) fail('tutorials/stages', `stages are pinned to different library versions: ${pinnedVersions.join(', ')}. Run node tools/pin-version.mjs vX.Y.Z`)
+
+// ---- report ------------------------------------------------------------
+for (const w of warnings) console.log(`  warn  ${w}`)
+if (errors.length) {
+    console.error(`\n${errors.length} problem(s):\n`)
+    for (const e of errors) console.error(`  FAIL  ${e}`)
+    process.exit(1)
+}
+const stubs = tutorials.filter(t => read(t).includes('<!-- PREVIEW-STUB'))
+
+console.log(`\nOK - ${tutorials.length} tutorial files (${stageTutorials.length - stubs.length} built stages, ${stubs.length} preview stubs, ${tutorials.length - stageTutorials.length} legacy), ${skillmaps.length} skillmaps, ${distinct.length} asset payload hash, ${warnings.length} warning(s).`)
+if (stubs.length) console.log(`      stubs awaiting build: ${stubs.map(s => s.split('/').pop()).join(', ')}`)
