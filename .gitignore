@@ -1,0 +1,22 @@
+# MakeCode
+built
+node_modules
+yotta_modules
+yotta_targets
+pxt_modules
+.pxt
+_site
+*.db
+*.tgz
+.header.json
+.simstate.json
+.DS_Store
+.venv-racetrack-slicer/
+.vscode/*
+.github/*
+!.github/workflows/
+.vscode
+AGENTS.md
+!.github/ISSUE_TEMPLATE/
+!.github/ISSUE_TEMPLATE/feedback.yml
+!.github/ISSUE_TEMPLATE/config.yml

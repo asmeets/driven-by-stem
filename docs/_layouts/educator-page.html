@@ -1,0 +1,35 @@
+---
+layout: page
+show_sidebar: false
+---
+
+<div class="educator-page-shell">
+  <div class="educator-page-main">
+    {{ content }}
+  </div>
+
+  <aside class="educator-page-nav" aria-label="Teacher's guide sections">
+    <nav>
+      {% for group in site.data.educator_nav %}
+      <p class="educator-page-nav-label">{{ group.title }}</p>
+      <ul class="educator-page-nav-list">
+        {% for item in group.items %}
+        <li>
+          {% if page.educator_nav == item.key %}
+          <span class="is-current" aria-current="page">{{ item.label }}</span>
+          {% else %}
+          <a href="{{ site.baseurl }}{{ item.url }}">{{ item.label }}</a>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% endfor %}
+
+      <p class="educator-page-nav-label">Links</p>
+      <ul class="educator-page-nav-list educator-page-nav-links">
+        <li><a href="{{ site.skillmap_url }}">Launch the Skillmap</a></li>
+        <li><a href="https://github.com/asmeets/driven-by-stem">GitHub Repository</a></li>
+      </ul>
+    </nav>
+  </aside>
+</div>

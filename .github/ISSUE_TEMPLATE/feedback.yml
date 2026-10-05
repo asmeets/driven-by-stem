@@ -1,0 +1,76 @@
+name: Feedback, Bug, or Question
+description: Share feedback about the game, report a bug, or ask a question. All are welcome!
+title: "[Feedback] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to share! Whether you're a student, teacher, or facilitator, this helps us make the game better for everyone.
+
+  - type: dropdown
+    id: type
+    attributes:
+      label: What kind of feedback is this?
+      options:
+        - Bug — something isn't working correctly
+        - Suggestion — an idea to improve the game
+        - Question — I need help with something
+        - Content — feedback on instructions, tutorials, or text
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened (or what's your idea)?
+      description: Describe the bug, suggestion, or question in as much detail as you can.
+      placeholder: "Example: When I boosted at the start, the car disappeared from the screen."
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce (for bugs)
+      description: If you're reporting a bug, how can we make it happen again?
+      placeholder: |
+        1. Open the game
+        2. Click Play
+        3. Press the boost button right away
+        4. Car disappears
+    validations:
+      required: false
+
+  - type: dropdown
+    id: role
+    attributes:
+      label: Who are you?
+      options:
+        - Student
+        - Teacher / Facilitator
+        - Microsoft employee
+        - Microsoft event staff
+        - Mercedes-AMG PETRONAS F1 partner
+        - Event staff (non-Microsoft)
+        - Other
+    validations:
+      required: false
+
+  - type: input
+    id: device
+    attributes:
+      label: Device or browser (optional)
+      description: e.g. Surface, iPad, Chromebook, Edge, Chrome, Safari
+      placeholder: "Surface / Microsoft Edge"
+    validations:
+      required: false
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Screenshots, extra context, or anything else that might help.
+    validations:
+      required: false

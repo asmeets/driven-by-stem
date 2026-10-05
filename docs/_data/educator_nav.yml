@@ -1,0 +1,53 @@
+# The sidebar table of contents. Grouped so a teacher can find the page they
+# need by what they are doing, rather than scanning one long list.
+# `key` matches the `educator_nav` value in each page's front matter.
+- title: Start Here
+  items:
+    - key: home
+      label: Home
+      url: /
+    - key: about
+      label: About
+      url: /educators/about/
+    - key: goals
+      label: Goals
+      url: /educators/goals/
+
+- title: Before the Session
+  items:
+    - key: requirements
+      label: Materials & Setup
+      url: /educators/requirements/
+    - key: foundations
+      label: Foundations
+      url: /educators/foundations/
+    - key: standards
+      label: Standards
+      url: /educators/standards/
+    - key: definitions
+      label: Definitions
+      url: /educators/definitions/
+
+- title: Teaching It
+  items:
+    - key: agenda
+      label: Agenda
+      url: /educators/agenda/
+    - key: in-the-classroom
+      label: In the Classroom
+      url: /educators/in-the-classroom/
+    - key: career-lenses
+      label: Career Lenses
+      url: /educators/career-lenses/
+    - key: accessibility
+      label: Accessibility
+      url: /educators/accessibility/
+
+- title: After the Session
+  items:
+    - key: feedback
+      label: Assessment & Reflection
+      url: /educators/feedback/
+    - key: supplementals
+      label: Remix & Extensions
+      url: /educators/supplementals/
