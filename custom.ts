@@ -373,7 +373,7 @@ namespace drivenByStem {
     // Kept in step with the tutorials' ```package pin by tools/pin-version.mjs.
     // It is drawn under the stage prompt so the build that is actually running can
     // be read off the screen, instead of inferred from caches.
-    const LIBRARY_VERSION = "v10.0.1"
+    const LIBRARY_VERSION = "v11.0.1"
 
     //% blockHidden=true
     export function libraryVersion(): string {
