@@ -10,7 +10,7 @@
 // instructions with the previous library, and the editor can resolve the extension
 // separately through its own cached "latest version" lookup.
 //
-// This fetches every stage the preview skillmap points at and reports the release
+// This fetches every stage the published skillmap points at and reports the release
 // each bundle was built from, the version the tutorial pins, and the version the
 // library reports. All three have to agree.
 import { readFileSync, readdirSync } from 'node:fs'
@@ -20,10 +20,10 @@ const ROOT = new URL('..', import.meta.url).pathname.replace(/\/$/, '')
 const REPO = 'asmeets/driven-by-stem'
 const cdn = new Date().toISOString().slice(0, 10).replace(/-/g, '')
 
-const map = readFileSync(join(ROOT, 'skillmap-preview.md'), 'utf8')
+const map = readFileSync(join(ROOT, 'skillmap.md'), 'utf8')
 const paths = [...map.matchAll(/^\* url:\s*github:[^/]+\/[^/]+\/(\S+)/gm)].map(m => m[1])
 if (!paths.length) {
-    console.error('No tutorial urls found in skillmap-preview.md')
+    console.error('No tutorial urls found in skillmap.md')
     process.exit(1)
 }
 

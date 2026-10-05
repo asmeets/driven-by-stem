@@ -14,6 +14,7 @@
         "assets.json",
         "skillmap.md",
         "skillmap-preview.md",
+        "skillmap-v1.md",
         "main.blocks",
         "main.ts",
         "custom.ts",

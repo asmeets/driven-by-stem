@@ -1,6 +1,6 @@
 ## Quick Links
 
-- 🎮 **Play the Game:** https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap-preview
+- 🎮 **Play the Game:** https://arcade.makecode.com/--skillmap#github:asmeets/driven-by-stem/skillmap
 - 📖 **Teacher's Guide:** https://asmeets.github.io/driven-by-stem/
 
 ---

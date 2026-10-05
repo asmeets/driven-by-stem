@@ -1,6 +1,6 @@
 # driven-by-stem
 * name: Driven by STEM, enabled by Microsoft
-* description: Join Mercedes as an engineer for the day! Code your own F1 simulator, balance speed against efficiency, and test your decisions on the track. Explore real STEM careers while building systems that perform under pressure.
+* description: Six stages, one continuous build. Code carries forward, so the car a student sets up in Join the Team is the car they race in Race and Reflect.
 * primarycolor: #ffd84d
 * secondarycolor: #000
 * tertiarycolor: #EAF3F8
@@ -12,118 +12,74 @@
 
 ## driven-by-stem
 * name: Driven by STEM
-* description: Move from the Garage to the track and all the way to the winner's circle through one guided path of tutorials, tests, and remix-ready decisions.
+* description: Students join a race team as junior engineers and build a working race simulator. They choose their own dashboard units, predict what more speed will cost, run a controlled comparison, read their own race data, and make strategy calls when the weather turns.
 * layout: manual
 
-### intro-to-makecode-v5
-* name: Intro to MakeCode
+### join-the-team
+* name: Join the Team
 * type: tutorial
 * allowcodecarryover: false
-* description: Learn about MakeCode Arcade and block-based coding that you'll use to build your F1 simulator, and how to get around the editor.
-* imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-intro-to-makecode.png
-* position: 0 9
-* tags: beginner, start-here, introduction, makecode, blocks
-* next: garage-activity1-v5
-* url: github:asmeets/driven-by-stem/tutorials/in-the-classroom/activity1-v5
-
-### garage-activity1-v5
-* name: Mission Briefing
-* type: tutorial
-* allowcodecarryover: false
-* description: Build your race car, wire up the controls, and choose how your shakedown dashboard reads speed and fuel.
+* description: A season starts long before the lights go out. First, get the team and the car ready. Name your team, wire up the controls, and choose how your dashboard reads. Everything you set here carries into every stage that follows.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-mission-briefing.png
-* position: 0 5
-* tags: beginner, kick-off, mission, controls, points
-* next: garage-activity2-v5
-* url: github:asmeets/driven-by-stem/tutorials/the-garage/activity1-v5
+* position: 0 6
+* tags: stage-1, ready, operations, ux, controls
+* next: design
+* url: github:asmeets/driven-by-stem/tutorials/stages/1-join-the-team-v6
 
-### garage-activity2-v5
-* name: Setup and Tradeoffs
+### design
+* name: Design
 * type: tutorial
 * allowcodecarryover: true
-* description: Choose your speed setting and discover the tradeoff: higher speed costs more energy.
+* description: Your team is ready. Now it's time to improve the car. Test ideas, make predictions, and discover how engineers use data to improve performance. Every change comes with a tradeoff. Your job is to find the right balance.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-setup-tradeoffs.png
-* position: 1 5
-* tags: beginner, car-setup, choices, tune, strategy
-* next: garage-activity3-v5
-* url: github:asmeets/driven-by-stem/tutorials/the-garage/activity2-v5
+* position: 2 5
+* tags: stage-2, ready, performance-engineering, variables, tradeoffs
+* next: test
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v7
 
-### garage-activity3-v5
-* name: Garage Shakedown
+### test
+* name: Test
 * type: tutorial
 * allowcodecarryover: true
-* description: Launch the shakedown test track, read fuel, time, and speed, and compare what your setup really does.
+* description: Your setup looks good on the bench. Now find out what it does on track. Run a baseline, change one thing, and run it again. One run is a story. Two runs are evidence.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-garage-shakedown.png
-* position: 3 6
-* tags: beginner, test-run, compare, feedback, improve
-* next: road-activity1-v5
-* url: github:asmeets/driven-by-stem/tutorials/the-garage/activity3-v5
+* position: 4 6
+* tags: stage-3, ready, test-engineering, comparison
+* next: analyze
+* url: github:asmeets/driven-by-stem/tutorials/stages/3-test-v6
 
-### road-activity1-v5
-* name: Hit the Track
+### analyze
+* name: Analyze
 * type: tutorial
 * allowcodecarryover: true
-* description: Drive a full track session, dodge obstacles, collect boosts, and let the data show how your setup performs.
+* description: A race throws more at the car than a test ever will. Now you'll record what happens. Count collisions, reward clean driving, and read the session's own numbers. The data doesn't care what you remember.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-hit-the-track.png
-* position: 5 7
-* tags: beginner, drive, dodge, movement, points
-* next: road-activity2-v5
-* url: github:asmeets/driven-by-stem/tutorials/on-the-road/activity1-v5
+* position: 6 5
+* tags: stage-4, ready, telemetry, data
+* next: decide
+* url: github:asmeets/driven-by-stem/tutorials/stages/4-analyze-v6
 
-### road-activity2-v5
-* name: Pit Stop Briefings
+### decide
+* name: Decide
 * type: tutorial
 * allowcodecarryover: true
-* description: Build a pit stop system that lets you recover energy mid-run and discover how strategy changes results.
-* imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-pit-stop-briefings.png
-* position: 7 6
-* tags: level-up, pit-stop, team-roles, upgrades, strategy
-* next: road-activity3-v5
-* url: github:asmeets/driven-by-stem/tutorials/on-the-road/activity2-v5
-
-### road-activity3-v5
-* name: Changing Conditions
-* type: tutorial
-* allowcodecarryover: true
-* description: Code a weather shift that changes grip mid-run and rewards drivers who adapt quickly.
+* description: The track is dry until it isn't. Now you'll race in conditions that change. Open the pit lane, adjust for grip, and decide what a stop is worth. A strategist makes the call before anyone knows how it ends.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-changing-conditions.png
-* position: 8 5
-* tags: level-up, weather, grip, adapt, track
-* next: finish-activity1-v5
-* url: github:asmeets/driven-by-stem/tutorials/on-the-road/activity3-v5
+* position: 8 6
+* tags: stage-5, ready, strategy, conditionals
+* next: race-and-reflect
+* url: github:asmeets/driven-by-stem/tutorials/stages/5-decide-v6
 
-### finish-activity1-v5
-* name: Final Challenge
+### race-and-reflect
+* name: Race and Reflect
 * type: tutorial
 * allowcodecarryover: true
-* description: Run all your systems together in one integrated challenge where every choice matters.
+* description: Every system you've built runs at once. Now it's time to race them together. Add risk, add recovery, and score a race you have to manage. Then look back and find your own decisions inside the result.
 * imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-final-challenge.png
-* position: 8 7
-* tags: level-up, final-challenge, best-score, strategy, improve
-* next: finish-activity2-v5
-* url: github:asmeets/driven-by-stem/tutorials/the-finish-line/activity1-v5
-
-### finish-activity2-v5
-* name: Reflect and Review
-* type: tutorial
-* allowcodecarryover: true
-* description: Turn your saved data into a readable summary and find out what to improve next time.
-* imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-reflect-review.png
-* position: 9 7
-* tags: wrap-up, results, review, compare, next-steps
-* next: finish-activity3-v5
-* url: github:asmeets/driven-by-stem/tutorials/the-finish-line/activity2-v5
-
-### finish-activity3-v5
-* name: Winners Circle
-* type: tutorial
-* allowcodecarryover: true
-* description: Celebrate your results, explore career connections, and discover where these skills can take you next.
-* imageUrl: https://raw.githubusercontent.com/asmeets/driven-by-stem/main/assets/skillmap/node-winners-circle.png
-* position: 10 7
-* tags: celebrate, careers, stem, remix, reflection
-* url: github:asmeets/driven-by-stem/tutorials/the-finish-line/activity3-v5
+* position: 10 5
+* tags: stage-6, ready, systems, careers, reflection
 * next: race-day-finish
+* url: github:asmeets/driven-by-stem/tutorials/stages/6-race-and-reflect-v6
 
 ### race-day-finish
 * name: Stand on the Podium!
