@@ -417,7 +417,7 @@ Good decisions are documented. When teams know what was tested and why it was ch
 * :racing car: Drag `||drivenByStem:save team setup [Pace]||` into the **`if`** branch of your `||logic:if||` block, below `||variables:set efficiencyDrain to 2||`.
 * :mouse pointer: Right-click it, choose **Duplicate**, drag the copy into the **`else`** branch, and switch its dropdown to **Balance**.
 * :game pad: Add a `||game:splash||` in each branch saying what that choice means for the team. Keep each line under 24 characters so it fits on screen.
-* :game pad: Run it once at `110` and once at `90`, and watch which branch reports back.
+* :game pad: Run the simulator once at `110` and once at `90`, and watch which is easier to control in the garage.
 
 ~hint Setup not saving? ⏱️
 

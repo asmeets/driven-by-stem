@@ -35,7 +35,7 @@
 * position: 2 5
 * tags: stage-2, ready, performance-engineering, variables, tradeoffs
 * next: test
-* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v9
+* url: github:asmeets/driven-by-stem/tutorials/stages/2-design-v10
 
 ### test
 * name: Test
