@@ -4,7 +4,7 @@
 ### @explicitHints true
 
 ```package
-driven-by-stem=github:asmeets/driven-by-stem#v11.0.3
+driven-by-stem=github:asmeets/driven-by-stem#v11.0.2
 ```
 
 ```validation.global
